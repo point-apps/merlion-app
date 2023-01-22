@@ -42,7 +42,7 @@
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Activity Date</span>
-          <input v-model="form.date" class="form-input" type="text" />
+          <component :is="Datepicker" v-model="form.date" />
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Activity</span>
@@ -87,6 +87,7 @@
 import { onMounted, ref } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import Breadcrumb from '@/components/breadcrumb.vue'
+import Datepicker from '@/components/datepicker.vue'
 import axios from '@/axios'
 import { useRouter } from 'vue-router'
 // import { useApi as useRoleApi, type RoleInterface } from '@/modules/role/composable/api'

@@ -1,10 +1,7 @@
 <template>
-  <button
-    class="btn rounded-full hover:bg-slate-300/20 focus:bg-slate-300/20 dark:hover:bg-slate-300/20 dark:focus:bg-slate-300/20"
-    @click="toggleDarkMode()"
-  >
-    <fa-icon v-if="isDarkMode" icon="fa-solid fa-sun-bright w-5 h-5" class="w-8 h-8 flex items-center justify-center" />
-    <fa-icon v-else icon="fa-regular fa-moon w-5 h-5" class="w-8 h-8 flex items-center justify-center" />
+  <button class="sidebar-shortcut-link text-red-200" @click="toggleDarkMode()">
+    <fa-icon v-if="isDarkMode" icon="fa-solid fa-sun-bright w-6 h-6" />
+    <fa-icon v-else icon="fa-regular fa-moon w-6 h-6" />
   </button>
 </template>
 

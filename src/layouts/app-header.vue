@@ -13,8 +13,8 @@
         <!-- Right: Header Buttons -->
         <div class="flex items-center space-x-2">
           <p>{{ fullName }}</p>
-          <div><component :is="ComponentNotification" /></div>
-          <div><component :is="ComponentDarkMode" /></div>
+          <!-- <div><component :is="ComponentNotification" /></div>
+          <div><component :is="ComponentDarkMode" /></div> -->
         </div>
       </div>
     </div>

@@ -21,6 +21,9 @@
           </button>
         </div>
         <div class="my-2">
+          <component :is="ComponentDarkMode" />
+        </div>
+        <div class="my-2">
           <button class="sidebar-shortcut-link text-red-200" @click="onSignout()">
             <fa-icon icon="fa-solid fa-power-off w-6 h-6" />
           </button>
@@ -125,6 +128,7 @@ import { useSidebarMenuStore } from '@/stores/sidebar-menu'
 import { useAuthStore } from '@/stores/auth'
 import { useMobileBreakpoint } from '@/composable/mobile-breakpoint'
 import ComponentToggleSidebar from './component-toggle-sidebar.vue'
+import ComponentDarkMode from './component-dark-mode.vue'
 
 const route = useRoute()
 const router = useRouter()
