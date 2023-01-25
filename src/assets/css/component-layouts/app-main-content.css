@@ -12,6 +12,6 @@
   }
 
   .main-content-header {
-    @apply flex space-x-10 items-center;
+    @apply flex flex-col lg:flex-row lg:space-x-10 lg:items-center;
   }
 }

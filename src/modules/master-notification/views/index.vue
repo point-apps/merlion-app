@@ -1,14 +1,14 @@
 <template>
   <div class="main-content-container">
     <div class="main-content-header">
-      <h2>User</h2>
-      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master' }, { name: 'user' }]" />
+      <h2>Notification</h2>
+      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master' }, { name: 'notification' }]" />
     </div>
     <div class="card p-4 space-y-5">
       <div>
         <div class="space-y-1">
           <label class="input-group relative">
-            <router-link to="/master/user/create" class="prepend-input">
+            <router-link to="/master/notification/create" class="prepend-input">
               <fa-icon icon="fa-solid fa-plus"></fa-icon>
             </router-link>
             <input v-model="searchText" class="form-input rounded-r-lg" placeholder="Search" type="text" />
@@ -27,22 +27,39 @@
         <table class="table">
           <thead>
             <tr class="basic-table-row">
-              <th class="basic-table-head">#</th>
-              <th class="basic-table-head">Name</th>
-              <th class="basic-table-head">Email</th>
-              <th class="basic-table-head">Role</th>
+              <th class="basic-table-head w-1">Send&nbsp;Date</th>
+              <th class="basic-table-head w-1">Subject</th>
+              <th class="basic-table-head">Message</th>
+              <th class="basic-table-head w-1"></th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in users" :key="user._id" class="basic-table-row">
-              <td class="basic-table-body">{{ index + 1 + (currentPage - 1) * pageLimit }}</td>
+            <tr class="basic-table-row">
+              <td class="basic-table-body">21&nbsp;Jan&nbsp;2023</td>
               <td class="basic-table-body">
-                <router-link :to="`/master/user/${user._id}`" class="text-blue-500 hover:text-blue-600">
-                  {{ user.name }}
+                <router-link :to="`/master/notification/1`" class="text-blue-500 hover:text-blue-600">
+                  Activity Recommendation
                 </router-link>
               </td>
-              <td class="basic-table-body">{{ user.role }}</td>
+              <td class="basic-table-body truncate">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ratione quis quisquam sapiente fugit
+                placeat molestiae, ipsa illum unde sed nobis neque? Alias qui id eius, laudantium dolore quasi ipsum.
+              </td>
+              <td class="basic-table-body">
+                <label class="bg-slate-400 text-slate-200 font-extrabold text-xs py-1 px-3 rounded-full">DRAFT</label>
+              </td>
             </tr>
+            <!-- <tr v-for="(user, index) in users" :key="user._id" class="basic-table-row">
+              <td class="basic-table-body">{{ index + 1 + (currentPage - 1) * pageLimit }}</td>
+              <td class="basic-table-body">
+                <router-link :to="`/master/notification/${user._id}`" class="text-blue-500 hover:text-blue-600">
+                  {{ user.username }}
+                </router-link>
+              </td>
+              <td class="basic-table-body">{{ user.fullName }}</td>
+              <td class="basic-table-body">{{ user.email }}</td>
+              <td class="basic-table-body">{{ user.email }}</td>
+            </tr> -->
           </tbody>
         </table>
 

@@ -1,14 +1,14 @@
 <template>
   <div class="main-content-container">
     <div class="main-content-header">
-      <h2>User</h2>
-      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master' }, { name: 'user' }]" />
+      <h2>Capture</h2>
+      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'strength mapping' }, { name: 'capture' }]" />
     </div>
     <div class="card p-4 space-y-5">
       <div>
         <div class="space-y-1">
           <label class="input-group relative">
-            <router-link to="/master/user/create" class="prepend-input">
+            <router-link to="/strength-mapping/capture/create" class="prepend-input">
               <fa-icon icon="fa-solid fa-plus"></fa-icon>
             </router-link>
             <input v-model="searchText" class="form-input rounded-r-lg" placeholder="Search" type="text" />
@@ -27,21 +27,77 @@
         <table class="table">
           <thead>
             <tr class="basic-table-row">
-              <th class="basic-table-head">#</th>
-              <th class="basic-table-head">Name</th>
-              <th class="basic-table-head">Email</th>
-              <th class="basic-table-head">Role</th>
+              <th class="basic-table-head w-1">Date</th>
+              <th class="basic-table-head w-1">Activity</th>
+              <th class="basic-table-head">Cluster</th>
+              <th class="basic-table-head w-1"></th>
             </tr>
           </thead>
           <tbody>
+            <tr class="basic-table-row">
+              <td class="basic-table-body">21 Jan 2023</td>
+              <td class="basic-table-body">
+                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
+                  Chess Tournament
+                </router-link>
+              </td>
+              <td class="basic-table-body">Thinking, Reasoning</td>
+              <td class="basic-table-body">
+                <label class="bg-slate-400 text-slate-200 font-extrabold text-xs py-1 px-3 rounded-full">DRAFT</label>
+              </td>
+            </tr>
+            <tr class="basic-table-row">
+              <td class="basic-table-body">18 Jan 2023</td>
+              <td class="basic-table-body">
+                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
+                  Cooking omelette for breakfast
+                </router-link>
+              </td>
+              <td class="basic-table-body">Servicing</td>
+              <td class="basic-table-body text-center">
+                <label class="bg-green-400 text-slate-500 font-extrabold text-xs py-1 px-3 rounded-full"
+                  >CAPTURED</label
+                >
+              </td>
+            </tr>
+            <tr class="basic-table-row">
+              <td class="basic-table-body">16 Jan 2023</td>
+              <td class="basic-table-body">
+                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
+                  Dancing with uncle
+                </router-link>
+              </td>
+              <td class="basic-table-body">Generating Idea</td>
+              <td class="basic-table-body text-center">
+                <label class="bg-green-400 text-slate-500 font-extrabold text-xs py-1 px-3 rounded-full"
+                  >CAPTURED</label
+                >
+              </td>
+            </tr>
+            <tr class="basic-table-row">
+              <td class="basic-table-body">16 Jan 2023</td>
+              <td class="basic-table-body">
+                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
+                  Playground activity
+                </router-link>
+              </td>
+              <td class="basic-table-body">Networking</td>
+              <td class="basic-table-body text-center">
+                <label class="bg-green-400 text-slate-500 font-extrabold text-xs py-1 px-3 rounded-full"
+                  >CAPTURED</label
+                >
+              </td>
+            </tr>
             <tr v-for="(user, index) in users" :key="user._id" class="basic-table-row">
               <td class="basic-table-body">{{ index + 1 + (currentPage - 1) * pageLimit }}</td>
               <td class="basic-table-body">
-                <router-link :to="`/master/user/${user._id}`" class="text-blue-500 hover:text-blue-600">
-                  {{ user.name }}
+                <router-link :to="`/strength-mapping/capture/${user._id}`" class="text-blue-500 hover:text-blue-600">
+                  {{ user.username }}
                 </router-link>
               </td>
-              <td class="basic-table-body">{{ user.role }}</td>
+              <td class="basic-table-body">{{ user.fullName }}</td>
+              <td class="basic-table-body">{{ user.email }}</td>
+              <td class="basic-table-body">{{ user.email }}</td>
             </tr>
           </tbody>
         </table>

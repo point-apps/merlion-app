@@ -5,7 +5,7 @@ export const routes = {
   path: '/',
   component: () => import('@/layouts/app-layout.vue'),
   meta: {
-    shortcut: 'main',
+    shortcut: 'notification',
   },
   children: [
     {
@@ -13,11 +13,10 @@ export const routes = {
       component: () => import('./module-index.vue'),
       children: [
         {
-          path: '',
-          component: () => import('./views/main-dashboard.vue'),
+          path: 'notification',
+          component: () => import('./views/index.vue'),
           meta: {
-            shortcut: 'main',
-            menu: 'dashboard',
+            shortcut: 'notification',
           },
         },
       ],

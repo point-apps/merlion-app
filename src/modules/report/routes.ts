@@ -2,22 +2,36 @@ import { useAuthStore } from '@/stores/auth'
 import type { RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 
 export const routes = {
-  path: '/',
+  path: '/strength-mapping',
   component: () => import('@/layouts/app-layout.vue'),
   meta: {
     shortcut: 'main',
   },
   children: [
     {
-      path: '',
+      path: 'report',
       component: () => import('./module-index.vue'),
+      meta: {
+        shortcut: 'main',
+        menu: 'strength-mapping',
+      },
       children: [
         {
           path: '',
-          component: () => import('./views/main-dashboard.vue'),
+          component: () => import('./views/ikigai/index.vue'),
           meta: {
             shortcut: 'main',
-            menu: 'dashboard',
+            menu: 'strength-mapping',
+            submenu: 'report',
+          },
+        },
+        {
+          path: ':id',
+          component: () => import('./views/ikigai/detail.vue'),
+          meta: {
+            shortcut: 'main',
+            menu: 'strength-mapping',
+            submenu: 'report',
           },
         },
       ],

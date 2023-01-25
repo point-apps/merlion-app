@@ -1,14 +1,14 @@
 <template>
   <div class="main-content-container">
     <div class="main-content-header">
-      <h2>User</h2>
-      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master' }, { name: 'user' }]" />
+      <h2>Institution</h2>
+      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master' }, { name: 'institution' }]" />
     </div>
     <div class="card p-4 space-y-5">
       <div>
         <div class="space-y-1">
           <label class="input-group relative">
-            <router-link to="/master/user/create" class="prepend-input">
+            <router-link to="/strength-mapping/capture/create" class="prepend-input">
               <fa-icon icon="fa-solid fa-plus"></fa-icon>
             </router-link>
             <input v-model="searchText" class="form-input rounded-r-lg" placeholder="Search" type="text" />
@@ -27,22 +27,36 @@
         <table class="table">
           <thead>
             <tr class="basic-table-row">
-              <th class="basic-table-head">#</th>
-              <th class="basic-table-head">Name</th>
-              <th class="basic-table-head">Email</th>
-              <th class="basic-table-head">Role</th>
+              <th class="basic-table-head w-1">Name</th>
             </tr>
           </thead>
           <tbody>
+            <tr class="basic-table-row">
+              <td class="basic-table-body">
+                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
+                  Merlion School
+                </router-link>
+              </td>
+            </tr>
+            <tr class="basic-table-row">
+              <td class="basic-table-body">
+                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
+                  Others
+                </router-link>
+              </td>
+            </tr>
+            <!-- <
             <tr v-for="(user, index) in users" :key="user._id" class="basic-table-row">
               <td class="basic-table-body">{{ index + 1 + (currentPage - 1) * pageLimit }}</td>
               <td class="basic-table-body">
-                <router-link :to="`/master/user/${user._id}`" class="text-blue-500 hover:text-blue-600">
-                  {{ user.name }}
+                <router-link :to="`/strength-mapping/capture/${user._id}`" class="text-blue-500 hover:text-blue-600">
+                  {{ user.username }}
                 </router-link>
               </td>
-              <td class="basic-table-body">{{ user.role }}</td>
-            </tr>
+              <td class="basic-table-body">{{ user.fullName }}</td>
+              <td class="basic-table-body">{{ user.email }}</td>
+              <td class="basic-table-body">{{ user.email }}</td>
+            </tr> -->
           </tbody>
         </table>
 

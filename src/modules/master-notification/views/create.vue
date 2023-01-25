@@ -1,31 +1,39 @@
 <template>
   <div class="main-content-container">
     <div class="main-content-header">
-      <h2>User</h2>
+      <h2>Notification</h2>
       <component
         :is="Breadcrumb"
-        :breadcrumbs="[{ name: 'master' }, { name: 'user', path: '/master/user' }, { name: 'create' }]"
+        :breadcrumbs="[{ name: 'master' }, { name: 'notification', path: '/master/notification' }, { name: 'create' }]"
       />
     </div>
     <div class="card p-4 space-y-5">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
         <label class="block space-y-1">
-          <span class="font-semibold">Full Name:</span>
-          <input v-model="form.fullName" class="form-input" type="text" />
+          <span class="font-semibold">Schedule notification date</span>
+          <input class="form-input" type="text" value="23-01-2023 16:00" />
+          <!-- <component :is="Datepicker" v-model="form.date" /> -->
         </label>
         <label class="block space-y-1">
-          <span class="font-semibold">Email:</span>
-          <input v-model="form.email" class="form-input" type="email" />
-        </label>
-        <label class="block space-y-1">
-          <span class="font-semibold">Role:</span>
+          <span class="font-semibold">Institution</span>
           <select class="form-input">
+            <option value="">Select Institution</option>
             <option value="student">Student</option>
             <option value="admin">Admin</option>
           </select>
         </label>
-        <div>
-          <button type="submit" class="btn btn-base rounded text-slate-100 bg-blue-500 hover:bg-blue-600">Save</button>
+        <label class="block space-y-1">
+          <span class="font-semibold">Subject</span>
+          <input v-model="form.activity" class="form-input" type="text" />
+        </label>
+        <label class="block space-y-1">
+          <span class="font-semibold">Message</span>
+          <textarea v-model="form.activity" rows="5" class="form-input" type="text" />
+        </label>
+        <div class="flex flex-row space-x-2">
+          <button type="submit" class="btn btn-base rounded flex-1 text-slate-100 bg-blue-500 hover:bg-blue-600">
+            Send
+          </button>
         </div>
       </form>
     </div>
@@ -36,6 +44,7 @@
 import { onMounted, ref } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import Breadcrumb from '@/components/breadcrumb.vue'
+import Datepicker from '@/components/datepicker.vue'
 import axios from '@/axios'
 import { useRouter } from 'vue-router'
 // import { useApi as useRoleApi, type RoleInterface } from '@/modules/role/composable/api'
@@ -46,7 +55,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const isShowSelect = ref(false)
 const form = ref({
-  username: '',
+  date: '21 Jan 2023',
   email: '',
   password: '',
   fullName: '',

@@ -1,7 +1,7 @@
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import type { ShortcutInterface, MenuInterface, SubmenuInterface } from '@/stores/sidebar-menu'
 import { ref, watch, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useSidebarStore } from '@/stores/sidebar'
 import { useSidebarMenuStore } from '@/stores/sidebar-menu'
 import { useMobileBreakpoint } from '@/composable/mobile-breakpoint'
@@ -10,6 +10,7 @@ export function useSidebar() {
   const sidebarStore = useSidebarStore()
   const sidebarMenuStore = useSidebarMenuStore()
   const route = useRoute()
+  const router = useRouter()
   const { isMobileBreakpoint } = useMobileBreakpoint()
 
   onMounted(() => {
@@ -43,6 +44,10 @@ export function useSidebar() {
         activeShortcut.value = sideMenuShortcut
       } else {
         sideMenuShortcut.active = false
+      }
+
+      if (sideMenuShortcut.path) {
+        router.replace('/notification')
       }
     }
   }
