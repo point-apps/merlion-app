@@ -5,17 +5,12 @@
     </div>
     <div class="card p-4 space-y-5">
       <div class="grid grid-cols-2">
+        <router-link class="btn btn-base btn-blue" to="/strength-mapping/report/spider-chart">Spider Chart</router-link>
         <router-link
-          to="/strength-mapping/report/spider-chart"
-          class="btn btn-base border-y border-l border-gray-500 hover:bg-blue-500 hover:text-white"
-          >Spider Chart</router-link
+          to="/strength-mapping/report/ikigai"
+          class="btn btn-base border-y border-r border-gray-500 hover:bg-blue-500 hover:text-white"
+          >Ikigai</router-link
         >
-        <router-link to="/strength-mapping/report/ikigai" class="btn btn-base btn-blue">Ikigai</router-link>
-      </div>
-
-      <div class="p-4 bg-green-200 rounded flex space-x-2 items-center">
-        <fa-icon icon="fa-solid fa-info-circle w-5 h-5"></fa-icon>
-        <p>Please click the section on the chart to find out more information.</p>
       </div>
 
       <h1 class="text-center">Uncaptured</h1>

@@ -5,12 +5,12 @@
     </div>
     <div class="card p-4 space-y-5">
       <div class="grid grid-cols-2">
+        <router-link to="/strength-mapping/report/spider-chart" class="btn btn-base btn-blue">Spider Chart</router-link>
         <router-link
-          to="/strength-mapping/report/spider-chart"
-          class="btn btn-base border-y border-l border-gray-500 hover:bg-blue-500 hover:text-white"
-          >Spider Chart</router-link
+          to="/strength-mapping/report/ikigai"
+          class="btn btn-base border-y border-r border-gray-500 hover:bg-blue-500 hover:text-white"
+          >Ikigai</router-link
         >
-        <router-link to="/strength-mapping/report/ikigai" class="btn btn-base btn-blue">Ikigai</router-link>
       </div>
       <p class="font-semibold">Typologies found to be "Easy" are:</p>
       <div class="bg-gray-100 p-4 rounded">

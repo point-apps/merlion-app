@@ -9,7 +9,35 @@ export const routes = {
   },
   children: [
     {
-      path: 'report',
+      path: 'report/spider-chart',
+      component: () => import('./module-index.vue'),
+      meta: {
+        shortcut: 'main',
+        menu: 'strength-mapping',
+      },
+      children: [
+        {
+          path: '',
+          component: () => import('./views/spider-chart/index.vue'),
+          meta: {
+            shortcut: 'main',
+            menu: 'strength-mapping',
+            submenu: 'report',
+          },
+        },
+        {
+          path: ':id',
+          component: () => import('./views/spider-chart/detail.vue'),
+          meta: {
+            shortcut: 'main',
+            menu: 'strength-mapping',
+            submenu: 'report',
+          },
+        },
+      ],
+    },
+    {
+      path: 'report/ikigai',
       component: () => import('./module-index.vue'),
       meta: {
         shortcut: 'main',
