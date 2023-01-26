@@ -138,7 +138,11 @@ import ComponentDarkMode from './component-dark-mode.vue'
 
 const sidebarContainerRef = ref(null)
 
-onClickOutside(sidebarContainerRef, () => sidebarStore.closeSidebar())
+onClickOutside(sidebarContainerRef, () => {
+  if (isMobileBreakpoint()) {
+    sidebarStore.closeSidebar()
+  }
+})
 
 const route = useRoute()
 const router = useRouter()

@@ -12,6 +12,7 @@
 
         <!-- Right: Header Buttons -->
         <div class="flex items-center space-x-2">
+          <fa-icon icon="fa-solid fa-user-circle w-5 h-5"></fa-icon>
           <p>{{ fullName }}</p>
         </div>
       </div>

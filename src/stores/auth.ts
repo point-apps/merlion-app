@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth', {
         const response = await axios.post('/auth/verify-token')
         this.$state.user.name = response.data.fullName
       } catch (error) {
-        this.logout()
+        // this.logout()
       }
     },
     logout() {
@@ -27,6 +27,7 @@ export const useAuthStore = defineStore('auth', {
     },
     async isAuthenticated() {
       const token = cookie.get('token')
+      console.log('token', token)
       if (this.$state.user.name === '' && !token) {
         return false
       }
