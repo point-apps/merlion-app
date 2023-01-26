@@ -13,7 +13,7 @@
         <!-- Right: Header Buttons -->
         <div class="flex items-center space-x-2">
           <fa-icon icon="fa-solid fa-user-circle w-5 h-5"></fa-icon>
-          <p>{{ fullName }}</p>
+          <p>{{ name }}</p>
         </div>
       </div>
     </div>
@@ -25,5 +25,5 @@ import ComponentToggleSidebar from './component-toggle-sidebar.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
-const fullName = authStore.$state.user.name
+const name = authStore.$state.user.name
 </script>

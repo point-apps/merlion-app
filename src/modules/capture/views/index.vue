@@ -2,7 +2,10 @@
   <div class="main-content-container">
     <div class="main-content-header">
       <h2>Capture</h2>
-      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'strength mapping' }, { name: 'capture' }]" />
+      <component
+        :is="Breadcrumb"
+        :breadcrumbs="[{ name: 'strength mapping', path: '/strength-mapping' }, { name: 'capture' }]"
+      />
     </div>
     <div class="card p-4 space-y-5">
       <div>

@@ -2,6 +2,14 @@
   <div class="main-content-container">
     <div class="main-content-header">
       <h2>Report</h2>
+      <component
+        :is="Breadcrumb"
+        :breadcrumbs="[
+          { name: 'strength mapping', path: '/strength-mapping' },
+          { name: 'report', path: '/strength-mapping/report/ikigai' },
+          { name: 'vocation' },
+        ]"
+      />
     </div>
     <div class="card p-4 space-y-5">
       <div class="grid grid-cols-2">
@@ -26,4 +34,6 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Breadcrumb from '@/components/breadcrumb.vue'
+</script>

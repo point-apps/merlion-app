@@ -2,6 +2,14 @@
   <div class="main-content-container">
     <div class="main-content-header">
       <h2>Report</h2>
+      <component
+        :is="Breadcrumb"
+        :breadcrumbs="[
+          { name: 'strength mapping', path: '/strength-mapping' },
+          { name: 'report', path: '/strength-mapping/report/spider-chart' },
+          { name: 'servicing' },
+        ]"
+      />
     </div>
     <div class="card p-4 space-y-5">
       <div class="grid grid-cols-2">
@@ -24,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import Breadcrumb from '@/components/breadcrumb.vue'
 import { useRouter } from 'vue-router'
 import { Chart } from 'highcharts-vue'
 import Highcharts from 'highcharts'

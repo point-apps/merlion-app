@@ -1,10 +1,14 @@
 <template>
   <div class="main-content-container">
     <div class="main-content-header">
-      <h2>User</h2>
+      <h2>Capture</h2>
       <component
         :is="Breadcrumb"
-        :breadcrumbs="[{ name: 'master' }, { name: 'user', path: '/master/user' }, { name: user.username }]"
+        :breadcrumbs="[
+          { name: 'strength mapping', path: '/strength-mapping' },
+          { name: 'capture', path: '/strength-mapping/capture' },
+          { name: 'my activity' },
+        ]"
       />
     </div>
     <div class="card p-4 space-y-5">

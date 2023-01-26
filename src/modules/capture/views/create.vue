@@ -1,11 +1,14 @@
 <template>
   <div class="main-content-container">
     <div class="main-content-header">
-      <h2>Capture Activity</h2>
-      <!-- <component
+      <h2>Capture</h2>
+      <component
         :is="Breadcrumb"
-        :breadcrumbs="[{ name: 'strength mapping' }, { name: 'capture', path: '/master/user' }, { name: 'create' }]"
-      /> -->
+        :breadcrumbs="[
+          { name: 'strength mapping', path: '/strength-mapping' },
+          { name: 'capture', path: '/strength-mapping/capture' },
+        ]"
+      />
     </div>
     <div class="card p-4 space-y-5">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">

@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import cookie from '@point-hub/vue-cookie'
 import axios from '@/axios'
-import { AxiosError } from 'axios'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -10,15 +9,28 @@ export const useAuthStore = defineStore('auth', {
     },
   }),
   actions: {
-    login() {
-      this.$state.user.name = 'johndoe'
+    async login(username: string, password: string) {
+      const response = await axios.post('/auth/signin', {
+        username: username,
+        password: password,
+      })
+
+      if (response.status === 200) {
+        this.$state.user.name = response.data.name
+        cookie.set('accessToken', response.data.accessToken)
+        cookie.set('refreshToken', response.data.refreshToken)
+      }
+
+      return response
     },
-    async verifyToken(token: string) {
+    async verifyToken() {
       try {
         const response = await axios.post('/auth/verify-token')
-        this.$state.user.name = response.data.fullName
+        if (response.status === 200) {
+          this.$state.user.name = response.data.name
+        }
       } catch (error) {
-        // this.logout()
+        this.logout()
       }
     },
     logout() {
@@ -26,14 +38,13 @@ export const useAuthStore = defineStore('auth', {
       cookie.remove('token')
     },
     async isAuthenticated() {
-      const token = cookie.get('token')
-      console.log('token', token)
-      if (this.$state.user.name === '' && !token) {
+      const accessToken = cookie.get('accessToken')
+      if (this.$state.user.name === '' && !accessToken) {
         return false
       }
 
-      if (this.$state.user.name === '' && token) {
-        await this.verifyToken(token)
+      if (this.$state.user.name === '' && accessToken) {
+        await this.verifyToken()
       }
       return true
     },

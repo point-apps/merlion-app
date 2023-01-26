@@ -116,14 +116,9 @@ const isSubmitted = ref(false)
 const onSubmit = async () => {
   try {
     isSubmitted.value = true
-    const response = await axios.post('/auth/signin', {
-      username: form.value.username,
-      password: form.value.password,
-    })
+    const response = await authStore.login(form.value.username, form.value.password)
 
     if (response.status === 200) {
-      cookie.set('token', response.data.token)
-      authStore.login()
       router.push('/')
     }
   } catch (error) {

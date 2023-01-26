@@ -2,7 +2,7 @@
   <ul class="scrollbar-hidden flex overflow-x-auto items-center gap-2">
     <li v-for="(breadcrumb, index) in props.breadcrumbs" :key="index" class="flex justify-center items-center gap-2">
       <router-link
-        class="text-primary hover:text-primary-focus dark:text-accent-light dark:hover:text-accent transition-colors"
+        class="text-primary hover:text-primary-focus dark:text-accent-light dark:hover:text-accent whitespace-nowrap transition-colors"
         :class="{ 'text-blue-500': breadcrumb.path }"
         :to="breadcrumb.path ?? '#'"
       >

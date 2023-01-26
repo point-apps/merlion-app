@@ -133,7 +133,6 @@ import { useSidebarStore } from '@/stores/sidebar'
 import { useSidebarMenuStore } from '@/stores/sidebar-menu'
 import { useAuthStore } from '@/stores/auth'
 import { useMobileBreakpoint } from '@/composable/mobile-breakpoint'
-import ComponentToggleSidebar from './component-toggle-sidebar.vue'
 import ComponentDarkMode from './component-dark-mode.vue'
 
 const sidebarContainerRef = ref(null)

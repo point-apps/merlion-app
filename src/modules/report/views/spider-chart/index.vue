@@ -2,6 +2,10 @@
   <div class="main-content-container">
     <div class="main-content-header">
       <h2>Report</h2>
+      <component
+        :is="Breadcrumb"
+        :breadcrumbs="[{ name: 'strength mapping', path: '/strength-mapping' }, { name: 'report' }]"
+      />
     </div>
     <div class="card p-4 space-y-5">
       <div class="grid grid-cols-2">
@@ -19,37 +23,55 @@
       <div class="bg-gray-100 p-4 rounded">
         <h2 class="font-semibold">Summary Result</h2>
         <hr class="my-3 py-1" />
-        <ul class="mb-20">
+        <ul class="mb-20 space-y-1 font-semibold">
           <li class="flex">
-            <span class="flex-1">Servicing</span>
+            <span class="flex-1">
+              <router-link to="/strength-mapping/report/spider-chart/1" class="text-blue-600">Servicing</router-link>
+            </span>
             <span class="flex-1">: 5</span>
           </li>
           <li class="flex">
-            <span class="flex-1">Thinking</span>
+            <span class="flex-1">
+              <router-link to="/strength-mapping/report/spider-chart/1" class="text-blue-600">Thinking</router-link>
+            </span>
             <span class="flex-1">: 2</span>
           </li>
           <li class="flex">
-            <span class="flex-1">Reasoning</span>
+            <span class="flex-1">
+              <router-link to="/strength-mapping/report/spider-chart/1" class="text-blue-600">Reasoning</router-link>
+            </span>
             <span class="flex-1">: 1</span>
           </li>
           <li class="flex">
-            <span class="flex-1">Elementary</span>
+            <span class="flex-1">
+              <router-link to="/strength-mapping/report/spider-chart/1" class="text-blue-600">Elementary</router-link>
+            </span>
             <span class="flex-1">: 7</span>
           </li>
           <li class="flex">
-            <span class="flex-1">Networking</span>
+            <span class="flex-1">
+              <router-link to="/strength-mapping/report/spider-chart/1" class="text-blue-600">Networking</router-link>
+            </span>
             <span class="flex-1">: 6</span>
           </li>
           <li class="flex">
-            <span class="flex-1">Generating Idea</span>
+            <span class="flex-1">
+              <router-link to="/strength-mapping/report/spider-chart/1" class="text-blue-600"
+                >Generating Idea</router-link
+              >
+            </span>
             <span class="flex-1">: 8</span>
           </li>
           <li class="flex">
-            <span class="flex-1">Technical</span>
+            <span class="flex-1">
+              <router-link to="/strength-mapping/report/spider-chart/1" class="text-blue-600">Technical</router-link>
+            </span>
             <span class="flex-1">: 1</span>
           </li>
           <li class="flex">
-            <span class="flex-1">Headman</span>
+            <span class="flex-1">
+              <router-link to="/strength-mapping/report/spider-chart/1" class="text-blue-600">Headman</router-link>
+            </span>
             <span class="flex-1">: 3</span>
           </li>
         </ul>
@@ -59,6 +81,7 @@
 </template>
 
 <script setup lang="ts">
+import Breadcrumb from '@/components/breadcrumb.vue'
 import { useRouter } from 'vue-router'
 import { Chart } from 'highcharts-vue'
 import Highcharts from 'highcharts'
