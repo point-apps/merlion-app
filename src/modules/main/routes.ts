@@ -14,10 +14,10 @@ export const routes = {
       children: [
         {
           path: '',
-          component: () => import('./views/main-dashboard.vue'),
+          component: () => import('./views/home.vue'),
           meta: {
             shortcut: 'main',
-            menu: 'dashboard',
+            menu: 'home',
           },
         },
       ],

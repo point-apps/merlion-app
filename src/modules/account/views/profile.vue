@@ -20,6 +20,8 @@
         </label>
       </div>
     </div>
+
+    <button class="btn btn-base py-2 bg-red-600 text-white" @click="onSignout()">Sign Out</button>
   </div>
 </template>
 
@@ -27,12 +29,19 @@
 import { ref } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
+const router = useRouter()
 
 const form = ref({
   name: authStore.$state.user.name,
   email: authStore.$state.user.email,
   role: authStore.$state.user.role,
 })
+
+const onSignout = () => {
+  authStore.logout()
+  router.push('/signin')
+}
 </script>

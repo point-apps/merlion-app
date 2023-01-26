@@ -4,7 +4,11 @@
       <h2>Cluster</h2>
       <component
         :is="Breadcrumb"
-        :breadcrumbs="[{ name: 'master' }, { name: 'cluster', path: '/master/cluster' }, { name: form.name }]"
+        :breadcrumbs="[
+          { name: 'master', path: '/master' },
+          { name: 'cluster', path: '/master/cluster' },
+          { name: form.name },
+        ]"
       />
     </div>
     <div class="card p-4 space-y-5">
@@ -42,8 +46,11 @@ import { ref, onMounted } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { useRoute } from 'vue-router'
+import { useBaseNotification } from '@/composable/notification'
 
 const route = useRoute()
+
+const { notification } = useBaseNotification()
 
 const form = ref({
   name: '',
@@ -54,21 +61,24 @@ const form = ref({
 })
 
 onMounted(async () => {
-  const result = await axios.get('/clusters/' + route.params.id)
-  form.value.name = result.data.name
-  form.value.alias = result.data.alias
-  form.value.description = result.data.description
-  form.value.typologies = result.data.typologies
-  form.value.suggestion = result.data.suggestion
+  const response = await axios.get('/clusters/' + route.params.id)
+  form.value.name = response.data.name
+  form.value.alias = response.data.alias
+  form.value.description = response.data.description
+  form.value.typologies = response.data.typologies
+  form.value.suggestion = response.data.suggestion
 })
 
+const isSubmitted = ref(false)
 const onSubmit = async () => {
-  await axios.patch('/user/' + route.params.id, {
-    username: form.value.username,
-    email: form.value.email,
-    fullName: form.value.fullName,
+  const response = await axios.patch('/clusters/' + route.params.id, {
+    suggestion: form.value.suggestion,
   })
-}
 
-const onSubmitPassword = () => {}
+  console.log(response)
+
+  if (response.status === 204) {
+    notification('Update', 'Update data success', 'success')
+  }
+}
 </script>
