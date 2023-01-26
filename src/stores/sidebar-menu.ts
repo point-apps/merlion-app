@@ -87,7 +87,7 @@ const menuMain = {
         {
           name: 'Report',
           meta: 'report',
-          path: '/strength-mapping/report',
+          path: '/strength-mapping/report/spider-chart',
         },
       ],
     },
@@ -102,7 +102,12 @@ const menuAccount = {
     {
       name: 'Profile',
       meta: 'profile',
-      path: 'profile',
+      path: '/account/profile',
+    },
+    {
+      name: 'Security',
+      meta: 'security',
+      path: '/account/security',
     },
   ],
 }

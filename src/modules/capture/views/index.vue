@@ -147,7 +147,7 @@ const currentPage = ref(1)
 const pageLimit = 10
 
 const getUsers = async (page = 1) => {
-  const result = await axios.get('/user', {
+  const result = await axios.get('/users', {
     params: {
       limit: pageLimit,
       page: page,

@@ -1,28 +1,23 @@
 <template>
   <div class="main-content-container">
     <div class="main-content-header">
-      <h2>User</h2>
-      <component
-        :is="Breadcrumb"
-        :breadcrumbs="[{ name: 'master' }, { name: 'user', path: '/master/user' }, { name: 'create' }]"
-      />
+      <h2>Account</h2>
+      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'account', path: '/account' }, { name: 'security' }]" />
     </div>
     <div class="card p-4 space-y-5">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
+        <h4 class="font-bold">Update Password</h4>
         <label class="block space-y-1">
-          <span class="font-semibold">Full Name:</span>
-          <input v-model="form.fullName" class="form-input" type="text" />
+          <span class="font-semibold">Current Password</span>
+          <input v-model="form.currentPassword" class="form-input" type="password" />
         </label>
         <label class="block space-y-1">
-          <span class="font-semibold">Email:</span>
-          <input v-model="form.email" class="form-input" type="email" />
+          <span class="font-semibold">New Password</span>
+          <input v-model="form.newPassword" class="form-input" type="password" />
         </label>
         <label class="block space-y-1">
-          <span class="font-semibold">Role:</span>
-          <select class="form-input">
-            <option value="student">Student</option>
-            <option value="admin">Admin</option>
-          </select>
+          <span class="font-semibold">Confirm Password</span>
+          <input v-model="form.confirmPassword" class="form-input" type="password" />
         </label>
         <div>
           <button type="submit" class="btn btn-base rounded text-slate-100 bg-blue-500 hover:bg-blue-600">Save</button>
@@ -34,7 +29,6 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { watchDebounced } from '@vueuse/core'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { useRouter } from 'vue-router'
@@ -53,13 +47,10 @@ const form = ref({
   role: '',
 })
 
-const roles = ref<RoleInterface[]>([])
 const isLoadingRoles = ref(false)
 
 onMounted(async () => {
   isLoadingRoles.value = true
-  const result = await readAllRole()
-  // roles.value = result.roles
   isLoadingRoles.value = false
 })
 

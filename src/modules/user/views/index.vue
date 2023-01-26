@@ -2,13 +2,13 @@
   <div class="main-content-container">
     <div class="main-content-header">
       <h2>User</h2>
-      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master' }, { name: 'user' }]" />
+      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master', path: '/master' }, { name: 'user' }]" />
     </div>
     <div class="card p-4 space-y-5">
       <div>
         <div class="space-y-1">
           <label class="input-group relative">
-            <router-link to="/master/user/create" class="prepend-input">
+            <router-link to="/master/user/invite" class="prepend-input">
               <fa-icon icon="fa-solid fa-plus"></fa-icon>
             </router-link>
             <input v-model="searchText" class="form-input rounded-r-lg" placeholder="Search" type="text" />
@@ -41,14 +41,15 @@
                   {{ user.name }}
                 </router-link>
               </td>
+              <td class="basic-table-body">{{ user.email }}</td>
               <td class="basic-table-body">{{ user.role }}</td>
             </tr>
           </tbody>
         </table>
 
-        <div v-if="pagination.totalPage > 1" class="flex flex-wrap gap-2 items-center justify-center mt-10">
+        <div v-if="pagination.pageCount > 1" class="flex flex-wrap gap-2 items-center justify-center mt-10">
           <button
-            v-for="i in pagination.totalPage"
+            v-for="i in pagination.pageCount"
             :key="i"
             class="btn btn-base border border-slate-800/20 dark:text-slate-100"
             :class="{ 'bg-blue-500 text-slate-100': i === currentPage }"
@@ -71,16 +72,19 @@ import { useHttpUser } from '../api/http'
 
 const httpUser = useHttpUser()
 
-const result = httpUser.readAll()
+interface UserInterface {
+  _id: string
+  name: string
+  email: string
+  role: string
+}
 
-console.log(result)
-
-const users = ref([])
+const users = ref<UserInterface[]>([])
 const pagination = ref({
   page: 1,
+  pageCount: 0,
+  pageSize: 0,
   totalDocument: 0,
-  totalPage: 0,
-  totalPerPage: 0,
 })
 const isLoadingSearch = ref(false)
 const searchText = ref('')
@@ -88,21 +92,21 @@ const currentPage = ref(1)
 const pageLimit = 10
 
 const getUsers = async (page = 1) => {
-  const result = await axios.get('/user', {
+  const result = await axios.get('/users', {
     params: {
       limit: pageLimit,
       page: page,
-      sort: 'username',
+      sort: 'name',
       filter: {
         $or: [
-          {
-            username: { $regex: searchText.value, $options: 'i' },
-          },
           {
             email: { $regex: searchText.value, $options: 'i' },
           },
           {
-            fullName: { $regex: searchText.value, $options: 'i' },
+            name: { $regex: searchText.value, $options: 'i' },
+          },
+          {
+            role: { $regex: searchText.value, $options: 'i' },
           },
         ],
       },
@@ -110,10 +114,10 @@ const getUsers = async (page = 1) => {
   })
   users.value = result.data.data
   pagination.value = {
-    page: result.data.page,
-    totalDocument: result.data.totalDocument,
-    totalPage: result.data.totalPage,
-    totalPerPage: result.data.totalPerPage,
+    page: result.data.pagination.page,
+    pageCount: result.data.pagination.pageCount,
+    pageSize: result.data.pagination.pageSize,
+    totalDocument: result.data.pagination.totalDocument,
   }
 }
 

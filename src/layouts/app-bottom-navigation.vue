@@ -23,14 +23,14 @@
         <span class="tab tab-kategori block text-xs">Capture</span>
       </router-link>
       <router-link
-        to="notification"
+        to="/notification"
         class="w-full focus:text-slate-500 hover:text-slate-500 justify-center inline-block text-center pt-2 pb-1"
       >
         <fa-icon icon="fa-thin fa-bell w-6 h-6" />
         <span class="tab tab-whishlist block text-xs">Notification</span>
       </router-link>
       <router-link
-        to="/account"
+        to="/account/profile"
         class="w-full focus:text-slate-500 hover:text-slate-500 justify-center inline-block text-center pt-2 pb-1"
       >
         <fa-icon icon="fa-thin fa-user w-6 h-6" />

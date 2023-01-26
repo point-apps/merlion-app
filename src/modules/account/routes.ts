@@ -2,54 +2,40 @@ import { useAuthStore } from '@/stores/auth'
 import type { RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 
 export const routes = {
-  path: '/master',
+  path: '/account',
   component: () => import('@/layouts/app-layout.vue'),
   meta: {
-    shortcut: 'main',
+    shortcut: 'account',
   },
   children: [
     {
-      path: 'user',
+      path: '',
       component: () => import('./module-index.vue'),
       meta: {
-        shortcut: 'main',
-        menu: 'master',
+        shortcut: 'account',
       },
       children: [
         {
           path: '',
           component: () => import('./views/index.vue'),
           meta: {
-            shortcut: 'main',
-            menu: 'master',
-            submenu: 'user',
+            shortcut: 'account',
           },
         },
         {
-          path: 'invite',
-          component: () => import('./views/invite.vue'),
+          path: 'profile',
+          component: () => import('./views/profile.vue'),
           meta: {
-            shortcut: 'main',
-            menu: 'master',
-            submenu: 'user',
+            shortcut: 'account',
+            menu: 'profile',
           },
         },
         {
-          path: ':id/edit',
-          component: () => import('./views/edit.vue'),
+          path: 'security',
+          component: () => import('./views/security.vue'),
           meta: {
-            shortcut: 'main',
-            menu: 'master',
-            submenu: 'user',
-          },
-        },
-        {
-          path: ':id',
-          component: () => import('./views/show.vue'),
-          meta: {
-            shortcut: 'main',
-            menu: 'master',
-            submenu: 'user',
+            shortcut: 'account',
+            menu: 'security',
           },
         },
       ],

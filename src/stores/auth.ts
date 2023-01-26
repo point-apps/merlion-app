@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia'
 import cookie from '@point-hub/vue-cookie'
 import axios from '@/axios'
+import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: {
       name: '',
+      email: '',
+      role: '',
     },
   }),
   actions: {
@@ -17,6 +20,8 @@ export const useAuthStore = defineStore('auth', {
 
       if (response.status === 200) {
         this.$state.user.name = response.data.name
+        this.$state.user.email = response.data.email
+        this.$state.user.role = response.data.role
         cookie.set('accessToken', response.data.accessToken)
         cookie.set('refreshToken', response.data.refreshToken)
       }
@@ -28,14 +33,20 @@ export const useAuthStore = defineStore('auth', {
         const response = await axios.post('/auth/verify-token')
         if (response.status === 200) {
           this.$state.user.name = response.data.name
+          this.$state.user.email = response.data.email
+          this.$state.user.role = response.data.role
         }
       } catch (error) {
         this.logout()
       }
     },
     logout() {
+      const router = useRouter()
       this.$state.user.name = ''
-      cookie.remove('token')
+      this.$state.user.email = ''
+      this.$state.user.role = ''
+      cookie.remove('accessToken')
+      router.push('/signin')
     },
     async isAuthenticated() {
       const accessToken = cookie.get('accessToken')
