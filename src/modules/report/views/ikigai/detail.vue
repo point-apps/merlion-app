@@ -19,7 +19,7 @@
           <li>- Reasoning</li>
         </ul>
         <hr class="py-1 my-3" />
-        <p class="font-semibold italic">BE FAITHFUL IN SMALLTHINGS BECAUSE IT IS IN THEM THAT YOUR STRENGTH LIES.</p>
+        <p class="font-semibold italic">BE FAITHFUL IN SMALL THINGS BECAUSE IT IS IN THEM THAT YOUR STRENGTH LIES.</p>
         <p class="font-extrabold">- Mother Theresa -</p>
       </div>
     </div>

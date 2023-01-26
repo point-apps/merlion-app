@@ -12,123 +12,221 @@
           >Ikigai</router-link
         >
       </div>
-
-      <h1 class="text-center">Uncaptured</h1>
-      <svg viewBox="0 0 185.5 185.5">
-        <g class="lvl-1">
-          <path
-            fill="#A80066"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M92.75,47.34A57.49,57.49,0,0,1,147,38.48a57.51,57.51,0,0,0-108.54,0,57.49,57.49,0,0,1,54.27,8.86Z"
-          />
-          <text x="43%" y="11%" style="font-size: 4px">What you love</text>
-          <text x="45%" y="15%" style="font-size: 6px; font-weight: bold">Enjoy</text>
-          <path
-            fill="#1E009F"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M185.5,92.75A57.53,57.53,0,0,0,147,38.48a57.49,57.49,0,0,1-8.86,54.27A57.49,57.49,0,0,1,147,147,57.53,57.53,0,0,0,185.5,92.75Z"
-          />
-          <text x="79%" y="48.5%" style="font-size: 4px">What the world</text>
-          <text x="89%" y="50.5%" style="font-size: 4px">Needs</text>
-          <text x="88%" y="54.5%" style="font-size: 6px; font-weight: bold">Easy</text>
-          <path
-            fill="#006D00"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M92.75,138.16A57.49,57.49,0,0,1,38.48,147,57.51,57.51,0,0,0,147,147a57.49,57.49,0,0,1-54.27-8.86Z"
-          />
-          <text x="39%" y="87%" style="font-size: 4px">What you're good at</text>
-          <text x="43%" y="91%" style="font-size: 6px; font-weight: bold">Excellent</text>
-          <path
-            fill="#D76200"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M47.34,92.75a57.49,57.49,0,0,1-8.86-54.27,57.51,57.51,0,0,0,0,108.54,57.49,57.49,0,0,1,8.86-54.27Z"
-          />
-          <text x="4%" y="48.5%" style="font-size: 4px">What you can</text>
-          <text x="4%" y="50.5%" style="font-size: 4px">be paid for</text>
-          <text x="4%" y="54.5%" style="font-size: 6px; font-weight: bold">Earn</text>
-        </g>
-
-        <g class="lvl-2">
-          <path
-            fill="#6F169E"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M92.75,47.34a57.61,57.61,0,0,1,19,26.39,57.61,57.61,0,0,1,26.39,19A57.49,57.49,0,0,0,147,38.48a57.49,57.49,0,0,0-54.27,8.86Z"
-          />
-          <text x="65%" y="33%" style="font-size: 5px; font-weight: bold">Craft</text>
-          <path
-            fill="#055BD3"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M138.16,92.75a57.61,57.61,0,0,1-26.39,19,57.61,57.61,0,0,1-19,26.39A57.49,57.49,0,0,0,147,147a57.49,57.49,0,0,0-8.86-54.27Z"
-          />
-          <text x="61%" y="69%" style="font-size: 5px; font-weight: bold">Creativity</text>
-          <path
-            fill="#04A126"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M92.75,138.16a57.61,57.61,0,0,1-19-26.39,57.61,57.61,0,0,1-26.39-19A57.49,57.49,0,0,0,38.48,147a57.49,57.49,0,0,0,54.27-8.86Z"
-          />
-          <text x="22%" y="69%" style="font-size: 5px; font-weight: bold">Competency</text>
-          <path
-            fill="#DC0600"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M47.34,92.75a57.61,57.61,0,0,1,26.39-19,57.61,57.61,0,0,1,19-26.39,57.49,57.49,0,0,0-54.27-8.86,57.49,57.49,0,0,0,8.86,54.27Z"
-          />
-          <text x="22%" y="33%" style="font-size: 5px; font-weight: bold">Contribution</text>
-        </g>
-
-        <g class="lvl-3">
-          <path
-            fill="#FF8CCC"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M111.77,73.73a57.61,57.61,0,0,0-19-26.39,57.61,57.61,0,0,0-19,26.39,57.62,57.62,0,0,1,38,0Z"
-          ></path>
-          <text x="45%" y="35%" style="font-size: 4px; font-weight: bold">Vocation</text>
-          <path
-            fill="#01A2E9"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M111.77,73.73a57.62,57.62,0,0,1,0,38,57.61,57.61,0,0,0,26.39-19A57.61,57.61,0,0,0,111.77,73.73Z"
-          ></path>
-          <text x="63%" y="51%" style="font-size: 4px; font-weight: bold">Passion</text>
-          <path
-            fill="#8AD197"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M73.73,111.77a57.61,57.61,0,0,0,19,26.39,57.61,57.61,0,0,0,19-26.39,57.62,57.62,0,0,1-38,0Z"
-          ></path>
-          <text x="43.5%" y="67%" style="font-size: 4px; font-weight: bold">Profession</text>
-          <path
-            fill="#FFCE4D"
-            fill-opacity="0.7"
-            stroke="white"
-            d="M73.73,73.73a57.61,57.61,0,0,0-26.39,19,57.61,57.61,0,0,0,26.39,19,57.62,57.62,0,0,1,0-38Z"
-          ></path>
-          <text x="28%" y="51%" style="font-size: 4px; font-weight: bold">Mission</text>
-        </g>
-
-        <g class="lvl-4" @click="redirectTo('ikigai')">
-          <path
-            fill="white"
-            fill-opacity="0.7"
-            d="M111.77,73.73a57.62,57.62,0,0,0-38,0,57.62,57.62,0,0,0,0,38,57.62,57.62,0,0,0,38,0,57.62,57.62,0,0,0,0-38Z"
-          />
-          <text x="44%" y="51%" style="font-size: 8px; font-weight: bold">Ikigai</text>
-        </g>
-      </svg>
+      <!-- <component :is="Chart" :options="chartOptions" /> -->
+      <figure class="highcharts-figure">
+        <div id="container"></div>
+      </figure>
+      <div class="bg-gray-100 p-4 rounded">
+        <h2 class="font-semibold">Summary Result</h2>
+        <hr class="my-3 py-1" />
+        <ul class="mb-20">
+          <li class="flex">
+            <span class="flex-1">Servicing</span>
+            <span class="flex-1">: 5</span>
+          </li>
+          <li class="flex">
+            <span class="flex-1">Thinking</span>
+            <span class="flex-1">: 2</span>
+          </li>
+          <li class="flex">
+            <span class="flex-1">Reasoning</span>
+            <span class="flex-1">: 1</span>
+          </li>
+          <li class="flex">
+            <span class="flex-1">Elementary</span>
+            <span class="flex-1">: 7</span>
+          </li>
+          <li class="flex">
+            <span class="flex-1">Networking</span>
+            <span class="flex-1">: 6</span>
+          </li>
+          <li class="flex">
+            <span class="flex-1">Generating Idea</span>
+            <span class="flex-1">: 8</span>
+          </li>
+          <li class="flex">
+            <span class="flex-1">Technical</span>
+            <span class="flex-1">: 1</span>
+          </li>
+          <li class="flex">
+            <span class="flex-1">Headman</span>
+            <span class="flex-1">: 3</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { Chart } from 'highcharts-vue'
+import Highcharts from 'highcharts'
+import 'highcharts/highcharts-more'
+import { onMounted } from 'vue'
+import highchartsMore from 'highcharts/highcharts-more'
+
+onMounted(() => {
+  highchartsMore(Highcharts)
+
+  Highcharts.chart('container', {
+    chart: {
+      polar: true,
+      type: 'line',
+    },
+
+    accessibility: {
+      description:
+        'A spiderweb chart compares the allocated budget against actual spending within an organization. The spider chart has six spokes. Each spoke represents one of the 6 departments within the organization: sales, marketing, development, customer support, information technology and administration. The chart is interactive, and each data point is displayed upon hovering. The chart clearly shows that 4 of the 6 departments have overspent their budget with Marketing responsible for the greatest overspend of $20,000. The allocated budget and actual spending data points for each department are as follows: Sales. Budget equals $43,000; spending equals $50,000. Marketing. Budget equals $19,000; spending equals $39,000. Development. Budget equals $60,000; spending equals $42,000. Customer support. Budget equals $35,000; spending equals $31,000. Information technology. Budget equals $17,000; spending equals $26,000. Administration. Budget equals $10,000; spending equals $14,000.',
+    },
+
+    title: {
+      text: '',
+      x: -80,
+    },
+
+    pane: {
+      size: '80%',
+    },
+
+    xAxis: {
+      categories: [
+        'Servicing',
+        'Thinking',
+        'Reasoning',
+        'Elementary',
+        'Networking',
+        'Generating Idea',
+        'Technical',
+        'Headman',
+      ],
+      tickmarkPlacement: 'on',
+      lineWidth: 0,
+    },
+
+    yAxis: {
+      gridLineInterpolation: 'polygon',
+      lineWidth: 0,
+      min: 0,
+    },
+
+    tooltip: {
+      shared: true,
+      pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>',
+    },
+
+    legend: {
+      align: 'right',
+      verticalAlign: 'middle',
+      layout: 'vertical',
+    },
+
+    series: [
+      {
+        name: 'Strength Mapping',
+        data: [5, 2, 1, 7, 6, 8, 1, 3],
+        pointPlacement: 'on',
+      },
+    ],
+
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 500,
+          },
+          chartOptions: {
+            legend: {
+              align: 'center',
+              verticalAlign: 'bottom',
+              layout: 'horizontal',
+            },
+            pane: {
+              size: '70%',
+            },
+          },
+        },
+      ],
+    },
+  })
+})
+
+const chartOptions = {
+  chart: {
+    polar: true,
+    type: 'line',
+  },
+
+  accessibility: {
+    description:
+      'A spiderweb chart compares the allocated budget against actual spending within an organization. The spider chart has six spokes. Each spoke represents one of the 6 departments within the organization: sales, marketing, development, customer support, information technology and administration. The chart is interactive, and each data point is displayed upon hovering. The chart clearly shows that 4 of the 6 departments have overspent their budget with Marketing responsible for the greatest overspend of $20,000. The allocated budget and actual spending data points for each department are as follows: Sales. Budget equals $43,000; spending equals $50,000. Marketing. Budget equals $19,000; spending equals $39,000. Development. Budget equals $60,000; spending equals $42,000. Customer support. Budget equals $35,000; spending equals $31,000. Information technology. Budget equals $17,000; spending equals $26,000. Administration. Budget equals $10,000; spending equals $14,000.',
+  },
+
+  title: {
+    text: 'Budget vs spending',
+    x: -80,
+  },
+
+  pane: {
+    size: '80%',
+  },
+
+  xAxis: {
+    categories: ['Sales', 'Marketing', 'Development', 'Customer Support', 'Information Technology', 'Administration'],
+    tickmarkPlacement: 'on',
+    lineWidth: 0,
+  },
+
+  yAxis: {
+    gridLineInterpolation: 'polygon',
+    lineWidth: 0,
+    min: 0,
+  },
+
+  tooltip: {
+    shared: true,
+    pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>',
+  },
+
+  legend: {
+    align: 'right',
+    verticalAlign: 'middle',
+    layout: 'vertical',
+  },
+
+  series: [
+    {
+      name: 'Allocated Budget',
+      data: [43000, 19000, 60000, 35000, 17000, 10000, 17000, 10000],
+      pointPlacement: 'on',
+    },
+    {
+      name: 'Actual Spending',
+      data: [50000, 39000, 42000, 31000, 26000, 14000, 17000, 10000],
+      pointPlacement: 'on',
+    },
+  ],
+
+  responsive: {
+    rules: [
+      {
+        condition: {
+          maxWidth: 500,
+        },
+        chartOptions: {
+          legend: {
+            align: 'center',
+            verticalAlign: 'bottom',
+            layout: 'horizontal',
+          },
+          pane: {
+            size: '70%',
+          },
+        },
+      },
+    ],
+  },
+}
 const router = useRouter()
 function redirectTo(path: string) {
   router.push('/strength-mapping/report/ikigai/' + path)

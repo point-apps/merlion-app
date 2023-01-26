@@ -26,6 +26,15 @@ export const routes = {
           },
         },
         {
+          path: 'activity-suggestion',
+          component: () => import('./views/spider-chart/activity-suggestion.vue'),
+          meta: {
+            shortcut: 'main',
+            menu: 'strength-mapping',
+            submenu: 'report',
+          },
+        },
+        {
           path: ':id',
           component: () => import('./views/spider-chart/detail.vue'),
           meta: {
