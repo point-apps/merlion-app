@@ -1,11 +1,11 @@
 <template>
   <div class="relative">
-    <input ref="dateRef" v-model="nativeDate" type="date" class="form-input absolute -z-50" />
-    <button class="absolute right-0 px-4 py-2" @click="onClickDateRef()">
+    <input ref="dateRef" v-model.lazy="nativeDate" type="date" class="form-input absolute -z-50" />
+    <button type="button" class="absolute right-0 px-4 py-2" @click="onClickDateRef()">
       <fa-icon icon="fa-regular fa-calendar" class=""></fa-icon>
     </button>
     <input
-      v-model="modelValue"
+      v-model.lazy="modelValue"
       v-cleave="{ date: true, delimiter: '-', datePattern: ['d', 'm', 'Y'] }"
       type="text"
       class="form-input"
@@ -28,8 +28,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const modelValue = ref(props.modelValue)
 const emit = defineEmits(['update:modelValue'])
-watch(modelValue, (newData) => {
-  emit('update:modelValue', newData)
+watch(props, (newData) => {
+  modelValue.value = newData.modelValue
+  emit('update:modelValue', newData.modelValue)
 })
 
 /**
@@ -43,9 +44,10 @@ const dateRef = ref()
 const onClickDateRef = () => {
   dateRef.value.showPicker()
 }
-const nativeDate = ref()
 
+const nativeDate = ref()
 watch(nativeDate, (newValue) => {
+  console.log('watchedNative')
   modelValue.value = format(new Date(newValue), 'dd-MM-yyyy')
 })
 </script>

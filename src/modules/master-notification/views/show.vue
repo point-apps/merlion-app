@@ -1,38 +1,37 @@
 <template>
   <div class="main-content-container">
     <div class="main-content-header">
-      <h2>User</h2>
+      <h2>Notification</h2>
       <component
         :is="Breadcrumb"
-        :breadcrumbs="[{ name: 'master' }, { name: 'user', path: '/master/user' }, { name: user.username }]"
+        :breadcrumbs="[
+          { name: 'master', path: '/master' },
+          { name: 'notification', path: '/master/notification' },
+          { name: notification.subject },
+        ]"
       />
     </div>
     <div class="card p-4 space-y-5">
       <div class="flex flex-col space-y-3">
         <div class="flex justify-end">
           <div class="space-x-3">
-            <router-link class="btn btn-base btn-default text-xs" :to="`/master/user/${$route.params.id}/edit`">
+            <router-link class="btn btn-base btn-default text-xs" :to="`/master/notification/${$route.params.id}/edit`">
               Edit
             </router-link>
-            <button class="btn btn-base btn-default text-xs">Delete</button>
+            <button class="btn btn-base btn-default text-xs" @click="onDelete()">Delete</button>
           </div>
         </div>
-        <h4 class="font-bold">Authentication Data</h4>
         <label class="block space-y-1">
-          <span>Username:</span>
-          <input v-model="user.username" class="form-input" placeholder="Username" type="text" readonly />
+          <span class="font-bold">Date</span>
+          <p>{{ notification.date }}</p>
         </label>
         <label class="block space-y-1">
-          <span>Email:</span>
-          <input v-model="user.email" class="form-input" placeholder="Email" type="text" readonly />
+          <span class="font-bold">Subject</span>
+          <p>{{ notification.subject }}</p>
         </label>
-        <div>
-          <hr class="my-3 border-slate-800/20" />
-        </div>
-        <h4 class="font-bold">User Data</h4>
-        <label class="block space-y-1">
-          <span>Full Name:</span>
-          <input v-model="user.fullName" class="form-input" placeholder="Full Name" type="text" readonly />
+        <label class="space-y-1 flex flex-col">
+          <span class="font-bold">Message</span>
+          <textarea rows="10" class="outline-none bg-transparent" :value="notification.message" readonly></textarea>
         </label>
       </div>
     </div>
@@ -43,20 +42,29 @@
 import { ref, onMounted } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { format } from 'date-fns'
 
 const route = useRoute()
+const router = useRouter()
 
-const user = ref({
-  username: '',
-  email: '',
-  fullName: '',
+const notification = ref({
+  date: '',
+  subject: '',
+  message: '',
 })
 
 onMounted(async () => {
-  const result = await axios.get('/user/' + route.params.id)
-  user.value.username = result.data.username
-  user.value.email = result.data.email
-  user.value.fullName = result.data.fullName
+  const result = await axios.get('/notifications/' + route.params.id)
+  notification.value.subject = result.data.subject
+  notification.value.message = result.data.message
+  notification.value.date = format(new Date(result.data.date), 'dd MMM yyyy HH:mm')
 })
+
+const onDelete = async () => {
+  const result = await axios.delete('/notifications/' + route.params.id)
+  if (result.status === 204) {
+    router.push('/master/notification')
+  }
+}
 </script>

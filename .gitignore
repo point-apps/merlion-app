@@ -10,6 +10,7 @@ lerna-debug.log*
 # Environment
 .DS_Store
 *.local
+.env.production
 
 # Lock files
 node_modules

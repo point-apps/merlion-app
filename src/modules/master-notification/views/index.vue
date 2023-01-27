@@ -28,44 +28,28 @@
           <thead>
             <tr class="basic-table-row">
               <th class="basic-table-head w-1">Send&nbsp;Date</th>
-              <th class="basic-table-head w-1">Subject</th>
-              <th class="basic-table-head">Message</th>
-              <th class="basic-table-head w-1"></th>
+              <th class="basic-table-head w-1">Institution</th>
+              <th class="basic-table-head">Subject</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="basic-table-row">
-              <td class="basic-table-body">21&nbsp;Jan&nbsp;2023</td>
+            <tr v-for="(notification, index) in notifications" :key="notification._id" class="basic-table-row">
               <td class="basic-table-body">
-                <router-link :to="`/master/notification/1`" class="text-blue-500 hover:text-blue-600">
-                  Activity Recommendation
+                {{ format(new Date(notification.date), 'dd MMM yyyy HH:mm') }}
+              </td>
+              <td class="basic-table-body">{{ notification.institution_id }}</td>
+              <td class="basic-table-body">
+                <router-link :to="`/master/notification/${notification._id}`" class="text-blue-500 hover:text-blue-600">
+                  {{ notification.subject }}
                 </router-link>
-              </td>
-              <td class="basic-table-body truncate">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam ratione quis quisquam sapiente fugit
-                placeat molestiae, ipsa illum unde sed nobis neque? Alias qui id eius, laudantium dolore quasi ipsum.
-              </td>
-              <td class="basic-table-body">
-                <label class="bg-slate-400 text-slate-200 font-extrabold text-xs py-1 px-3 rounded-full">DRAFT</label>
               </td>
             </tr>
-            <!-- <tr v-for="(user, index) in users" :key="user._id" class="basic-table-row">
-              <td class="basic-table-body">{{ index + 1 + (currentPage - 1) * pageLimit }}</td>
-              <td class="basic-table-body">
-                <router-link :to="`/master/notification/${user._id}`" class="text-blue-500 hover:text-blue-600">
-                  {{ user.username }}
-                </router-link>
-              </td>
-              <td class="basic-table-body">{{ user.fullName }}</td>
-              <td class="basic-table-body">{{ user.email }}</td>
-              <td class="basic-table-body">{{ user.email }}</td>
-            </tr> -->
           </tbody>
         </table>
 
-        <div v-if="pagination.totalPage > 1" class="flex flex-wrap gap-2 items-center justify-center mt-10">
+        <div v-if="pagination.pageCount > 1" class="flex flex-wrap gap-2 items-center justify-center mt-10">
           <button
-            v-for="i in pagination.totalPage"
+            v-for="i in pagination.pageCount"
             :key="i"
             class="btn btn-base border border-slate-800/20 dark:text-slate-100"
             :class="{ 'bg-blue-500 text-slate-100': i === currentPage }"
@@ -84,59 +68,57 @@ import { onMounted, ref, watch } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { watchDebounced } from '@vueuse/core'
-import { useHttpUser } from '../api/http'
+import { format } from 'date-fns'
 
-const httpUser = useHttpUser()
+interface NotificationInterface {
+  _id: string
+  date: Date
+  subject: string
+  message: string
+}
 
-const result = httpUser.readAll()
-
-console.log(result)
-
-const users = ref([])
+const notifications = ref<NotificationInterface[]>([])
 const pagination = ref({
   page: 1,
+  pageCount: 0,
+  pageSize: 0,
   totalDocument: 0,
-  totalPage: 0,
-  totalPerPage: 0,
 })
 const isLoadingSearch = ref(false)
 const searchText = ref('')
 const currentPage = ref(1)
 const pageLimit = 10
 
-const getUsers = async (page = 1) => {
-  const result = await axios.get('/user', {
+const getNotifications = async (page = 1) => {
+  const result = await axios.get('/notifications', {
     params: {
       limit: pageLimit,
       page: page,
-      sort: 'username',
+      sort: 'date-',
       filter: {
         $or: [
           {
-            username: { $regex: searchText.value, $options: 'i' },
+            subject: { $regex: searchText.value, $options: 'i' },
           },
           {
-            email: { $regex: searchText.value, $options: 'i' },
-          },
-          {
-            fullName: { $regex: searchText.value, $options: 'i' },
+            message: { $regex: searchText.value, $options: 'i' },
           },
         ],
       },
     },
   })
-  users.value = result.data.data
+  notifications.value = result.data.data
   pagination.value = {
-    page: result.data.page,
-    totalDocument: result.data.totalDocument,
-    totalPage: result.data.totalPage,
-    totalPerPage: result.data.totalPerPage,
+    page: result.data.pagination.page,
+    totalDocument: result.data.pagination.totalDocument,
+    pageCount: result.data.pagination.pageCount,
+    pageSize: result.data.pagination.pageSize,
   }
 }
 
 const onClickPage = async (page: number) => {
   currentPage.value = page
-  await getUsers(page)
+  await getNotifications(page)
 }
 
 watch(searchText, () => {
@@ -147,13 +129,13 @@ watchDebounced(
   searchText,
   async () => {
     currentPage.value = 1
-    await getUsers()
+    await getNotifications()
     isLoadingSearch.value = false
   },
   { debounce: 500, maxWait: 1000 }
 )
 
 onMounted(async () => {
-  await getUsers()
+  await getNotifications()
 })
 </script>

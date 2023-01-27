@@ -16,15 +16,15 @@
         <label class="block space-y-1">
           <span class="font-semibold">Schedule notification date</span>
           <div class="flex space-x-4">
-            <div>
-              <component :is="Datepicker" v-model="form.date" />
+            <div v-if="isLoading === false">
+              <component :is="Datepicker" v-model.lazy="form.date" />
               <p v-for="(error, index) in errors?.date" :key="index" class="text-red-500 mt-1 text-xs">
                 {{ error }}
               </p>
             </div>
             <div>
               <input
-                v-model="form.time"
+                v-model.lazy="form.time"
                 v-cleave="{ time: true, timePattern: ['h', 'm'] }"
                 type="text"
                 class="form-input"
@@ -70,7 +70,6 @@
       </form>
     </div>
   </div>
-  {{ form }}
 </template>
 
 <script setup lang="ts">
@@ -95,19 +94,32 @@ const form = ref({
 })
 const errors = ref()
 
-const isLoadingRoles = ref(false)
+const isLoading = ref(true)
 onMounted(async () => {
-  isLoadingRoles.value = true
-  getInstitutions()
-  isLoadingRoles.value = false
+  isLoading.value = true
+  await getInstitutions()
+  isLoading.value = false
 })
 
 const onSubmit = async () => {
   try {
-    const response = await axios.post('/notifications', form.value)
+    const inputDate = form.value.date.split('-')
+    const inputTime = form.value.time.split(':')
+    const date = new Date()
+    date.setFullYear(Number(inputDate[2]))
+    date.setMonth(Number(inputDate[1]) - 1) // month start from 0 (january)
+    date.setDate(Number(inputDate[0]))
+    date.setHours(Number(inputTime[0].substring(0, 2)))
+    date.setMinutes(Number(inputTime[1].substring(0, 2)))
+    date.setSeconds(0)
+    date.setMilliseconds(0)
+    const response = await axios.post('/notifications', {
+      ...form.value,
+      date: date,
+    })
 
     if (response.status === 201) {
-      router.push('/master/notifications')
+      router.push('/master/notification')
     }
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
