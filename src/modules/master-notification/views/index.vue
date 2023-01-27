@@ -2,7 +2,7 @@
   <div class="main-content-container">
     <div class="main-content-header">
       <h2>Notification</h2>
-      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master' }, { name: 'notification' }]" />
+      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master', path: '/master' }, { name: 'notification' }]" />
     </div>
     <div class="card p-4 space-y-5">
       <div>

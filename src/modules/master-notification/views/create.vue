@@ -4,31 +4,63 @@
       <h2>Notification</h2>
       <component
         :is="Breadcrumb"
-        :breadcrumbs="[{ name: 'master' }, { name: 'notification', path: '/master/notification' }, { name: 'create' }]"
+        :breadcrumbs="[
+          { name: 'master', path: '/master' },
+          { name: 'notification', path: '/master/notification' },
+          { name: 'create' },
+        ]"
       />
     </div>
     <div class="card p-4 space-y-5">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
         <label class="block space-y-1">
           <span class="font-semibold">Schedule notification date</span>
-          <input class="form-input" type="text" value="23-01-2023 16:00" />
-          <!-- <component :is="Datepicker" v-model="form.date" /> -->
+          <div class="flex space-x-4">
+            <div>
+              <component :is="Datepicker" v-model="form.date" />
+              <p v-for="(error, index) in errors?.date" :key="index" class="text-red-500 mt-1 text-xs">
+                {{ error }}
+              </p>
+            </div>
+            <div>
+              <input
+                v-model="form.time"
+                v-cleave="{ time: true, timePattern: ['h', 'm'] }"
+                type="text"
+                class="form-input"
+                placeholder="00:00"
+              />
+              <p v-for="(error, index) in errors?.time" :key="index" class="text-red-500 mt-1 text-xs">
+                {{ error }}
+              </p>
+            </div>
+          </div>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Institution</span>
-          <select class="form-input">
+          <select v-model="form.institution_id" class="form-input">
             <option value="">Select Institution</option>
-            <option value="student">Student</option>
-            <option value="admin">Admin</option>
+            <option v-for="(institution, index) in institutions" :key="index" :value="institution._id">
+              {{ institution.name }}
+            </option>
           </select>
+          <p v-for="(error, index) in errors?.institution_id" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Subject</span>
-          <input v-model="form.activity" class="form-input" type="text" />
+          <input v-model="form.subject" class="form-input" type="text" />
+          <p v-for="(error, index) in errors?.subject" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Message</span>
-          <textarea v-model="form.activity" rows="5" class="form-input" type="text" />
+          <textarea v-model="form.message" rows="5" class="form-input" type="text" />
+          <p v-for="(error, index) in errors?.message" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <div class="flex flex-row space-x-2">
           <button type="submit" class="btn btn-base rounded flex-1 text-slate-100 bg-blue-500 hover:bg-blue-600">
@@ -38,74 +70,67 @@
       </form>
     </div>
   </div>
+  {{ form }}
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { watchDebounced } from '@vueuse/core'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import Datepicker from '@/components/datepicker.vue'
 import axios from '@/axios'
 import { useRouter } from 'vue-router'
-// import { useApi as useRoleApi, type RoleInterface } from '@/modules/role/composable/api'
-// import SelectRole from '@/modules/user/components/select-role.vue'
+import { format } from 'date-fns'
+import { useBaseNotification } from '@/composable/notification'
+import { AxiosError } from 'axios'
 
-// const roleApi = useRoleApi()
+const { notification } = useBaseNotification()
 
 const router = useRouter()
-const isShowSelect = ref(false)
 const form = ref({
-  date: '21 Jan 2023',
-  email: '',
-  password: '',
-  fullName: '',
-  role: '',
+  date: format(new Date(), 'dd-MM-yyyy'),
+  time: '08:00',
+  institution_id: '',
+  subject: '',
+  message: '',
 })
+const errors = ref()
 
-const roles = ref<RoleInterface[]>([])
 const isLoadingRoles = ref(false)
-
 onMounted(async () => {
   isLoadingRoles.value = true
-  const result = await readAllRole()
-  // roles.value = result.roles
+  getInstitutions()
   isLoadingRoles.value = false
 })
 
 const onSubmit = async () => {
-  await axios.post('/user', form.value)
-  router.push('/master/user')
-}
+  try {
+    const response = await axios.post('/notifications', form.value)
 
-const latestSelectedRole = ref()
-
-// const onBlurSelectRole = () => {
-//   if (!roles.value.some((el) => el.name === form.value.role)) {
-//     form.value.role = latestSelectedRole.value
-//   }
-//   isShowSelect.value = false
-// }
-
-const choose = (text: string) => {
-  if (roles.value.some((el) => el.name === text)) {
-    latestSelectedRole.value = text
-    form.value.role = text
-  } else {
-    form.value.role = ''
+    if (response.status === 201) {
+      router.push('/master/notifications')
+    }
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      errors.value = error.response?.data.errors
+      notification(error.response?.statusText, error.response?.data.message, 'warning')
+    } else if (error instanceof AxiosError) {
+      notification(error.code as string, error.message, 'warning')
+    } else {
+      notification('Unknown Error', '', 'warning')
+    }
   }
-  isShowSelect.value = false
 }
 
-const readAllRole = async () => {
-  // return await roleApi.readAll(1, 10, form.value.role)
+// Institution List
+const institutions = ref([])
+const getInstitutions = async () => {
+  const result = await axios.get('/institutions', {
+    params: {
+      limit: 100,
+      page: 1,
+      sort: 'name',
+    },
+  })
+  institutions.value = result.data.data
 }
-
-// watchDebounced(
-//   form.value,
-//   async () => {
-//     const result = await readAllRole()
-//     roles.value = result.roles
-//   },
-//   { debounce: 500, maxWait: 1000 }
-// )
 </script>
