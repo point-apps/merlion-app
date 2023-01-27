@@ -75,8 +75,6 @@ const onSubmit = async () => {
     suggestion: form.value.suggestion,
   })
 
-  console.log(response)
-
   if (response.status === 204) {
     notification('Update', 'Update data success', 'success')
   }

@@ -1,47 +1,28 @@
 <template>
   <div class="main-content-container">
     <div class="main-content-header">
-      <h2>User</h2>
+      <h2>Institution</h2>
       <component
         :is="Breadcrumb"
-        :breadcrumbs="[{ name: 'master' }, { name: 'user', path: '/master/user' }, { name: form.username }]"
+        :breadcrumbs="[
+          { name: 'master', path: '/master' },
+          { name: 'institution', path: '/master/institution' },
+          { name: institution.name, path: '/master/institution/' + route.params.id },
+          { name: 'edit' },
+        ]"
       />
     </div>
     <div class="card p-4 space-y-5">
       <form class="flex flex-col space-y-3" @submit.prevent="onSubmit()">
-        <h4 class="font-bold">Authentication Data</h4>
         <label class="block space-y-1">
-          <span>Username:</span>
-          <input v-model="form.username" class="form-input" placeholder="Username" type="text" readonly />
-        </label>
-        <label class="block space-y-1">
-          <span>Email:</span>
-          <input v-model="form.email" class="form-input" placeholder="Email" type="text" />
-        </label>
-        <div>
-          <hr class="my-3 border-slate-800/20" />
-        </div>
-        <h4 class="font-bold">User Data</h4>
-        <label class="block space-y-1">
-          <span>Full Name:</span>
-          <input v-model="form.fullName" class="form-input" placeholder="Full Name" type="text" />
+          <span>Name</span>
+          <input v-model="form.name" class="form-input" type="text" />
+          <p v-for="(error, index) in errors?.name" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <div>
           <button type="submit" class="btn btn-base text-slate-100 bg-blue-500 hover:bg-blue-600">Update</button>
-        </div>
-      </form>
-    </div>
-    <div class="card p-4 space-y-5">
-      <form class="flex flex-col space-y-3" @submit.prevent="onSubmitPassword()">
-        <h4 class="font-bold">Authentication Data</h4>
-        <label class="block space-y-1">
-          <span>New Password:</span>
-          <input v-model="form.password" class="form-input" placeholder="New Password" type="password" />
-        </label>
-        <div>
-          <button type="submit" class="btn btn-base text-slate-100 bg-blue-500 hover:bg-blue-600">
-            Update Password
-          </button>
         </div>
       </form>
     </div>
@@ -52,31 +33,54 @@
 import { ref, onMounted } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useBaseNotification } from '@/composable/notification'
+import { AxiosError } from 'axios'
+
+const { notification } = useBaseNotification()
 
 const route = useRoute()
+const router = useRouter()
 
 const form = ref({
-  username: '',
-  password: '',
-  email: '',
-  fullName: '',
+  name: '',
 })
+
+const institution = ref({
+  name: '',
+})
+
+const errors = ref()
 
 onMounted(async () => {
-  const result = await axios.get('/user/' + route.params.id)
-  form.value.username = result.data.username
-  form.value.email = result.data.email
-  form.value.fullName = result.data.fullName
+  const response = await axios.get('/institutions/' + route.params.id)
+  institution.value.name = response.data.name
+
+  form.value.name = response.data.name
 })
 
+const isSubmitted = ref(false)
 const onSubmit = async () => {
-  await axios.patch('/user/' + route.params.id, {
-    username: form.value.username,
-    email: form.value.email,
-    fullName: form.value.fullName,
-  })
-}
+  try {
+    const response = await axios.patch('/institutions/' + route.params.id, {
+      name: form.value.name,
+    })
 
-const onSubmitPassword = () => {}
+    if (response.status === 204) {
+      notification('Update', 'Update data success', 'success')
+      router.push('/master/institution/' + route.params.id)
+    }
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      errors.value = error.response?.data.errors
+      notification(error.response?.statusText, error.response?.data.message, 'warning')
+    } else if (error instanceof AxiosError) {
+      notification(error.code as string, error.message, 'warning')
+    } else {
+      notification('Unknown Error', '', 'warning')
+    }
+  } finally {
+    isSubmitted.value = false
+  }
+}
 </script>

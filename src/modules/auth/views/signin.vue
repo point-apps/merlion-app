@@ -96,8 +96,6 @@
 import { AxiosError } from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import cookie from '@point-hub/vue-cookie'
-import axios from '@/axios'
 import { useBaseNotification } from '@/composable/notification'
 import { useAuthStore } from '@/stores/auth'
 

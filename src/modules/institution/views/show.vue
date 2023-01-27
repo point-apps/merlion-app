@@ -1,38 +1,29 @@
 <template>
   <div class="main-content-container">
     <div class="main-content-header">
-      <h2>User</h2>
+      <h2>Institution</h2>
       <component
         :is="Breadcrumb"
-        :breadcrumbs="[{ name: 'master' }, { name: 'user', path: '/master/user' }, { name: user.username }]"
+        :breadcrumbs="[
+          { name: 'master', path: '/master' },
+          { name: 'institution', path: '/master/institution' },
+          { name: institution.name },
+        ]"
       />
     </div>
     <div class="card p-4 space-y-5">
       <div class="flex flex-col space-y-3">
         <div class="flex justify-end">
           <div class="space-x-3">
-            <router-link class="btn btn-base btn-default text-xs" :to="`/master/user/${$route.params.id}/edit`">
+            <router-link class="btn btn-base btn-default text-xs" :to="`/master/institution/${$route.params.id}/edit`">
               Edit
             </router-link>
-            <button class="btn btn-base btn-default text-xs">Delete</button>
+            <button class="btn btn-base btn-default text-xs" @click="onDelete()">Delete</button>
           </div>
         </div>
-        <h4 class="font-bold">Authentication Data</h4>
         <label class="block space-y-1">
-          <span>Username:</span>
-          <input v-model="user.username" class="form-input" placeholder="Username" type="text" readonly />
-        </label>
-        <label class="block space-y-1">
-          <span>Email:</span>
-          <input v-model="user.email" class="form-input" placeholder="Email" type="text" readonly />
-        </label>
-        <div>
-          <hr class="my-3 border-slate-800/20" />
-        </div>
-        <h4 class="font-bold">User Data</h4>
-        <label class="block space-y-1">
-          <span>Full Name:</span>
-          <input v-model="user.fullName" class="form-input" placeholder="Full Name" type="text" readonly />
+          <span class="font-bold">Name</span>
+          <p>{{ institution.name }}</p>
         </label>
       </div>
     </div>
@@ -43,20 +34,43 @@
 import { ref, onMounted } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { AxiosError } from 'axios'
+import { useBaseNotification } from '@/composable/notification'
 
 const route = useRoute()
+const router = useRouter()
+const { notification } = useBaseNotification()
 
-const user = ref({
-  username: '',
-  email: '',
-  fullName: '',
+const institution = ref({
+  name: '',
 })
 
 onMounted(async () => {
-  const result = await axios.get('/user/' + route.params.id)
-  user.value.username = result.data.username
-  user.value.email = result.data.email
-  user.value.fullName = result.data.fullName
+  const response = await axios.get('/institutions/' + route.params.id)
+  institution.value.name = response.data.name
 })
+
+const isSubmitted = ref(false)
+const onDelete = async () => {
+  try {
+    isSubmitted.value = true
+    const response = await axios.delete('/institutions/' + route.params.id)
+
+    if (response.status === 204) {
+      notification('Delete', `delete ${institution.value.name} success`, 'warning')
+      router.push('/master/institution')
+    }
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      notification(error.response?.statusText, error.response?.data.message, 'warning')
+    } else if (error instanceof AxiosError) {
+      notification(error.code as string, error.message, 'warning')
+    } else {
+      notification('Unknown Error', '', 'warning')
+    }
+  } finally {
+    isSubmitted.value = false
+  }
+}
 </script>

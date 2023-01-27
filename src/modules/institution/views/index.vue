@@ -2,13 +2,13 @@
   <div class="main-content-container">
     <div class="main-content-header">
       <h2>Institution</h2>
-      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master' }, { name: 'institution' }]" />
+      <component :is="Breadcrumb" :breadcrumbs="[{ name: 'master', path: '/master' }, { name: 'institution' }]" />
     </div>
     <div class="card p-4 space-y-5">
       <div>
         <div class="space-y-1">
           <label class="input-group relative">
-            <router-link to="/strength-mapping/capture/create" class="prepend-input">
+            <router-link to="/master/institution/create" class="prepend-input">
               <fa-icon icon="fa-solid fa-plus"></fa-icon>
             </router-link>
             <input v-model="searchText" class="form-input rounded-r-lg" placeholder="Search" type="text" />
@@ -27,42 +27,25 @@
         <table class="table">
           <thead>
             <tr class="basic-table-row">
-              <th class="basic-table-head w-1">Name</th>
+              <th class="basic-table-head w-1">#</th>
+              <th class="basic-table-head">Name</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="basic-table-row">
-              <td class="basic-table-body">
-                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
-                  Merlion School
-                </router-link>
-              </td>
-            </tr>
-            <tr class="basic-table-row">
-              <td class="basic-table-body">
-                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
-                  Others
-                </router-link>
-              </td>
-            </tr>
-            <!-- <
-            <tr v-for="(user, index) in users" :key="user._id" class="basic-table-row">
+            <tr v-for="(institution, index) in institutions" :key="institution._id" class="basic-table-row">
               <td class="basic-table-body">{{ index + 1 + (currentPage - 1) * pageLimit }}</td>
               <td class="basic-table-body">
-                <router-link :to="`/strength-mapping/capture/${user._id}`" class="text-blue-500 hover:text-blue-600">
-                  {{ user.username }}
+                <router-link :to="`/master/institution/${institution._id}`" class="text-blue-500 hover:text-blue-600">
+                  {{ institution.name }}
                 </router-link>
               </td>
-              <td class="basic-table-body">{{ user.fullName }}</td>
-              <td class="basic-table-body">{{ user.email }}</td>
-              <td class="basic-table-body">{{ user.email }}</td>
-            </tr> -->
+            </tr>
           </tbody>
         </table>
 
-        <div v-if="pagination.totalPage > 1" class="flex flex-wrap gap-2 items-center justify-center mt-10">
+        <div v-if="pagination.pageCount > 1" class="flex flex-wrap gap-2 items-center justify-center mt-10">
           <button
-            v-for="i in pagination.totalPage"
+            v-for="i in pagination.pageCount"
             :key="i"
             class="btn btn-base border border-slate-800/20 dark:text-slate-100"
             :class="{ 'bg-blue-500 text-slate-100': i === currentPage }"
@@ -81,59 +64,50 @@ import { onMounted, ref, watch } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { watchDebounced } from '@vueuse/core'
-import { useHttpUser } from '../api/http'
 
-const httpUser = useHttpUser()
+interface InstitutionInterface {
+  name: string
+}
 
-const result = httpUser.readAll()
-
-console.log(result)
-
-const users = ref([])
+const institutions = ref<InstitutionInterface[]>([])
 const pagination = ref({
   page: 1,
+  pageCount: 0,
+  pageSize: 0,
   totalDocument: 0,
-  totalPage: 0,
-  totalPerPage: 0,
 })
 const isLoadingSearch = ref(false)
 const searchText = ref('')
 const currentPage = ref(1)
 const pageLimit = 10
 
-const getUsers = async (page = 1) => {
-  const result = await axios.get('/user', {
+const getInstitutions = async (page = 1) => {
+  const result = await axios.get('/institutions', {
     params: {
       limit: pageLimit,
       page: page,
-      sort: 'username',
+      sort: 'name',
       filter: {
         $or: [
           {
-            username: { $regex: searchText.value, $options: 'i' },
-          },
-          {
-            email: { $regex: searchText.value, $options: 'i' },
-          },
-          {
-            fullName: { $regex: searchText.value, $options: 'i' },
+            name: { $regex: searchText.value, $options: 'i' },
           },
         ],
       },
     },
   })
-  users.value = result.data.data
+  institutions.value = result.data.data
   pagination.value = {
-    page: result.data.page,
-    totalDocument: result.data.totalDocument,
-    totalPage: result.data.totalPage,
-    totalPerPage: result.data.totalPerPage,
+    page: result.data.pagination.page,
+    pageCount: result.data.pagination.pageCount,
+    pageSize: result.data.pagination.pageSize,
+    totalDocument: result.data.pagination.totalDocument,
   }
 }
 
 const onClickPage = async (page: number) => {
   currentPage.value = page
-  await getUsers(page)
+  await getInstitutions(page)
 }
 
 watch(searchText, () => {
@@ -144,13 +118,13 @@ watchDebounced(
   searchText,
   async () => {
     currentPage.value = 1
-    await getUsers()
+    await getInstitutions()
     isLoadingSearch.value = false
   },
   { debounce: 500, maxWait: 1000 }
 )
 
 onMounted(async () => {
-  await getUsers()
+  await getInstitutions()
 })
 </script>
