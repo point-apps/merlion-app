@@ -1,6 +1,6 @@
 @layer components {
   nav.header {
-    @apply fixed top-0 flex w-full h-[3.5rem] z-20 px-4 lg:px-8 bg-white dark:bg-slate-800;
+    @apply fixed top-0 flex w-full h-[3.5rem] z-20 px-4 lg:px-8 bg-white dark:bg-slate-800 shadow;
   }
   
   .is-sidebar-open nav.header {

@@ -27,13 +27,11 @@
         <table class="table">
           <thead>
             <tr class="basic-table-row">
-              <th class="basic-table-head w-1">#</th>
               <th class="basic-table-head">Name</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(institution, index) in institutions" :key="institution._id" class="basic-table-row">
-              <td class="basic-table-body">{{ index + 1 + (currentPage - 1) * pageLimit }}</td>
               <td class="basic-table-body">
                 <router-link :to="`/master/institution/${institution._id}`" class="text-blue-500 hover:text-blue-600">
                   {{ institution.name }}

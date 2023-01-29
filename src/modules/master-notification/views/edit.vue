@@ -63,7 +63,7 @@
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Message</span>
-          <textarea v-model="form.message" rows="5" class="form-input" type="text" />
+          <component :is="BaseTextarea" v-model="form.message"></component>
           <p v-for="(error, index) in errors?.message" :key="index" class="text-red-500 mt-1 text-xs">
             {{ error }}
           </p>
@@ -82,6 +82,7 @@
 import { ref, onMounted } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import Datepicker from '@/components/datepicker.vue'
+import BaseTextarea from '@/components/base-textarea.vue'
 import axios from '@/axios'
 import { useRoute } from 'vue-router'
 import { format } from 'date-fns'

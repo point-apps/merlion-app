@@ -31,7 +31,12 @@
         </label>
         <label class="space-y-1 flex flex-col">
           <span class="font-bold">Message</span>
-          <textarea rows="10" class="outline-none bg-transparent" :value="notification.message" readonly></textarea>
+          <component
+            :is="BaseTextarea"
+            v-model="notification.message"
+            class="-mx-2 outline-none border-none"
+            readonly
+          ></component>
         </label>
       </div>
     </div>
@@ -41,6 +46,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
+import BaseTextarea from '@/components/base-textarea.vue'
 import axios from '@/axios'
 import { useRoute, useRouter } from 'vue-router'
 import { format } from 'date-fns'

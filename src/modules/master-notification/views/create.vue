@@ -57,7 +57,7 @@
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Message</span>
-          <textarea v-model="form.message" rows="5" class="form-input" type="text" />
+          <component :is="BaseTextarea" v-model="form.message"></component>
           <p v-for="(error, index) in errors?.message" :key="index" class="text-red-500 mt-1 text-xs">
             {{ error }}
           </p>
@@ -73,14 +73,21 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import Datepicker from '@/components/datepicker.vue'
+import BaseTextarea from '@/components/base-textarea.vue'
 import axios from '@/axios'
 import { useRouter } from 'vue-router'
 import { format } from 'date-fns'
 import { useBaseNotification } from '@/composable/notification'
 import { AxiosError } from 'axios'
+
+const textarea = ref()
+
+const resize = () => {
+  textarea.value.style.height = `${textarea.value.scrollHeight}px`
+}
 
 const { notification } = useBaseNotification()
 
@@ -124,7 +131,6 @@ const onSubmit = async () => {
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       errors.value = error.response?.data.errors
-      notification(error.response?.statusText, error.response?.data.message, 'warning')
     } else if (error instanceof AxiosError) {
       notification(error.code as string, error.message, 'warning')
     } else {

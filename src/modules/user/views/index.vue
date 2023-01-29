@@ -27,7 +27,6 @@
         <table class="table">
           <thead>
             <tr class="basic-table-row">
-              <th class="basic-table-head">#</th>
               <th class="basic-table-head">Name</th>
               <th class="basic-table-head">Email</th>
               <th class="basic-table-head">Role</th>
@@ -35,7 +34,6 @@
           </thead>
           <tbody>
             <tr v-for="(user, index) in users" :key="user._id" class="basic-table-row">
-              <td class="basic-table-body">{{ index + 1 + (currentPage - 1) * pageLimit }}</td>
               <td class="basic-table-body">
                 <router-link :to="`/master/user/${user._id}`" class="text-blue-500 hover:text-blue-600">
                   {{ user.name }}

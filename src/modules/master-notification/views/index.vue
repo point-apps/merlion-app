@@ -34,10 +34,10 @@
           </thead>
           <tbody>
             <tr v-for="(notification, index) in notifications" :key="notification._id" class="basic-table-row">
-              <td class="basic-table-body">
+              <td class="basic-table-body whitespace-nowrap">
                 {{ format(new Date(notification.date), 'dd MMM yyyy HH:mm') }}
               </td>
-              <td class="basic-table-body">{{ notification.institution_id }}</td>
+              <td class="basic-table-body whitespace-nowrap">{{ notification.institution?.name }}</td>
               <td class="basic-table-body">
                 <router-link :to="`/master/notification/${notification._id}`" class="text-blue-500 hover:text-blue-600">
                   {{ notification.subject }}
@@ -87,23 +87,17 @@ const pagination = ref({
 const isLoadingSearch = ref(false)
 const searchText = ref('')
 const currentPage = ref(1)
-const pageLimit = 10
+const pageLimit = 2
 
 const getNotifications = async (page = 1) => {
   const result = await axios.get('/notifications', {
     params: {
-      limit: pageLimit,
+      pageSize: pageLimit,
       page: page,
       sort: 'date-',
-      filter: {
-        $or: [
-          {
-            subject: { $regex: searchText.value, $options: 'i' },
-          },
-          {
-            message: { $regex: searchText.value, $options: 'i' },
-          },
-        ],
+      search: {
+        institution: searchText.value,
+        subject: searchText.value,
       },
     },
   })
