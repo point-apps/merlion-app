@@ -7,7 +7,7 @@
         :breadcrumbs="[
           { name: 'strength mapping', path: '/strength-mapping' },
           { name: 'report', path: '/strength-mapping/report/spider-chart' },
-          { name: 'servicing', path: '/strength-mapping/report/spider-chart/1' },
+          { name: $route.params.id, path: '/strength-mapping/report/spider-chart/1' },
           { name: 'suggestion' },
         ]"
       />
@@ -23,26 +23,50 @@
       </div>
       <h2>Servicing</h2>
       <div class="bg-gray-100 p-4 rounded space-y-4">
-        <p><b>Serving</b> Suka menolong sesama, sopan santun memberikan salam pada guru atau orang tua</p>
-        <p>
-          <b>Caretaking</b> Peduli dengan orang lain ditambah dengan memberikan nasihat, taat beragama, menjadi
-          sukarelawan jika dibutuhkan bantuan
-        </p>
+        <component :is="BaseTextarea" v-model="suggestion" readonly class="outline-none border-none"></component>
       </div>
-      <router-link class="text-blue-500 px-4 underline" to="/strength-mapping/report/spider-chart/activity-suggestion">
+      <a
+        href="https://www.youtube.com/c/MerlionSchool"
+        target="_blank"
+        class="text-blue-500 px-4 underline"
+        to="/strength-mapping/report/spider-chart/activity-suggestion"
+      >
         Click here for more information and recommendations
-      </router-link>
+      </a>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
+import BaseTextarea from '@/components/base-textarea.vue'
+import axios from '@/axios'
 
+const route = useRoute()
 const router = useRouter()
+
+const clusters = ref([])
+const suggestion = ref()
+const getClusters = async (search = '') => {
+  const result = await axios.get('/clusters', {
+    params: {
+      limit: 10,
+      page: 1,
+      search: {
+        name: search.replace('-', ' '),
+      },
+    },
+  })
+  clusters.value = result.data.data
+  suggestion.value = clusters.value[0]?.suggestion
+}
 function redirectTo(path: string) {
   router.push('/strength-mapping/report/ikigai/' + path)
 }
+
+onMounted(async () => {
+  await getClusters(route.params.id as string)
+})
 </script>

@@ -26,7 +26,7 @@ export const routes = {
           },
         },
         {
-          path: 'activity-suggestion',
+          path: ':id/activity-suggestion',
           component: () => import('./views/spider-chart/activity-suggestion.vue'),
           meta: {
             shortcut: 'main',
