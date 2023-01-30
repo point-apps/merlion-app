@@ -34,6 +34,9 @@ import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { useBaseNotification } from '@/composable/notification'
 import { AxiosError } from 'axios'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const { notification } = useBaseNotification()
 
@@ -53,6 +56,7 @@ const onSubmit = async () => {
     if (response.status === 201) {
       form.value.name = ''
       notification('Create', 'Create data success', 'success')
+      router.push('/master/institution')
     }
   } catch (error) {
     if (error instanceof AxiosError && error.response) {

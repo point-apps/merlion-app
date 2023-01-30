@@ -84,15 +84,15 @@ import Breadcrumb from '@/components/breadcrumb.vue'
 import Datepicker from '@/components/datepicker.vue'
 import BaseTextarea from '@/components/base-textarea.vue'
 import axios from '@/axios'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { format } from 'date-fns'
 import { AxiosError } from 'axios'
 import { useBaseNotification } from '@/composable/notification'
-import router from '@/router'
 
 const { notification } = useBaseNotification()
 
 const route = useRoute()
+const router = useRouter()
 
 const form = ref({
   subject: '',

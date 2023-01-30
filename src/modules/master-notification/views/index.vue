@@ -87,7 +87,7 @@ const pagination = ref({
 const isLoadingSearch = ref(false)
 const searchText = ref('')
 const currentPage = ref(1)
-const pageLimit = 2
+const pageLimit = 10
 
 const getNotifications = async (page = 1) => {
   const result = await axios.get('/notifications', {

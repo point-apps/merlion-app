@@ -29,7 +29,7 @@
         </label>
         <label class="block space-y-1">
           <span class="font-bold">Suggestion :</span>
-          <textarea v-model="form.suggestion" rows="5" class="form-input" type="text" />
+          <component :is="BaseTextarea" v-model="form.suggestion"></component>
         </label>
         <div>
           <button type="submit" class="btn btn-base rounded text-slate-100 bg-blue-500 hover:bg-blue-600">
@@ -44,11 +44,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
+import BaseTextarea from '@/components/base-textarea.vue'
 import axios from '@/axios'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useBaseNotification } from '@/composable/notification'
 
 const route = useRoute()
+const router = useRouter()
 
 const { notification } = useBaseNotification()
 
@@ -77,6 +79,7 @@ const onSubmit = async () => {
 
   if (response.status === 204) {
     notification('Update', 'Update data success', 'success')
+    router.push('/master/cluster')
   }
 }
 </script>
