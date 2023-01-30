@@ -46,20 +46,32 @@
         <label class="block space-y-1">
           <span class="font-semibold">Activity Date</span>
           <component :is="Datepicker" v-model="form.date" />
+          <p v-for="(error, index) in errors?.date" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Activity</span>
           <input v-model="form.activity" class="form-input" type="text" />
+          <p v-for="(error, index) in errors?.activity" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Describe the activity</span>
           <textarea v-model="form.description" rows="5" class="form-input" type="text" />
+          <p v-for="(error, index) in errors?.description" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <label class="block space-y-1">
           <popper placement="bottom-start">
             <label class="input-group block">
               <label class="font-semibold">Clusters</label>
               <input v-model="searchCluster" type="text" class="form-input" placeholder="Choose Cluster" />
+              <p v-for="(error, index) in errors?.clusters" :key="index" class="text-red-500 mt-1 text-xs">
+                {{ error }}
+              </p>
             </label>
             <template #content="contentProps">
               <div
@@ -158,6 +170,9 @@
             type="text"
             placeholder="who assists in observing this activity"
           />
+          <p v-for="(error, index) in errors?.observer" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <div class="flex flex-row space-x-2">
           <button type="submit" class="btn btn-base rounded flex-1 text-slate-100 bg-blue-500 hover:bg-blue-600">
@@ -174,7 +189,6 @@
       </form>
     </div>
   </div>
-  <pre><code>{{ form.clusters }}</code></pre>
 </template>
 
 <script setup lang="ts">
@@ -185,9 +199,12 @@ import Datepicker from '@/components/datepicker.vue'
 import axios from '@/axios'
 import { useRouter } from 'vue-router'
 import { format } from 'date-fns'
+import { useBaseNotification } from '@/composable/notification'
+import { AxiosError } from 'axios'
 
+const { notification } = useBaseNotification()
 const router = useRouter()
-const isShowSelect = ref(false)
+const errors = ref()
 
 interface CaptureClusterInterface {
   cluster_id: string
@@ -214,6 +231,16 @@ const form = ref<CaptureInterface>({
 const isLoadingSearch = ref(false)
 
 const onChooseCluster = (cluster: any, typology: string) => {
+  if (form.value.clusters.length >= 3) {
+    notification('Cluster error', 'Max 3 cluster allowed on each activity', 'warning')
+    return
+  }
+
+  if (form.value.clusters.some((e) => e.typology === typology)) {
+    notification('Cluster error', `Cluster ${cluster.name} [${typology}] already choosen`, 'warning')
+    return
+  }
+
   form.value.clusters.push({
     cluster_id: cluster._id,
     name: cluster.name,
@@ -231,20 +258,42 @@ onMounted(async () => {
 })
 
 const onSubmit = async () => {
-  console.log(form.value.date)
-  const inputDate = form.value.date.split('-')
-  console.log(inputDate)
-  const date = new Date()
-  date.setFullYear(Number(inputDate[2]))
-  date.setMonth(Number(inputDate[1]) - 1) // month start from 0 (january)
-  date.setDate(Number(inputDate[0]))
-  date.setHours(0)
-  date.setMinutes(0)
-  date.setSeconds(0)
-  date.setMilliseconds(0)
-  console.log(date)
-  await axios.post('/captures', { ...form.value, date: date })
-  router.push('/strength-mapping/capture')
+  try {
+    const inputDate = form.value.date.split('-')
+
+    if (inputDate.length !== 3) {
+      notification('Date error', 'Format date error', 'warning')
+      return
+    }
+
+    const date = new Date()
+    date.setFullYear(Number(inputDate[2]))
+    date.setMonth(Number(inputDate[1]) - 1) // month start from 0 (january)
+    date.setDate(Number(inputDate[0]))
+    date.setHours(0)
+    date.setMinutes(0)
+    date.setSeconds(0)
+    date.setMilliseconds(0)
+
+    if (format(date, 'yyyy-MM-dd') > format(new Date(), 'yyyy-MM-dd')) {
+      notification('Date error', 'Activity date is for past or current activity only', 'warning')
+      return
+    }
+
+    const response = await axios.post('/captures', { ...form.value, date: date })
+    if (response.status === 201) {
+      notification('Create', 'Create success', 'success')
+      router.push('/strength-mapping/capture/' + response.data._id)
+    }
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      errors.value = error.response?.data.errors
+    } else if (error instanceof AxiosError) {
+      notification(error.code as string, error.message, 'warning')
+    } else {
+      notification('Unknown Error', '', 'warning')
+    }
+  }
 }
 
 const searchCluster = ref()
@@ -287,8 +336,8 @@ const isIkigaiChoosen = (cluster, ikigai) => {
   return false
 }
 
-const onSavingDraft = () => {
+const onSavingDraft = async () => {
   form.value.isDraft = true
-  onSubmit()
+  await onSubmit()
 }
 </script>

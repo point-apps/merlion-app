@@ -32,6 +32,9 @@ watch(props, (newData) => {
   modelValue.value = newData.modelValue
   emit('update:modelValue', newData.modelValue)
 })
+watch(modelValue, (newData) => {
+  emit('update:modelValue', newData)
+})
 
 /**
  * HTMLInputElement.showPicker()
@@ -47,7 +50,7 @@ const onClickDateRef = () => {
 
 const nativeDate = ref()
 watch(nativeDate, (newValue) => {
-  console.log('watchedNative')
   modelValue.value = format(new Date(newValue), 'dd-MM-yyyy')
+  emit('update:modelValue', modelValue.value)
 })
 </script>

@@ -31,14 +31,16 @@
           <thead>
             <tr class="basic-table-row">
               <th class="basic-table-head w-1">Date</th>
-              <th class="basic-table-head w-1">Activity</th>
+              <th class="basic-table-head">Activity</th>
               <th class="basic-table-head">Cluster</th>
               <th class="basic-table-head w-1"></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(capture, index) in captures" :key="capture._id" class="basic-table-row">
-              <td class="basic-table-body whitespace-nowrap">{{ format(new Date(capture.date), 'dd-MM-yyyy') }}</td>
+              <td class="basic-table-body whitespace-nowrap">
+                {{ format(new Date(capture.date), 'dd-MM-yyyy') }}
+              </td>
               <td class="basic-table-body">
                 <router-link :to="`/strength-mapping/capture/${capture._id}`" class="text-blue-500 hover:text-blue-600">
                   {{ capture.activity }}
@@ -49,14 +51,22 @@
                   {{ cluster.name }}<span v-if="clusterIndex + 1 < capture.clusters.length">, </span>
                 </span>
               </td>
-              <td class="basic-table-body">{{ capture.status }}</td>
+              <td class="basic-table-body">
+                <div
+                  v-if="!capture.isDraft"
+                  class="bg-green-500 font-bold py-1 px-3 rounded text-green-100 text-center"
+                >
+                  Captured
+                </div>
+                <div v-else class="bg-slate-500 py-1 px-3 rounded font-bold text-slate-100 text-center">Draft</div>
+              </td>
             </tr>
           </tbody>
         </table>
 
-        <div v-if="pagination.totalPage > 1" class="flex flex-wrap gap-2 items-center justify-center mt-10">
+        <div v-if="pagination.pageCount > 1" class="flex flex-wrap gap-2 items-center justify-center mt-10">
           <button
-            v-for="i in pagination.totalPage"
+            v-for="i in pagination.pageCount"
             :key="i"
             class="btn btn-base border border-slate-800/20 dark:text-slate-100"
             :class="{ 'bg-blue-500 text-slate-100': i === currentPage }"
@@ -87,33 +97,35 @@ console.log(result)
 const captures = ref([])
 const pagination = ref({
   page: 1,
+  pageCount: 0,
+  pageSize: 0,
   totalDocument: 0,
-  totalPage: 0,
-  totalPerPage: 0,
 })
 const isLoadingSearch = ref(false)
 const searchText = ref('')
 const currentPage = ref(1)
-const pageLimit = 10
+const pageSize = 10
 
 const getCaptures = async (page = 1) => {
   const result = await axios.get('/captures', {
     params: {
-      limit: pageLimit,
+      pageSize: pageSize,
       page: page,
-      sort: 'date-',
+      sort: {
+        date: 'asc',
+      },
       search: {
-        activity: { $regex: searchText.value, $options: 'i' },
-        cluster: { $regex: searchText.value, $options: 'i' },
+        activity: searchText.value,
+        cluster: searchText.value,
       },
     },
   })
   captures.value = result.data.data
   pagination.value = {
-    page: result.data.page,
-    totalDocument: result.data.totalDocument,
-    totalPage: result.data.totalPage,
-    totalPerPage: result.data.totalPerPage,
+    page: result.data.pagination.page,
+    pageCount: result.data.pagination.pageCount,
+    pageSize: result.data.pagination.pageSize,
+    totalDocument: result.data.pagination.totalDocument,
   }
 }
 
