@@ -53,19 +53,13 @@
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Describe the activity</span>
-          <textarea v-model="form.activity" rows="5" class="form-input" type="text" />
+          <textarea v-model="form.description" rows="5" class="form-input" type="text" />
         </label>
         <label class="block space-y-1">
-          <span class="font-semibold">Clusters</span>
-          <input
-            v-model="form.activity"
-            class="form-input"
-            type="text"
-            placeholder="Choose cluster type based on activity"
-          />
           <popper placement="bottom-start">
-            <label class="input-group">
-              <input type="text" class="form-input w-full" placeholder="Type username..." />
+            <label class="input-group block">
+              <label class="font-semibold">Clusters</label>
+              <input v-model="searchCluster" type="text" class="form-input" placeholder="Choose Cluster" />
             </label>
             <template #content="contentProps">
               <div
@@ -73,66 +67,114 @@
               >
                 <ul class="my-2">
                   <div v-for="cluster in clusters" :key="cluster.name">
-                    <li v-for="cluster in clusters" :key="cluster.name">
+                    <li v-for="typology in cluster.typologies" :key="typology">
                       <button
-                        class="dark:hover:bg-slate-600 dark:focus:bg-slate-600 flex items-center space-x-3.5 px-4 py-2 pr-8 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 w-full text-left"
-                        @click="contentProps.close()"
+                        type="button"
+                        class="dark:hover:bg-slate-600 dark:focus:bg-slate-600 flex items-center p-4 pr-8 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 w-full text-left"
+                        @click="onChooseCluster(cluster, typology) || contentProps.close()"
                       >
                         <div>
-                          <p class="dark:text-slate-100 text-slate-700 line-clamp-1">{{ cluster.name }}</p>
-                          <p class="dark:text-slate-300 text-xs text-slate-500">Web Developer</p>
+                          <div class="flex">
+                            <p class="dark:text-slate-100 capitalize text-slate-900 line-clamp-1 space-x-1">
+                              <span class="font-semibold">{{ cluster.name }} </span>
+                              <span class="text-sm font-light">[{{ typology }}]</span>
+                            </p>
+                          </div>
+                          <p class="dark:text-slate-300 text-sm capitalize font-light text-slate-700">
+                            {{ cluster.description }}
+                          </p>
                         </div>
                       </button>
                     </li>
                   </div>
-
-                  <li>
-                    <button
-                      class="dark:hover:bg-slate-600 dark:focus:bg-slate-600 flex items-center space-x-3.5 px-4 py-2 pr-8 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 w-full text-left"
-                      @click="contentProps.close()"
-                    >
-                      <div>
-                        <p class="dark:text-slate-100 text-slate-700 line-clamp-1">Simon Tods</p>
-                        <p class="dark:text-slate-300 text-xs text-slate-500">Web Developer</p>
-                      </div>
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      class="dark:hover:bg-slate-600 dark:focus:bg-slate-600 flex items-center space-x-3.5 px-4 py-2 pr-8 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 w-full text-left"
-                      @click="contentProps.close()"
-                    >
-                      <div>
-                        <p class="dark:text-slate-100 text-slate-700 line-clamp-1">Simon Tods</p>
-                        <p class="dark:text-slate-300 text-xs text-slate-500">Web Developer</p>
-                      </div>
-                    </button>
-                  </li>
                 </ul>
               </div>
             </template>
           </popper>
         </label>
+        <div class="block space-y-4">
+          <div v-for="cluster in form.clusters" class="shadow p-4 bg-green-50 space-y-4">
+            <div>
+              <p class="space-x-1">
+                <span class="text-lg capitalize font-semibold">{{ cluster.name }} </span>
+                <span class="text-sm capitalize font-light">[{{ cluster.typology }}]</span>
+              </p>
+              <p>Choose the Ikigai that suits you</p>
+              <p class="text-sm font-light">You can choose more than 1 options</p>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <button
+                type="button"
+                :class="{
+                  'bg-green-400': isIkigaiChoosen(cluster, 'easy'),
+                  'bg-slate-50': !isIkigaiChoosen(cluster, 'easy'),
+                }"
+                class="shadow py-2 px-3"
+                @click="onChooseIkigai(cluster, 'easy')"
+              >
+                Easy
+              </button>
+              <button
+                type="button"
+                :class="{
+                  'bg-green-400': isIkigaiChoosen(cluster, 'enjoy'),
+                  'bg-slate-50': !isIkigaiChoosen(cluster, 'enjoy'),
+                }"
+                class="shadow py-2 px-3"
+                @click="onChooseIkigai(cluster, 'enjoy')"
+              >
+                Enjoy
+              </button>
+              <button
+                type="button"
+                :class="{
+                  'bg-green-400': isIkigaiChoosen(cluster, 'excellent'),
+                  'bg-slate-50': !isIkigaiChoosen(cluster, 'excellent'),
+                }"
+                class="shadow py-2 px-3"
+                @click="onChooseIkigai(cluster, 'excellent')"
+              >
+                Excellent
+              </button>
+              <button
+                type="button"
+                :class="{
+                  'bg-green-400': isIkigaiChoosen(cluster, 'earn'),
+                  'bg-slate-50': !isIkigaiChoosen(cluster, 'earn'),
+                }"
+                class="shadow py-2 px-3"
+                @click="onChooseIkigai(cluster, 'earn')"
+              >
+                Earn
+              </button>
+            </div>
+          </div>
+        </div>
         <label class="block space-y-1">
           <span class="font-semibold">Observer</span>
           <input
-            v-model="form.activity"
+            v-model="form.observer"
             class="form-input"
             type="text"
-            placeholder="who assists in observing this activity (Father / Mother / Aunty)"
+            placeholder="who assists in observing this activity"
           />
         </label>
         <div class="flex flex-row space-x-2">
           <button type="submit" class="btn btn-base rounded flex-1 text-slate-100 bg-blue-500 hover:bg-blue-600">
             Save
           </button>
-          <button type="submit" class="btn btn-base rounded flex-1 text-slate-100 bg-slate-500 hover:bg-slate-600">
+          <button
+            type="button"
+            class="btn btn-base rounded flex-1 text-slate-100 bg-slate-500 hover:bg-slate-600"
+            @click="onSavingDraft()"
+          >
             Save as a Draft
           </button>
         </div>
       </form>
     </div>
   </div>
+  <pre><code>{{ form.clusters }}</code></pre>
 </template>
 
 <script setup lang="ts">
@@ -142,76 +184,111 @@ import Breadcrumb from '@/components/breadcrumb.vue'
 import Datepicker from '@/components/datepicker.vue'
 import axios from '@/axios'
 import { useRouter } from 'vue-router'
-// import { useApi as useRoleApi, type RoleInterface } from '@/modules/role/composable/api'
-// import SelectRole from '@/modules/user/components/select-role.vue'
-
-// const roleApi = useRoleApi()
+import { format } from 'date-fns'
 
 const router = useRouter()
 const isShowSelect = ref(false)
-const form = ref({
-  date: '21 Jan 2023',
-  email: '',
-  password: '',
-  fullName: '',
-  role: '',
-})
 
-const roles = ref<RoleInterface[]>([])
+interface CaptureClusterInterface {
+  cluster_id: string
+  name: string
+  typology: string
+  ikigai: string[]
+}
+interface CaptureInterface {
+  date: string
+  activity: string
+  description: string
+  observer: string
+  clusters: CaptureClusterInterface[]
+  isDraft: boolean
+}
+const form = ref<CaptureInterface>({
+  date: format(new Date(), 'dd-MM-yyyy'),
+  activity: '',
+  description: '',
+  observer: '',
+  clusters: [],
+  isDraft: false,
+})
+const isLoadingSearch = ref(false)
+
+const onChooseCluster = (cluster: any, typology: string) => {
+  form.value.clusters.push({
+    cluster_id: cluster._id,
+    name: cluster.name,
+    typology: typology,
+    ikigai: [],
+  })
+}
+
 const isLoadingRoles = ref(false)
 
 onMounted(async () => {
   isLoadingRoles.value = true
-  getClusters()
-  // roles.value = result.roles
+  await getClusters()
   isLoadingRoles.value = false
 })
 
 const onSubmit = async () => {
-  await axios.post('/user', form.value)
-  router.push('/master/user')
+  console.log(form.value.date)
+  const inputDate = form.value.date.split('-')
+  console.log(inputDate)
+  const date = new Date()
+  date.setFullYear(Number(inputDate[2]))
+  date.setMonth(Number(inputDate[1]) - 1) // month start from 0 (january)
+  date.setDate(Number(inputDate[0]))
+  date.setHours(0)
+  date.setMinutes(0)
+  date.setSeconds(0)
+  date.setMilliseconds(0)
+  console.log(date)
+  await axios.post('/captures', { ...form.value, date: date })
+  router.push('/strength-mapping/capture')
 }
 
-const latestSelectedRole = ref()
-
+const searchCluster = ref()
 const clusters = ref({})
-const getClusters = async () => {
+const getClusters = async (search = '') => {
   const result = await axios.get('/clusters', {
     params: {
       limit: 10,
       page: 1,
+      search: {
+        name: search,
+        typology: search,
+      },
     },
   })
   clusters.value = result.data.data
 }
+watchDebounced(
+  searchCluster,
+  async (newValue) => {
+    isLoadingSearch.value = true
+    await getClusters(newValue)
+    isLoadingSearch.value = false
+  },
+  { debounce: 500, maxWait: 1000 }
+)
 
-// const onBlurSelectRole = () => {
-//   if (!roles.value.some((el) => el.name === form.value.role)) {
-//     form.value.role = latestSelectedRole.value
-//   }
-//   isShowSelect.value = false
-// }
-
-const choose = (text: string) => {
-  if (roles.value.some((el) => el.name === text)) {
-    latestSelectedRole.value = text
-    form.value.role = text
+const onChooseIkigai = (cluster, ikigai) => {
+  if (!cluster.ikigai.includes(ikigai)) {
+    cluster.ikigai.push(ikigai)
   } else {
-    form.value.role = ''
+    cluster.ikigai = cluster.ikigai.filter((e) => e !== ikigai)
   }
-  isShowSelect.value = false
 }
 
-const readAllRole = async () => {
-  // return await roleApi.readAll(1, 10, form.value.role)
+const isIkigaiChoosen = (cluster, ikigai) => {
+  if (cluster.ikigai.includes(ikigai)) {
+    return true
+  }
+  return false
 }
 
-// watchDebounced(
-//   form.value,
-//   async () => {
-//     const result = await readAllRole()
-//     roles.value = result.roles
-//   },
-//   { debounce: 500, maxWait: 1000 }
-// )
+const onSavingDraft = () => {
+  form.value.isDraft = true
+  onSubmit()
+}
 </script>

@@ -40,10 +40,10 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     logout() {
-      this.$state.user.name = ''
-      this.$state.user.email = ''
-      this.$state.user.role = ''
-      cookie.remove('accessToken')
+      // this.$state.user.name = ''
+      // this.$state.user.email = ''
+      // this.$state.user.role = ''
+      // cookie.remove('accessToken')
     },
     async isAuthenticated() {
       const accessToken = cookie.get('accessToken')

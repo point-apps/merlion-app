@@ -37,70 +37,19 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="basic-table-row">
-              <td class="basic-table-body">21 Jan 2023</td>
+            <tr v-for="(capture, index) in captures" :key="capture._id" class="basic-table-row">
+              <td class="basic-table-body whitespace-nowrap">{{ format(new Date(capture.date), 'dd-MM-yyyy') }}</td>
               <td class="basic-table-body">
-                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
-                  Chess Tournament
+                <router-link :to="`/strength-mapping/capture/${capture._id}`" class="text-blue-500 hover:text-blue-600">
+                  {{ capture.activity }}
                 </router-link>
               </td>
-              <td class="basic-table-body">Thinking, Reasoning</td>
               <td class="basic-table-body">
-                <label class="bg-slate-400 text-slate-200 font-extrabold text-xs py-1 px-3 rounded-full">DRAFT</label>
+                <span v-for="(cluster, clusterIndex) in capture.clusters" :key="cluster.name" class="capitalize">
+                  {{ cluster.name }}<span v-if="clusterIndex + 1 < capture.clusters.length">, </span>
+                </span>
               </td>
-            </tr>
-            <tr class="basic-table-row">
-              <td class="basic-table-body">18 Jan 2023</td>
-              <td class="basic-table-body">
-                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
-                  Cooking omelette for breakfast
-                </router-link>
-              </td>
-              <td class="basic-table-body">Servicing</td>
-              <td class="basic-table-body text-center">
-                <label class="bg-green-400 text-slate-500 font-extrabold text-xs py-1 px-3 rounded-full"
-                  >CAPTURED</label
-                >
-              </td>
-            </tr>
-            <tr class="basic-table-row">
-              <td class="basic-table-body">16 Jan 2023</td>
-              <td class="basic-table-body">
-                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
-                  Dancing with uncle
-                </router-link>
-              </td>
-              <td class="basic-table-body">Generating Idea</td>
-              <td class="basic-table-body text-center">
-                <label class="bg-green-400 text-slate-500 font-extrabold text-xs py-1 px-3 rounded-full"
-                  >CAPTURED</label
-                >
-              </td>
-            </tr>
-            <tr class="basic-table-row">
-              <td class="basic-table-body">16 Jan 2023</td>
-              <td class="basic-table-body">
-                <router-link :to="`/strength-mapping/capture/1`" class="text-blue-500 hover:text-blue-600">
-                  Playground activity
-                </router-link>
-              </td>
-              <td class="basic-table-body">Networking</td>
-              <td class="basic-table-body text-center">
-                <label class="bg-green-400 text-slate-500 font-extrabold text-xs py-1 px-3 rounded-full"
-                  >CAPTURED</label
-                >
-              </td>
-            </tr>
-            <tr v-for="(user, index) in users" :key="user._id" class="basic-table-row">
-              <td class="basic-table-body">{{ index + 1 + (currentPage - 1) * pageLimit }}</td>
-              <td class="basic-table-body">
-                <router-link :to="`/strength-mapping/capture/${user._id}`" class="text-blue-500 hover:text-blue-600">
-                  {{ user.username }}
-                </router-link>
-              </td>
-              <td class="basic-table-body">{{ user.fullName }}</td>
-              <td class="basic-table-body">{{ user.email }}</td>
-              <td class="basic-table-body">{{ user.email }}</td>
+              <td class="basic-table-body">{{ capture.status }}</td>
             </tr>
           </tbody>
         </table>
@@ -127,6 +76,7 @@ import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { watchDebounced } from '@vueuse/core'
 import { useHttpUser } from '../api/http'
+import { format } from 'date-fns'
 
 const httpUser = useHttpUser()
 
@@ -134,7 +84,7 @@ const result = httpUser.readAll()
 
 console.log(result)
 
-const users = ref([])
+const captures = ref([])
 const pagination = ref({
   page: 1,
   totalDocument: 0,
@@ -146,28 +96,19 @@ const searchText = ref('')
 const currentPage = ref(1)
 const pageLimit = 10
 
-const getUsers = async (page = 1) => {
-  const result = await axios.get('/users', {
+const getCaptures = async (page = 1) => {
+  const result = await axios.get('/captures', {
     params: {
       limit: pageLimit,
       page: page,
-      sort: 'username',
-      filter: {
-        $or: [
-          {
-            username: { $regex: searchText.value, $options: 'i' },
-          },
-          {
-            email: { $regex: searchText.value, $options: 'i' },
-          },
-          {
-            fullName: { $regex: searchText.value, $options: 'i' },
-          },
-        ],
+      sort: 'date-',
+      search: {
+        activity: { $regex: searchText.value, $options: 'i' },
+        cluster: { $regex: searchText.value, $options: 'i' },
       },
     },
   })
-  users.value = result.data.data
+  captures.value = result.data.data
   pagination.value = {
     page: result.data.page,
     totalDocument: result.data.totalDocument,
@@ -178,7 +119,7 @@ const getUsers = async (page = 1) => {
 
 const onClickPage = async (page: number) => {
   currentPage.value = page
-  await getUsers(page)
+  await getCaptures(page)
 }
 
 watch(searchText, () => {
@@ -189,13 +130,13 @@ watchDebounced(
   searchText,
   async () => {
     currentPage.value = 1
-    await getUsers()
+    await getCaptures()
     isLoadingSearch.value = false
   },
   { debounce: 500, maxWait: 1000 }
 )
 
 onMounted(async () => {
-  await getUsers()
+  await getCaptures()
 })
 </script>

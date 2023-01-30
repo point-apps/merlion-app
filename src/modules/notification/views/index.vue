@@ -28,7 +28,6 @@
       </button>
     </div>
   </div>
-  {{ pagination }}
 </template>
 
 <script setup lang="ts">
