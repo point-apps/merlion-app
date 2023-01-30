@@ -266,6 +266,14 @@ const onSubmit = async () => {
       return
     }
 
+    const isIkigaiEmpty = form.value.clusters.some((el) => {
+      return el.ikigai.length === 0
+    })
+
+    if (isIkigaiEmpty) {
+      notification('Ikigai error', 'Please fill ikigai type at least 1', 'warning')
+      return
+    }
     const date = new Date()
     date.setFullYear(Number(inputDate[2]))
     date.setMonth(Number(inputDate[1]) - 1) // month start from 0 (january)
