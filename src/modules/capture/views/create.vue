@@ -75,7 +75,7 @@
             </label>
             <template #content="contentProps">
               <div
-                class="border-slate-100 dark:border-slate-800 dark:bg-slate-700 mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col rounded-lg bg-white sm:m-0 sm:w-80 overflow-auto"
+                class="border-slate-100 dark:border-slate-800 mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col rounded-lg bg-white dark:bg-slate-700 sm:m-0 sm:w-80 overflow-auto"
               >
                 <ul class="my-2">
                   <div v-for="cluster in clusters" :key="cluster.name">
@@ -105,7 +105,7 @@
           </popper>
         </label>
         <div class="block space-y-4">
-          <div v-for="cluster in form.clusters" class="shadow p-4 bg-green-50 space-y-4">
+          <div v-for="cluster in form.clusters" class="shadow p-4 bg-green-50 dark:bg-slate-800 space-y-4">
             <div>
               <p class="space-x-1">
                 <span class="text-lg capitalize font-semibold">{{ cluster.name }} </span>
@@ -118,8 +118,8 @@
               <button
                 type="button"
                 :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'easy'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'easy'),
+                  'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'easy'),
+                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
                 }"
                 class="shadow py-2 px-3"
                 @click="onChooseIkigai(cluster, 'easy')"
@@ -129,8 +129,8 @@
               <button
                 type="button"
                 :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'enjoy'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'enjoy'),
+                  'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'enjoy'),
+                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
                 }"
                 class="shadow py-2 px-3"
                 @click="onChooseIkigai(cluster, 'enjoy')"
@@ -140,8 +140,8 @@
               <button
                 type="button"
                 :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'excellent'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'excellent'),
+                  'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'excellent'),
+                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
                 }"
                 class="shadow py-2 px-3"
                 @click="onChooseIkigai(cluster, 'excellent')"
@@ -151,8 +151,8 @@
               <button
                 type="button"
                 :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'earn'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'earn'),
+                  'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'earn'),
+                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
                 }"
                 class="shadow py-2 px-3"
                 @click="onChooseIkigai(cluster, 'earn')"
@@ -175,7 +175,10 @@
           </p>
         </label>
         <div class="flex flex-row space-x-2">
-          <button type="submit" class="btn btn-base rounded flex-1 text-slate-100 bg-blue-500 hover:bg-blue-600">
+          <button
+            type="submit"
+            class="btn btn-base rounded flex-1 text-slate-100 bg-blue-500 dark:bg-blue-700 hover:bg-blue-600"
+          >
             Save
           </button>
           <button

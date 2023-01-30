@@ -49,7 +49,11 @@
           <span class="font-semibold">Clusters</span>
         </label>
         <div class="block space-y-4">
-          <div v-for="cluster in capture.clusters" class="shadow p-4 bg-green-50 space-y-4">
+          <div
+            v-for="cluster in capture.clusters"
+            :key="cluster._id"
+            class="shadow p-4 bg-green-500 dark:bg-slate-800 space-y-4"
+          >
             <div>
               <p class="space-x-1">
                 <span class="text-lg capitalize font-semibold">{{ cluster.name }} </span>
@@ -61,8 +65,8 @@
               <button
                 type="button"
                 :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'easy'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'easy'),
+                  'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'easy'),
+                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
                 }"
                 class="shadow py-2 px-3"
               >
@@ -71,8 +75,8 @@
               <button
                 type="button"
                 :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'enjoy'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'enjoy'),
+                  'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'enjoy'),
+                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
                 }"
                 class="shadow py-2 px-3"
               >
@@ -81,8 +85,8 @@
               <button
                 type="button"
                 :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'excellent'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'excellent'),
+                  'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'excellent'),
+                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
                 }"
                 class="shadow py-2 px-3"
               >
@@ -91,8 +95,8 @@
               <button
                 type="button"
                 :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'earn'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'earn'),
+                  'bg-green-400 dark:bg-slate-700': isIkigaiChoosen(cluster, 'earn'),
+                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
                 }"
                 class="shadow py-2 px-3"
               >

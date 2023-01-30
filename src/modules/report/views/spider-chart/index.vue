@@ -17,9 +17,9 @@
         >
       </div>
       <figure class="highcharts-figure">
-        <div id="container"></div>
+        <div id="container" class="dark:bg-slate-700"></div>
       </figure>
-      <div class="bg-gray-100 p-4 rounded">
+      <div class="bg-gray-100 dark:bg-slate-700 p-4 rounded">
         <h2 class="font-semibold">Summary Result</h2>
         <hr class="my-3 py-1" />
         <ul class="mb-20 space-y-1 font-semibold">
@@ -163,7 +163,9 @@ onMounted(async () => {
       polar: true,
       type: 'line',
     },
-
+    title: {
+      text: 'Spider Chart',
+    },
     pane: {
       size: '80%',
     },
@@ -192,12 +194,6 @@ onMounted(async () => {
     tooltip: {
       shared: true,
       pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>',
-    },
-
-    legend: {
-      align: 'right',
-      verticalAlign: 'middle',
-      layout: 'vertical',
     },
 
     series: [
