@@ -3,7 +3,7 @@
     <div
       v-for="(notification, index) in notifications"
       :key="notification._id"
-      class="bg-white rounded shadow p-4 space-y-4"
+      class="bg-white dark:bg-slate-800 rounded shadow p-4 space-y-4"
     >
       <h4 class="">{{ notification.subject }}</h4>
       <component

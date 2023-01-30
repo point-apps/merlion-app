@@ -23,7 +23,7 @@
       <p class="">
         Typologies found to be <span class="capitalize font-semibold">{{ $route.params.id }}</span> are:
       </p>
-      <div class="bg-gray-100 p-4 rounded">
+      <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded">
         <ul v-if="captures.length" class="mb-20">
           <li v-for="capture in captures" class="capitalize">- {{ capture._id }}</li>
         </ul>

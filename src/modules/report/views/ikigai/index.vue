@@ -17,7 +17,7 @@
         <router-link to="/strength-mapping/report/ikigai" class="btn btn-base btn-blue">Ikigai</router-link>
       </div>
 
-      <div class="p-4 bg-green-200 rounded flex space-x-2 items-center">
+      <div class="p-4 bg-green-200 dark:text-gray-800 rounded flex space-x-2 items-center">
         <fa-icon icon="fa-solid fa-info-circle w-5 h-5"></fa-icon>
         <p>Please click the section on the chart to find out more information.</p>
       </div>
