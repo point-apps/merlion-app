@@ -65,10 +65,22 @@
           </p>
         </label>
         <label class="block space-y-1">
+          <span class="font-semibold">Observer</span>
+          <input
+            v-model="form.observer"
+            class="form-input"
+            type="text"
+            placeholder="who assists in observing this activity"
+          />
+          <p v-for="(error, index) in errors?.observer" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
+        </label>
+        <label class="block space-y-1">
           <popper placement="bottom-start">
             <label class="input-group block">
               <label class="font-semibold">Clusters</label>
-              <input v-model="searchCluster" type="text" class="form-input" placeholder="Choose Cluster" />
+              <input v-model="searchCluster" type="text" class="form-input" placeholder="Choose Cluster (max 3)" />
               <p v-for="(error, index) in errors?.clusters" :key="index" class="text-red-500 mt-1 text-xs">
                 {{ error }}
               </p>
@@ -162,18 +174,6 @@
             </div>
           </div>
         </div>
-        <label class="block space-y-1">
-          <span class="font-semibold">Observer</span>
-          <input
-            v-model="form.observer"
-            class="form-input"
-            type="text"
-            placeholder="who assists in observing this activity"
-          />
-          <p v-for="(error, index) in errors?.observer" :key="index" class="text-red-500 mt-1 text-xs">
-            {{ error }}
-          </p>
-        </label>
         <div class="flex flex-row space-x-2">
           <button
             type="submit"

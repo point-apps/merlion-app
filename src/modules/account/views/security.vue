@@ -55,8 +55,8 @@ onMounted(async () => {
 })
 
 const onSubmit = async () => {
-  await axios.post('/user', form.value)
-  router.push('/master/user')
+  // await axios.post('/user', form.value)
+  // router.push('/master/user')
 }
 
 const latestSelectedRole = ref()
