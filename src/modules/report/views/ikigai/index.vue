@@ -34,7 +34,6 @@
                 d="M92.75,47.34A57.49,57.49,0,0,1,147,38.48a57.51,57.51,0,0,0-108.54,0,57.49,57.49,0,0,1,54.27,8.86Z"
                 @click="redirectTo('enjoy')"
               />
-              <text x="43%" y="11%" style="font-size: 4px" @click="redirectTo('enjoy')">What you love</text>
               <text x="45%" y="15%" style="font-size: 6px; font-weight: bold" @click="redirectTo('enjoy')">Enjoy</text>
               <path
                 fill="#1E009F"
@@ -43,9 +42,7 @@
                 d="M185.5,92.75A57.53,57.53,0,0,0,147,38.48a57.49,57.49,0,0,1-8.86,54.27A57.49,57.49,0,0,1,147,147,57.53,57.53,0,0,0,185.5,92.75Z"
                 @click="redirectTo('easy')"
               />
-              <text x="79%" y="48.5%" style="font-size: 4px" @click="redirectTo('easy')">What the world</text>
-              <text x="89%" y="50.5%" style="font-size: 4px" @click="redirectTo('easy')">Needs</text>
-              <text x="88%" y="54.5%" style="font-size: 6px; font-weight: bold" @click="redirectTo('easy')">Easy</text>
+              <text x="84%" y="52.5%" style="font-size: 6px; font-weight: bold" @click="redirectTo('easy')">Easy</text>
               <path
                 fill="#006D00"
                 fill-opacity="0.7"
@@ -53,7 +50,6 @@
                 d="M92.75,138.16A57.49,57.49,0,0,1,38.48,147,57.51,57.51,0,0,0,147,147a57.49,57.49,0,0,1-54.27-8.86Z"
                 @click="redirectTo('excellent')"
               />
-              <text x="39%" y="87%" style="font-size: 4px" @click="redirectTo('excellent')">What you're good at</text>
               <text x="43%" y="91%" style="font-size: 6px; font-weight: bold" @click="redirectTo('excellent')">
                 Excellent
               </text>
@@ -64,9 +60,7 @@
                 d="M47.34,92.75a57.49,57.49,0,0,1-8.86-54.27,57.51,57.51,0,0,0,0,108.54,57.49,57.49,0,0,1,8.86-54.27Z"
                 @click="redirectTo('earn')"
               />
-              <text x="4%" y="48.5%" style="font-size: 4px" @click="redirectTo('earn')">What you can</text>
-              <text x="4%" y="50.5%" style="font-size: 4px" @click="redirectTo('earn')">be paid for</text>
-              <text x="4%" y="54.5%" style="font-size: 6px; font-weight: bold" @click="redirectTo('earn')">Earn</text>
+              <text x="7%" y="52.5%" style="font-size: 6px; font-weight: bold" @click="redirectTo('earn')">Earn</text>
             </g>
 
             <g class="lvl-2">
