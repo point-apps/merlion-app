@@ -120,6 +120,9 @@ onMounted(async () => {
       title: {
         text: route.params.id as string,
       },
+      accessibility: {
+        enabled: false,
+      },
       xAxis: {
         categories: categories,
         crosshair: true,

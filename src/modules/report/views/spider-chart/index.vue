@@ -11,24 +11,28 @@
       <div class="">
         <div class="flex">
           <div class="grid grid-cols-2 flex-1">
-            <router-link class="btn btn-base btn-blue" to="/strength-mapping/report/spider-chart"
-              >Spider Chart</router-link
-            >
+            <router-link class="btn btn-base btn-blue" to="/strength-mapping/report/spider-chart">
+              Spider Chart
+            </router-link>
             <router-link
               to="/strength-mapping/report/ikigai"
               class="btn btn-base border-y border-r border-gray-500 hover:bg-blue-500 hover:text-white"
-              >Ikigai</router-link
             >
+              Ikigai
+            </router-link>
           </div>
           <button class="py-1 px-2 border-y border-r border-gray-500" @click="isFilterOpen = !isFilterOpen">
             <fa-icon icon="fa-light fa-calendar-day w-4 h-4"></fa-icon>
           </button>
         </div>
-        <div v-if="!isFilterOpen" class="p-2 grid grid-cols-2 gap-4 border-x border-black">
+        <div v-if="isFilterOpen" class="p-2 grid grid-cols-2 gap-4 border-x border-black">
           <div>
             <span class="text-xs">Year</span>
-            <select v-model="year" class="form-input bg-white pr-2 mr-2">
-              <option value="">Year</option>
+            <select
+              v-model="filterHelper.filterYear.value"
+              class="form-input bg-white pr-2 mr-2"
+              @change="filterHelper.update()"
+            >
               <option v-for="counter in 5" :key="counter" :value="Number(format(new Date(), 'yyyy')) - counter + 1">
                 {{ Number(format(new Date(), 'yyyy')) - counter + 1 }}
               </option>
@@ -36,26 +40,39 @@
           </div>
           <div>
             <span class="text-xs">Semester</span>
-            <select v-model="semester" class="form-input bg-white">
-              <option value="">Semester</option>
+            <select
+              v-model="filterHelper.filterSemester.value"
+              class="form-input bg-white"
+              @change="filterHelper.update()"
+            >
               <option value="odd">Odd</option>
               <option value="even">Even</option>
             </select>
           </div>
         </div>
-        <div v-if="!isFilterOpen" class="grid grid-cols-2 gap-4 border-x p-2 dark:text-black border-black">
+        <div v-if="isFilterOpen" class="grid grid-cols-2 gap-4 border-x p-2 dark:text-black border-black">
           <div>
             <span class="text-xs">Date From</span>
-            <component :is="Datepicker" v-model="dateFrom" class="bg-white rounded" />
+            <component :is="Datepicker" v-model="filterHelper.dateFrom.value" class="bg-white rounded" />
           </div>
           <div>
             <span class="text-xs">Date To</span>
-            <component :is="Datepicker" v-model="dateTo" class="bg-white rounded" />
+            <component :is="Datepicker" v-model="filterHelper.dateTo.value" class="bg-white rounded" />
           </div>
         </div>
-        <div v-if="!isFilterOpen" class="border-x p-2 dark:text-black border-black border-b">
-          <button type="button" class="btn bg-blue-600 w-full p-2 text-white" @click="getCaptures()">
-            Generate Report
+        <div v-if="isFilterOpen" class="border-x p-2 dark:text-black border-black border-b">
+          <button
+            type="button"
+            class="btn bg-blue-600 w-full p-2 text-white space-x-2"
+            :class="{ 'bg-gray-300 text-gray-600': isLoading }"
+            :disabled="isLoading"
+            @click="getCaptures()"
+          >
+            <span>Generate Report</span>
+            <div
+              v-if="isLoading"
+              class="border-slate-150 dark:border-slate-500 dark:border-r-slate-300 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400"
+            ></div>
           </button>
         </div>
       </div>
@@ -137,31 +154,20 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumb from '@/components/breadcrumb.vue'
-import Datepicker from '@/components/datepicker.vue'
+import { format } from 'date-fns'
+import { onMounted, ref } from 'vue'
 import Highcharts, { Chart } from 'highcharts'
 import highchartsMore from 'highcharts/highcharts-more'
-import { onMounted, ref, watch } from 'vue'
 import axios from '@/axios'
-import { format } from 'date-fns'
+import Breadcrumb from '@/components/breadcrumb.vue'
+import Datepicker from '@/components/datepicker.vue'
 import { useDateHelper } from '@/composable/date-helper'
+import { useFilterHelper } from '../../composable/filter'
 
 const dateHelper = useDateHelper()
-
+const filterHelper = useFilterHelper()
 const isFilterOpen = ref(false)
-const currentDate = new Date()
-const dateFrom = ref(format(currentDate, '01-07-yyyy'))
-const dateTo = ref(format(currentDate, '31-12-yyyy'))
-const year = ref(format(currentDate, 'yyyy'))
-const semester = ref('even')
-
-// set default semester to odd
-if (Number(format(currentDate, 'M')) <= 6) {
-  semester.value = 'even'
-  dateFrom.value = format(currentDate, '01-01-yyyy')
-  dateTo.value = format(currentDate, '30-06-yyyy')
-}
-
+const isLoading = ref(false)
 const captures = ref([])
 const pagination = ref({
   page: 1,
@@ -169,22 +175,19 @@ const pagination = ref({
   pageSize: 0,
   totalDocument: 0,
 })
-const isLoadingSearch = ref(false)
-const searchText = ref('')
-const pageSize = 10
 
-const chart = ref<Chart>()
-let spiderChart: any = undefined
-const getCaptures = async (page = 1) => {
+let spiderChart: Chart | undefined = undefined
+const getCaptures = async () => {
+  isLoading.value = true
   const result = await axios.get('/report/spider-chart', {
     params: {
-      pageSize: pageSize,
-      page: page,
-      dateFrom: dateHelper.convertToDateFormat(dateFrom.value),
-      dateTo: dateHelper.convertToDateFormat(dateTo.value),
+      pageSize: 10,
+      page: 1,
+      dateFrom: dateHelper.convertToDateFormat(filterHelper.dateFrom.value),
+      dateTo: dateHelper.convertToDateFormat(filterHelper.dateTo.value),
     },
   })
-  console.log(captures.value)
+
   captures.value = result.data.data
   pagination.value = {
     page: result.data.pagination.page,
@@ -192,35 +195,13 @@ const getCaptures = async (page = 1) => {
     pageSize: result.data.pagination.pageSize,
     totalDocument: result.data.pagination.totalDocument,
   }
-  const chartNumber: number[] = [
-    getNumber('servicing'),
-    getNumber('thinking'),
-    getNumber('reasoning'),
-    getNumber('elementary'),
-    getNumber('networking'),
-    getNumber('generating idea'),
-    getNumber('technical'),
-    getNumber('headman'),
-  ]
-  spiderChart?.series[0]?.setData(chartNumber)
+  spiderChart?.series[0]?.setData(getChartNumber())
+  isLoading.value = false
 }
 
-watch(searchText, () => {
-  isLoadingSearch.value = true
-})
-
 onMounted(async () => {
+  filterHelper.update()
   await getCaptures()
-  const chartNumber: number[] = [
-    getNumber('servicing'),
-    getNumber('thinking'),
-    getNumber('reasoning'),
-    getNumber('elementary'),
-    getNumber('networking'),
-    getNumber('generating idea'),
-    getNumber('technical'),
-    getNumber('headman'),
-  ]
   highchartsMore(Highcharts)
   spiderChart = Highcharts.chart(
     'container',
@@ -228,6 +209,9 @@ onMounted(async () => {
       chart: {
         polar: true,
         type: 'line',
+      },
+      accessibility: {
+        enabled: false,
       },
       title: {
         text: 'Spider Chart',
@@ -264,7 +248,7 @@ onMounted(async () => {
       series: [
         {
           name: 'Number of activities',
-          data: chartNumber,
+          data: getChartNumber(),
           pointPlacement: 'on',
           type: 'line',
         },
@@ -299,5 +283,18 @@ const getNumber = (cluster: string) => {
     return el._id === cluster
   })
   return filtered[0]?.count ?? 0
+}
+
+const getChartNumber = (): number[] => {
+  return [
+    getNumber('servicing'),
+    getNumber('thinking'),
+    getNumber('reasoning'),
+    getNumber('elementary'),
+    getNumber('networking'),
+    getNumber('generating idea'),
+    getNumber('technical'),
+    getNumber('headman'),
+  ]
 }
 </script>
