@@ -7,6 +7,7 @@
         :breadcrumbs="[
           { name: 'strength mapping', path: '/strength-mapping' },
           { name: 'capture', path: '/strength-mapping/capture' },
+          { name: 'create' },
         ]"
       />
     </div>
@@ -204,8 +205,11 @@ import { useRouter } from 'vue-router'
 import { format } from 'date-fns'
 import { useBaseNotification } from '@/composable/notification'
 import { AxiosError } from 'axios'
+import { useDateHelper } from '@/composable/date-helper'
 
 const { notification } = useBaseNotification()
+const { convertToDateFormat } = useDateHelper()
+
 const router = useRouter()
 const errors = ref()
 
@@ -262,13 +266,6 @@ onMounted(async () => {
 
 const onSubmit = async () => {
   try {
-    const inputDate = form.value.date.split('-')
-
-    if (inputDate.length !== 3) {
-      notification('Date error', 'Format date error', 'warning')
-      return
-    }
-
     const isIkigaiEmpty = form.value.clusters.some((el) => {
       return el.ikigai.length === 0
     })
@@ -277,19 +274,19 @@ const onSubmit = async () => {
       notification('Ikigai error', 'Please fill ikigai type at least 1', 'warning')
       return
     }
-    const date = new Date()
-    date.setFullYear(Number(inputDate[2]))
-    date.setMonth(Number(inputDate[1]) - 1) // month start from 0 (january)
-    date.setDate(Number(inputDate[0]))
-    date.setHours(0)
-    date.setMinutes(0)
-    date.setSeconds(0)
-    date.setMilliseconds(0)
+
+    const date = convertToDateFormat(form.value.date)
+    if (!date) {
+      notification('Date error', 'Format date error', 'warning')
+      return
+    }
 
     if (format(date, 'yyyy-MM-dd') > format(new Date(), 'yyyy-MM-dd')) {
       notification('Date error', 'Activity date is for past or current activity only', 'warning')
       return
     }
+
+    console.log(date)
 
     const response = await axios.post('/captures', { ...form.value, date: date })
     if (response.status === 201) {

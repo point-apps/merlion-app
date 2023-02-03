@@ -30,7 +30,7 @@
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Activity Date</span>
-          <p>{{ format(new Date(capture.date), 'dd-MM-yyyy') }}</p>
+          <p>{{ convertToDateInputFormat(capture.date) }}</p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Activity</span>
@@ -120,15 +120,16 @@ import Breadcrumb from '@/components/breadcrumb.vue'
 import BaseTextarea from '@/components/base-textarea.vue'
 import axios from '@/axios'
 import { useRoute, useRouter } from 'vue-router'
-import { format } from 'date-fns'
 import { useBaseNotification } from '@/composable/notification'
+import { useDateHelper } from '@/composable/date-helper'
 
 const { notification } = useBaseNotification()
+const { convertToDateInputFormat } = useDateHelper()
 const route = useRoute()
 const router = useRouter()
 
 const capture = ref({
-  date: new Date(),
+  date: new Date().toString(),
   activity: '',
   description: '',
   clusters: [],
