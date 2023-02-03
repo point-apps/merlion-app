@@ -8,7 +8,7 @@
       />
     </div>
     <div class="card p-4 space-y-5">
-      <div class="">
+      <div>
         <div class="flex">
           <div class="grid grid-cols-2 flex-1">
             <router-link class="btn btn-base btn-blue" to="/strength-mapping/report/spider-chart">
@@ -33,8 +33,8 @@
               class="form-input bg-white pr-2 mr-2"
               @change="filterHelper.update()"
             >
-              <option v-for="counter in 5" :key="counter" :value="Number(format(new Date(), 'yyyy')) - counter + 1">
-                {{ Number(format(new Date(), 'yyyy')) - counter + 1 }}
+              <option v-for="counter in 5" :key="counter" :value="dateHelper.getCurrentYear() - counter + 1">
+                {{ dateHelper.getCurrentYear() - counter + 1 }}
               </option>
             </select>
           </div>
@@ -154,7 +154,6 @@
 </template>
 
 <script setup lang="ts">
-import { format } from 'date-fns'
 import { onMounted, ref } from 'vue'
 import Highcharts, { Chart } from 'highcharts'
 import highchartsMore from 'highcharts/highcharts-more'
@@ -175,7 +174,6 @@ const pagination = ref({
   pageSize: 0,
   totalDocument: 0,
 })
-
 let spiderChart: Chart | undefined = undefined
 const getCaptures = async () => {
   isLoading.value = true

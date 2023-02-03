@@ -16,8 +16,9 @@
         <router-link
           to="/strength-mapping/report/spider-chart"
           class="btn btn-base border-y border-l border-gray-500 hover:bg-blue-500 hover:text-white"
-          >Spider Chart</router-link
         >
+          Spider Chart
+        </router-link>
         <router-link to="/strength-mapping/report/ikigai" class="btn btn-base btn-blue">Ikigai</router-link>
       </div>
       <p class="">

@@ -51,7 +51,6 @@ export function useDateHelper() {
 
   const getCurrentSemester = (currentDate: string | Date) => {
     const july = 6
-    console.log(new Date(currentDate).getMonth() < july)
     if (new Date(currentDate).getMonth() < july) {
       return 'odd'
     }
@@ -59,5 +58,9 @@ export function useDateHelper() {
     return 'even'
   }
 
-  return { convertToDateInputFormat, convertToDateFormat, getCurrentSemester }
+  const getCurrentYear = (): number => {
+    return Number(format(new Date(), 'yyyy'))
+  }
+
+  return { convertToDateInputFormat, convertToDateFormat, getCurrentSemester, getCurrentYear }
 }
