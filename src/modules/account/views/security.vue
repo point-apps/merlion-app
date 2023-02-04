@@ -40,11 +40,9 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const isShowSelect = ref(false)
 const form = ref({
-  username: '',
-  email: '',
-  password: '',
-  fullName: '',
-  role: '',
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: '',
 })
 
 const isLoadingRoles = ref(false)
@@ -55,8 +53,15 @@ onMounted(async () => {
 })
 
 const onSubmit = async () => {
+  if (!isNewPasswordConfirmed(form.value.newPassword, form.value.confirmPassword)) {
+    alert('password doesn match')
+  }
   // await axios.post('/user', form.value)
   // router.push('/master/user')
+}
+
+const isNewPasswordConfirmed = (newPassword: string, confirmPassword: string) => {
+  return newPassword === confirmPassword
 }
 
 const latestSelectedRole = ref()

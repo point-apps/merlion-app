@@ -45,7 +45,7 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-const captures = ref([])
+const captures = ref<{ _id: string }[]>([])
 const pagination = ref({
   page: 1,
   pageCount: 0,

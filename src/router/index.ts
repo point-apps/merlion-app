@@ -3,25 +3,23 @@ import { routes as authRoutes } from '@/modules/auth/routes'
 import { routes as accountRoutes } from '@/modules/account/routes'
 import { routes as mainRoutes } from '@/modules/main/routes'
 import { routes as templateRoutes, pageRoutes } from '@/modules/template/routes'
-import { routes as strengthMappingRoutes } from '@/modules/strength-mapping/routes'
+import { routes as userRoutes } from '@/modules/user/routes'
 import { routes as masterRoutes } from '@/modules/master/routes'
-import { routes as masterUserRoutes } from '@/modules/user/routes'
-import { routes as captureRoutes } from '@/modules/capture/routes'
+import { routes as strengthMappingRoutes } from '@/modules/strength-mapping/routes'
 import { routes as reportRoutes } from '@/modules/report/routes'
 import { routes as notificationRoutes } from '@/modules/notification/routes'
 
 const routes = [
   accountRoutes,
   mainRoutes,
+  userRoutes,
+  authRoutes,
   masterRoutes,
-  masterUserRoutes,
   strengthMappingRoutes,
-  captureRoutes,
   reportRoutes,
   notificationRoutes,
   templateRoutes,
   pageRoutes,
-  authRoutes,
 ]
 
 const router = createRouter({

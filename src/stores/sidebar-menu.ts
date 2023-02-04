@@ -116,6 +116,6 @@ const menuNotification = {
   name: 'Notification',
   meta: 'notification',
   icon: 'fa-regular fa-envelope',
-  path: '/',
+  path: '/notification',
   menu: [],
 }

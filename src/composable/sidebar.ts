@@ -46,8 +46,9 @@ export function useSidebar() {
         sideMenuShortcut.active = false
       }
 
-      if (sideMenuShortcut.path) {
-        router.replace('/notification')
+      // if sidebarMenuShortcut have a path, then redirect to that path
+      if (sideMenuShortcut.meta === shortcut.meta && sideMenuShortcut.path) {
+        router.replace(sideMenuShortcut.path)
       }
     }
   }
