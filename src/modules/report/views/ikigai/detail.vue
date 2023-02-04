@@ -22,11 +22,11 @@
         <router-link to="/strength-mapping/report/ikigai" class="btn btn-base btn-blue">Ikigai</router-link>
       </div>
       <p class="">
-        Typologies found to be <span class="capitalize font-semibold">{{ $route.params.id }}</span> are:
+        The typologies found to be your <span class="capitalize font-semibold">{{ $route.params.id }}</span> is:
       </p>
       <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded">
         <ul v-if="captures.length" class="mb-20">
-          <li v-for="capture in captures" class="capitalize">- {{ capture._id }}</li>
+          <li v-for="capture in captures" :key="capture._id" class="capitalize">- {{ capture._id }}</li>
         </ul>
         <div v-else class="mb-20 font-light">Not found</div>
         <hr class="py-1 my-3" />
