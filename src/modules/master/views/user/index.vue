@@ -66,7 +66,7 @@ import { onMounted, ref, watch } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { watchDebounced } from '@vueuse/core'
-import { useHttpUser } from '../api/http'
+import { useHttpUser } from '@/modules/master/api/http'
 
 const httpUser = useHttpUser()
 

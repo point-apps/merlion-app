@@ -9,6 +9,52 @@ export const routes = {
   },
   children: [
     {
+      path: 'user',
+      component: () => import('./module-index.vue'),
+      meta: {
+        shortcut: 'main',
+        menu: 'master',
+      },
+      children: [
+        {
+          path: '',
+          component: () => import('./views/user/index.vue'),
+          meta: {
+            shortcut: 'main',
+            menu: 'master',
+            submenu: 'user',
+          },
+        },
+        {
+          path: 'invite',
+          component: () => import('./views/user/invite.vue'),
+          meta: {
+            shortcut: 'main',
+            menu: 'master',
+            submenu: 'user',
+          },
+        },
+        {
+          path: ':id/edit',
+          component: () => import('./views/user/edit.vue'),
+          meta: {
+            shortcut: 'main',
+            menu: 'master',
+            submenu: 'user',
+          },
+        },
+        {
+          path: ':id',
+          component: () => import('./views/user/show.vue'),
+          meta: {
+            shortcut: 'main',
+            menu: 'master',
+            submenu: 'user',
+          },
+        },
+      ],
+    },
+    {
       path: '',
       component: () => import('./module-index.vue'),
       children: [

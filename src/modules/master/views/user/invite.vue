@@ -45,7 +45,7 @@ const form = ref({
 })
 
 const onSubmit = async () => {
-  const response = await axios.post('/users/invite', form.value)
+  const response = await axios.post('/users', form.value)
 
   if (response.status === 201) {
     form.value.name = ''
