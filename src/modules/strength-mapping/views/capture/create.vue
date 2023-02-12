@@ -13,7 +13,7 @@
     </div>
     <div class="card p-4 space-y-5">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
-        <label class="block space-y-1">
+        <label v-if="!form.file" class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
           <div class="flex items-center justify-center w-full">
             <label
@@ -40,10 +40,23 @@
                 </p>
                 <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or MP4</p>
               </div>
-              <input id="dropzone-file" type="file" class="hidden" />
+              <input id="dropzone-file" type="file" class="hidden" any @change="onFileChange($event)" />
             </label>
           </div>
         </label>
+        <div
+          v-if="form.file"
+          class="m-2 relative min-h-[100px] max-h-[200px] lg:max-w-[200px] shadow dark:bg-slate-700 flex justify-center"
+        >
+          <img :src="form.file" alt="activity" class="max-h-[200px] lg:max-w-[200px] relative" />
+          <button
+            type="button"
+            class="btn py-1 px-2.5 bg-white border-white absolute shadow rounded-full top-2 right-2 opacity-50"
+            @click="onRemoveFile()"
+          >
+            <fa-icon icon="fa-solid fa-xmark" class="text-slate-800 shadow"></fa-icon>
+          </button>
+        </div>
         <label class="block space-y-1">
           <span class="font-semibold">Activity Date</span>
           <component :is="Datepicker" v-model="form.date" />
@@ -221,6 +234,7 @@ interface CaptureClusterInterface {
 }
 interface CaptureInterface {
   date: string
+  file: string
   activity: string
   description: string
   observer: string
@@ -229,6 +243,7 @@ interface CaptureInterface {
 }
 const form = ref<CaptureInterface>({
   date: format(new Date(), 'dd-MM-yyyy'),
+  file: '',
   activity: '',
   description: '',
   observer: '',
@@ -236,6 +251,18 @@ const form = ref<CaptureInterface>({
   isDraft: false,
 })
 const isLoadingSearch = ref(false)
+
+const onFileChange = (e: any) => {
+  console.log(e)
+  console.log(e.target.files[0])
+  const file = e.target.files[0]
+  console.log(URL.createObjectURL(file))
+  form.value.file = URL.createObjectURL(file)
+}
+
+const onRemoveFile = () => {
+  form.value.file = ''
+}
 
 const onChooseCluster = (cluster: any, typology: string) => {
   if (form.value.clusters.length >= 3) {

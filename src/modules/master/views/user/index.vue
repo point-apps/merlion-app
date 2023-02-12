@@ -8,9 +8,9 @@
       <div>
         <div class="space-y-1">
           <label class="input-group relative">
-            <!-- <router-link to="/master/user/invite" class="prepend-input">
+            <router-link to="/master/user/invite" class="prepend-input">
               <fa-icon icon="fa-solid fa-plus"></fa-icon>
-            </router-link> -->
+            </router-link>
             <input v-model="searchText" class="form-input rounded-r-lg" placeholder="Search" type="text" />
             <div
               v-if="isLoadingSearch"

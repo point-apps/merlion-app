@@ -13,17 +13,26 @@
         <label class="block space-y-1">
           <span class="font-semibold">Name</span>
           <input v-model="form.name" class="form-input" type="text" />
+          <p v-for="(error, index) in errors?.name" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Email</span>
           <input v-model="form.email" class="form-input" type="email" />
+          <p v-for="(error, index) in errors?.email" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Role</span>
-          <select class="form-input">
-            <option value="student">Student</option>
+          <select v-model="form.role" class="form-input">
+            <option value="user">User</option>
             <option value="admin">Admin</option>
           </select>
+          <p v-for="(error, index) in errors?.role" :key="index" class="text-red-500 mt-1 text-xs">
+            {{ error }}
+          </p>
         </label>
         <div>
           <button type="submit" class="btn btn-base rounded text-slate-100 bg-blue-500 hover:bg-blue-600">Save</button>
@@ -34,23 +43,48 @@
 </template>
 
 <script setup lang="ts">
+import { AxiosError } from 'axios'
 import { ref } from 'vue'
-import Breadcrumb from '@/components/breadcrumb.vue'
+import { useRouter } from 'vue-router'
 import axios from '@/axios'
+import Breadcrumb from '@/components/breadcrumb.vue'
+import { useBaseNotification } from '@/composable/notification'
+
+const router = useRouter()
+const { notification } = useBaseNotification()
 
 const form = ref({
   name: '',
   email: '',
-  role: '',
+  role: 'user',
 })
 
-const onSubmit = async () => {
-  const response = await axios.post('/users', form.value)
+const errors = ref()
 
-  if (response.status === 201) {
-    form.value.name = ''
-    form.value.email = ''
-    form.value.role = ''
+const isSubmitted = ref(false)
+
+const onSubmit = async () => {
+  try {
+    isSubmitted.value = true
+    const response = await axios.post('/users', form.value)
+
+    if (response.status === 201) {
+      form.value.name = ''
+      form.value.email = ''
+      form.value.role = ''
+      router.push('/master/user')
+    }
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      errors.value = error.response?.data.errors
+      notification(error.response?.statusText, error.response?.data.message, 'warning')
+    } else if (error instanceof AxiosError) {
+      notification(error.code as string, error.message, 'warning')
+    } else {
+      notification('Unknown Error', '', 'warning')
+    }
+  } finally {
+    isSubmitted.value = false
   }
 }
 </script>
