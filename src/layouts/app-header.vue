@@ -11,7 +11,7 @@
         </div>
 
         <!-- Right: Header Buttons -->
-        <router-link to="/account/profile" class="flex items-center space-x-2">
+        <router-link to="/account/profile" class="flex items-center justify-center space-x-2">
           <fa-icon icon="fa-solid fa-user-circle w-5 h-5"></fa-icon>
           <p>{{ name }}</p>
         </router-link>

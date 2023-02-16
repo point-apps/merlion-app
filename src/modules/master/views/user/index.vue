@@ -35,9 +35,9 @@
           <tbody>
             <tr v-for="(user, index) in users" :key="user._id" class="basic-table-row">
               <td class="basic-table-body">
-                <!-- <router-link :to="`/master/user/${user._id}`" class="text-blue-500 hover:text-blue-600"> -->
-                {{ user.name }}
-                <!-- </router-link> -->
+                <router-link :to="`/master/user/${user._id}`" class="text-blue-500 hover:text-blue-600">
+                  {{ user.name }}
+                </router-link>
               </td>
               <td class="basic-table-body">{{ user.email }}</td>
               <td class="basic-table-body">{{ user.role }}</td>

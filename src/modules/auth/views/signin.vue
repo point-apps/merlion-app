@@ -1,9 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
     <a href="#" class="flex items-center mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-      <img class="w-8 h-8" src="@/assets/logo-icon.png" alt="logo" />
-      <span>Point</span>
-      <span class="font-light">hub</span>
+      <img class="h-8" src="https://assets.pointhub.net/assets/images/logo/primary/logo.png" alt="logo" />
     </a>
     <form @submit.prevent="onSubmit()">
       <div
@@ -80,7 +78,11 @@
               </span>
             </div>
             <div class="gap-4 grid grid-cols-1 font-semibold text-gray-600">
-              <button class="flex justify-center items-center border rounded py-2 px-3 space-x-2 border-gray-500">
+              <button
+                type="button"
+                class="flex justify-center items-center border rounded py-2 px-3 space-x-2 border-gray-500"
+                @click="onGoogleSignin()"
+              >
                 <fa-icon icon="fa-brands fa-google w-4 h-4"></fa-icon>
                 <span>Signin with Google</span>
               </button>
@@ -93,12 +95,14 @@
 </template>
 
 <script setup lang="ts">
-import { AxiosError } from 'axios'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import axios, { AxiosError } from 'axios'
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useBaseNotification } from '@/composable/notification'
 import { useAuthStore } from '@/stores/auth'
+import { baseURL } from '@/config/api'
 
+const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const { notification } = useBaseNotification()
@@ -109,6 +113,28 @@ const form = ref({
 })
 
 const errors = ref()
+
+onMounted(() => {
+  if (route.query.error) {
+    notification('Authentication Error', route.query.error as string, 'warning')
+    router.replace({ query: {} })
+  }
+})
+
+const onGoogleSignin = async () => {
+  try {
+    const response = await axios.get(
+      `${baseURL}/auth/google/get-auth-url?callback=//${window.location.hostname}${window.location.port ? ':' : ''}${
+        window.location.port
+      }/auth/google-callback`
+    )
+    if (response.status === 200) {
+      window.open(response.data, '_self')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 const isSubmitted = ref(false)
 const onSubmit = async () => {

@@ -27,6 +27,22 @@ export const useAuthStore = defineStore('auth', {
 
       return response
     },
+    async exchangeOAuthToken(vendor: string, code: string) {
+      const response = await axios.post('/auth/exchange-token', {
+        vendor: vendor,
+        code: code,
+      })
+      console.log(response.data)
+      if (response.status === 200) {
+        this.$state.user.name = response.data.name
+        this.$state.user.email = response.data.email
+        this.$state.user.role = response.data.role
+        cookie.set('accessToken', response.data.accessToken)
+        cookie.set('refreshToken', response.data.refreshToken)
+      }
+
+      return response
+    },
     async verifyToken() {
       try {
         const response = await axios.post('/auth/verify-token')

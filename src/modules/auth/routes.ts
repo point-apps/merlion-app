@@ -15,6 +15,16 @@ export const routes = {
         },
       ],
     },
+    {
+      path: '/auth',
+      component: () => import('./module-index.vue'),
+      children: [
+        {
+          path: 'google-callback',
+          component: () => import('./views/google-callback.vue'),
+        },
+      ],
+    },
   ],
   beforeEnter: async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     const authStore = useAuthStore()
