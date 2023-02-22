@@ -91,6 +91,11 @@
         </div>
       </div>
     </form>
+    <div class="flex space-x-3 p-4 text-gray-600">
+      <router-link to="/terms">Terms</router-link>
+      <span>|</span>
+      <router-link to="/privacy">Privacy</router-link>
+    </div>
   </div>
 </template>
 
@@ -124,9 +129,9 @@ onMounted(() => {
 const onGoogleSignin = async () => {
   try {
     const response = await axios.get(
-      `${baseURL}/auth/google/get-auth-url?callback=//${window.location.hostname}${window.location.port ? ':' : ''}${
-        window.location.port
-      }/auth/google-callback`
+      `${baseURL}/auth/google-drive/get-auth-url?callback=//${window.location.hostname}${
+        window.location.port ? ':' : ''
+      }${window.location.port}/auth/google-callback`
     )
     if (response.status === 200) {
       window.open(response.data, '_self')
