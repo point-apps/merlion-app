@@ -26,17 +26,7 @@
       <div class="flex flex-col space-y-4">
         <label class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
-          <div v-if="!capture.file.url" class="font-light italic">Not captured any photo or video</div>
-          <div
-            v-else
-            class="my-2 relative min-h-[100px] max-h-[200px] lg:max-w-[200px] shadow dark:bg-slate-700 flex justify-center"
-          >
-            <video v-if="capture.file.mimeType.includes('video')" controls class="w-full">
-              <source :src="capture.file.url" />
-              Your browser does not support HTML5 video.
-            </video>
-            <img v-else :src="capture.file.url" alt="activity" class="max-h-[200px] lg:max-w-[200px] relative" />
-          </div>
+          <div class="font-light italic">Not captured any photo or video</div>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Activity Date</span>
@@ -140,12 +130,6 @@ const router = useRouter()
 
 const capture = ref({
   date: new Date().toString(),
-  file: {
-    id: '',
-    name: '',
-    mimeType: '',
-    url: '',
-  },
   activity: '',
   description: '',
   clusters: [],
@@ -156,7 +140,6 @@ const capture = ref({
 onMounted(async () => {
   const result = await axios.get('/captures/' + route.params.id)
   capture.value.date = result.data.date
-  capture.value.file = result.data.file
   capture.value.activity = result.data.activity
   capture.value.description = result.data.description
   capture.value.clusters = result.data.clusters

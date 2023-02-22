@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes as authRoutes } from '@/modules/auth/routes'
 import { routes as mainRoutes } from '@/modules/main/routes'
-import { routes as pagesRoutes } from '@/modules/pages/routes'
 import { routes as accountRoutes } from '@/modules/account/routes'
 import { routes as templateRoutes, pageRoutes } from '@/modules/template/routes'
 import { routes as masterRoutes } from '@/modules/master/routes'
@@ -17,7 +16,6 @@ const routes = [
   strengthMappingRoutes,
   reportRoutes,
   notificationRoutes,
-  pagesRoutes,
   templateRoutes,
   pageRoutes,
 ]

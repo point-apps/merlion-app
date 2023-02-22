@@ -13,9 +13,9 @@
     </div>
     <div class="card p-4 space-y-5">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
-        <label class="block space-y-1">
+        <label v-if="!form.file" class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
-          <div v-if="!form.file" class="flex items-center justify-center w-full">
+          <div class="flex items-center justify-center w-full">
             <label
               for="dropzone-file"
               class="dark:hover:bg-bray-800 flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
@@ -45,14 +45,10 @@
           </div>
         </label>
         <div
-          v-if="form.fileUrl"
-          class="my-2 relative min-h-[100px] max-h-[200px] lg:max-w-[200px] shadow dark:bg-slate-700 flex justify-center"
+          v-if="form.file"
+          class="m-2 relative min-h-[100px] max-h-[200px] lg:max-w-[200px] shadow dark:bg-slate-700 flex justify-center"
         >
-          <video v-if="form.fileMimeType.includes('video')" controls class="w-full">
-            <source :src="form.fileUrl" />
-            Your browser does not support HTML5 video.
-          </video>
-          <img v-else :src="form.fileUrl" alt="activity" class="max-h-[200px] lg:max-w-[200px] relative" />
+          <img :src="form.file" alt="activity" class="max-h-[200px] lg:max-w-[200px] relative" />
           <button
             type="button"
             class="btn py-1 px-2.5 bg-white border-white absolute shadow rounded-full top-2 right-2 opacity-50"
@@ -192,41 +188,19 @@
             </div>
           </div>
         </div>
-
         <div class="flex flex-row space-x-2">
           <button
-            :disabled="isSaving"
             type="submit"
-            :class="[{ 'bg-gray-500': isSaving }]"
-            class="btn btn-base rounded relative flex-1 text-slate-100 bg-blue-500 dark:bg-blue-700 hover:bg-blue-600"
+            class="btn btn-base rounded flex-1 text-slate-100 bg-blue-500 dark:bg-blue-700 hover:bg-blue-600"
           >
             Save
-            <div
-              v-if="isSaving && !isSavingDraftMode"
-              class="dark:text-slate-300 pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400"
-            >
-              <div
-                class="border-slate-150 dark:border-slate-500 dark:border-r-slate-300 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400"
-              ></div>
-            </div>
           </button>
-
           <button
-            :disabled="isSaving"
-            :class="[{ 'bg-gray-500': isSaving }]"
             type="button"
-            class="btn btn-base rounded flex-1 text-slate-100 bg-red-500 hover:bg-red-600"
+            class="btn btn-base rounded flex-1 text-slate-100 bg-slate-500 hover:bg-slate-600"
             @click="onSavingDraft()"
           >
             Save as a Draft
-            <div
-              v-if="isSaving && isSavingDraftMode"
-              class="dark:text-slate-300 pointer-events-none absolute right-5 flex h-full w-10 items-center justify-center text-slate-400"
-            >
-              <div
-                class="border-slate-150 dark:border-slate-500 dark:border-r-slate-300 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400"
-              ></div>
-            </div>
           </button>
         </div>
       </form>
@@ -261,9 +235,6 @@ interface CaptureClusterInterface {
 interface CaptureInterface {
   date: string
   file: string
-  fileUrl: string
-  fileMimeType: string
-  fileSize: number
   activity: string
   description: string
   observer: string
@@ -273,9 +244,6 @@ interface CaptureInterface {
 const form = ref<CaptureInterface>({
   date: format(new Date(), 'dd-MM-yyyy'),
   file: '',
-  fileUrl: '',
-  fileMimeType: '',
-  fileSize: 0,
   activity: '',
   description: '',
   observer: '',
@@ -285,18 +253,15 @@ const form = ref<CaptureInterface>({
 const isLoadingSearch = ref(false)
 
 const onFileChange = (e: any) => {
+  console.log(e)
+  console.log(e.target.files[0])
   const file = e.target.files[0]
-  form.value.file = file
-  form.value.fileUrl = URL.createObjectURL(file)
-  form.value.fileSize = file.size
-  form.value.fileMimeType = file.type
+  console.log(URL.createObjectURL(file))
+  form.value.file = URL.createObjectURL(file)
 }
 
 const onRemoveFile = () => {
   form.value.file = ''
-  form.value.fileUrl = ''
-  form.value.fileSize = 0
-  form.value.fileMimeType = ''
 }
 
 const onChooseCluster = (cluster: any, typology: string) => {
@@ -319,8 +284,6 @@ const onChooseCluster = (cluster: any, typology: string) => {
 }
 
 const isLoadingRoles = ref(false)
-const isSaving = ref(false)
-const isSavingDraftMode = ref(false)
 
 onMounted(async () => {
   isLoadingRoles.value = true
@@ -330,7 +293,6 @@ onMounted(async () => {
 
 const onSubmit = async () => {
   try {
-    isSaving.value = true
     const isIkigaiEmpty = form.value.clusters.some((el) => {
       return el.ikigai.length === 0
     })
@@ -351,20 +313,9 @@ const onSubmit = async () => {
       return
     }
 
-    const response = await axios.post('/captures', {
-      ...form.value,
-      date: date.toISOString(),
-    })
+    console.log(date)
 
-    const formData = new FormData()
-    formData.append('capture_id', response.data._id)
-    formData.append('files', form.value.file)
-    await axios.post('/captures/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-
+    const response = await axios.post('/captures', { ...form.value, date: date })
     if (response.status === 201) {
       notification('Create', 'Create success', 'success')
       router.push('/strength-mapping/capture/' + response.data._id)
@@ -377,8 +328,6 @@ const onSubmit = async () => {
     } else {
       notification('Unknown Error', '', 'warning')
     }
-  } finally {
-    isSaving.value = false
   }
 }
 
@@ -424,8 +373,6 @@ const isIkigaiChoosen = (cluster, ikigai) => {
 
 const onSavingDraft = async () => {
   form.value.isDraft = true
-  isSavingDraftMode.value = true
   await onSubmit()
-  isSavingDraftMode.value = false
 }
 </script>
