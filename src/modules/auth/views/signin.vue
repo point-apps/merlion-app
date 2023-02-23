@@ -70,7 +70,7 @@
               Sign in
             </button>
             <div class="inline-flex items-center justify-center w-full">
-              <hr class="w-64 h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
+              <hr class="w-64 h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
               <span
                 class="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-800"
               >
@@ -78,13 +78,8 @@
               </span>
             </div>
             <div class="gap-4 grid grid-cols-1 font-semibold text-gray-600">
-              <button
-                type="button"
-                class="flex justify-center items-center border rounded py-2 px-3 space-x-2 border-gray-500"
-                @click="onGoogleSignin()"
-              >
-                <fa-icon icon="fa-brands fa-google w-4 h-4"></fa-icon>
-                <span>Signin with Google</span>
+              <button type="button" class="flex justify-center items-center rounded" @click="onGoogleSignin()">
+                <img src="@/assets/images/google/btn_google_signin_light_normal_web@2x.png" alt="" class="h-12" />
               </button>
             </div>
           </div>
