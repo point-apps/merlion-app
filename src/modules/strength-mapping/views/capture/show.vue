@@ -11,6 +11,7 @@
         ]"
       />
     </div>
+    {{ capture }}
     <div class="card p-4 space-y-5">
       <div class="flex justify-end">
         <div class="space-x-3">
@@ -156,7 +157,9 @@ const capture = ref({
 onMounted(async () => {
   const result = await axios.get('/captures/' + route.params.id)
   capture.value.date = result.data.date
-  capture.value.file = result.data.file
+  if (result.data.file) {
+    capture.value.file = result.data.file
+  }
   capture.value.activity = result.data.activity
   capture.value.description = result.data.description
   capture.value.clusters = result.data.clusters
