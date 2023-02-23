@@ -1,12 +1,9 @@
 <template>
-  <div class="mx-auto max-w-4xl space-y-4 py-8 px-4">
-    <a href="/signin" class="flex items-center mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-      <img class="h-8" src="https://assets.pointhub.net/assets/images/logo/primary/logo.png" alt="logo" />
-    </a>
+  <div class="mx-auto max-w-7xl space-y-4 py-8 px-4">
     <div class="text-center">
-      <h2 class="font-bold">Privacy Policy</h2>
+      <h2 class="font-bold text-2xl">Privacy Policy</h2>
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card p-10 space-y-5">
       <div>
         <h3 class="font-semibold">1. Introduction</h3>
         <p>
@@ -135,7 +132,9 @@
               <p>
                 If You decide to register through or otherwise grant us access to a Third-Party Social Media Service, We
                 may collect Personal data that is already associated with Your Third-Party Social Media Service's
-                account, such as Your name, Your email address.
+                account such as Your name, Your email address for help you Login faster in Our app. And We use your
+                Google Drive account to store Your uploaded photo, so You will responsible with Your photos because We
+                don't store in our storage
               </p>
             </div>
           </div>
