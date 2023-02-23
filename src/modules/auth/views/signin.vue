@@ -92,9 +92,9 @@
       </div>
     </form>
     <div class="flex space-x-3 p-4 text-gray-600">
-      <router-link to="/terms">Terms</router-link>
+      <a href="//pointhub.app/terms">Terms</a>
       <span>|</span>
-      <router-link to="/privacy">Privacy</router-link>
+      <a href="//pointhub.app/privacy">Privacy</a>
     </div>
   </div>
 </template>
