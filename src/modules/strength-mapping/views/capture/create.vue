@@ -356,14 +356,16 @@ const onSubmit = async () => {
       date: date.toISOString(),
     })
 
-    const formData = new FormData()
-    formData.append('capture_id', response.data._id)
-    formData.append('files', form.value.file)
-    await axios.post('/captures/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
+    if (form.value.file) {
+      const formData = new FormData()
+      formData.append('capture_id', response.data._id)
+      formData.append('files', form.value.file)
+      await axios.post('/captures/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    }
 
     if (response.status === 201) {
       notification('Create', 'Create success', 'success')
