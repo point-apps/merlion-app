@@ -79,7 +79,30 @@
             </div>
             <div class="gap-4 grid grid-cols-1 font-semibold text-gray-600">
               <button type="button" class="flex justify-center items-center rounded" @click="onGoogleSignin()">
-                <img src="@/assets/images/google/btn_google_signin_light_normal_web@2x.png" alt="" class="h-12" />
+                <img
+                  v-if="isGoogleSigninPressed"
+                  src="@/assets/images/google/btn_google_signin_light_pressed_web@2x.png"
+                  alt=""
+                  class="h-12 dark:hidden"
+                />
+                <img
+                  v-else
+                  src="@/assets/images/google/btn_google_signin_light_normal_web@2x.png"
+                  alt=""
+                  class="h-12 dark:hidden"
+                />
+                <img
+                  v-if="isGoogleSigninPressed"
+                  src="@/assets/images/google/btn_google_signin_dark_pressed_web@2x.png"
+                  alt=""
+                  class="h-12 hidden dark:block"
+                />
+                <img
+                  v-else
+                  src="@/assets/images/google/btn_google_signin_dark_normal_web@2x.png"
+                  alt=""
+                  class="h-12 hidden dark:block"
+                />
               </button>
             </div>
           </div>
@@ -121,8 +144,10 @@ onMounted(() => {
   }
 })
 
+const isGoogleSigninPressed = ref(false)
 const onGoogleSignin = async () => {
   try {
+    isGoogleSigninPressed.value = true
     const response = await axios.get(
       `${baseURL}/auth/google-drive/get-auth-url?callback=//${window.location.hostname}${
         window.location.port ? ':' : ''
@@ -133,6 +158,8 @@ const onGoogleSignin = async () => {
     }
   } catch (error) {
     console.log(error)
+  } finally {
+    isGoogleSigninPressed.value = false
   }
 }
 
