@@ -312,7 +312,9 @@ const getCapture = async () => {
   form.value.description = result.data.description
   form.value.clusters = result.data.clusters
   form.value.observer = result.data.observer
-  capture.value.file = result.data.file
+  if (result.data.file) {
+    capture.value.file = result.data.file
+  }
 }
 const getClusters = async (search = '') => {
   const result = await axios.get('/clusters', {
