@@ -9,7 +9,7 @@
           <a href="https://www.youtube.com/c/MerlionSchool" target="_blank">Click here for the guidance</a>
         </div>
         <div class="flex flex-col lg:flex-row lg:space-y-0 lg:space-x-3 space-y-3 w-full">
-          <router-link to="#" class="btn btn-base btn-red w-full text-lg"> Subject Monitoring </router-link>
+          <a href="#" class="btn btn-base btn-red w-full text-lg" @click="comingSoon()"> Subject Monitoring</a>
           <router-link to="/strength-mapping/capture" class="btn btn-base btn-blue w-full text-lg">
             Capture
           </router-link>
@@ -24,4 +24,8 @@ import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
 const name = authStore.$state.user.name
+
+const comingSoon = () => {
+  alert('coming soon')
+}
 </script>
