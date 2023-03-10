@@ -13,7 +13,7 @@
     </div>
     <div class="card p-4 space-y-5">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
-        <label class="block space-y-1">
+        <label v-if="authStore.$state.user.googleDriveId" class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
           <div v-if="!form.file" class="flex items-center justify-center w-full">
             <label
@@ -245,6 +245,10 @@ import { format } from 'date-fns'
 import { useBaseNotification } from '@/composable/notification'
 import { AxiosError } from 'axios'
 import { useDateHelper } from '@/composable/date-helper'
+import { baseURL } from '@/config/api'
+import { useAuthStore } from '@/stores/auth'
+
+const authStore = useAuthStore()
 
 const { notification } = useBaseNotification()
 const { convertToDateFormat } = useDateHelper()
@@ -429,5 +433,24 @@ const onSavingDraft = async () => {
   isSavingDraftMode.value = true
   await onSubmit()
   isSavingDraftMode.value = false
+}
+
+const isGoogleSigninPressed = ref(false)
+const onGoogleSignin = async () => {
+  try {
+    isGoogleSigninPressed.value = true
+    const response = await axios.get(
+      `${baseURL}/auth/google-drive/get-auth-url?callback=//${window.location.hostname}${
+        window.location.port ? ':' : ''
+      }${window.location.port}/auth/google-callback`
+    )
+    if (response.status === 200) {
+      window.open(response.data, '_self')
+    }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    isGoogleSigninPressed.value = false
+  }
 }
 </script>

@@ -9,6 +9,7 @@ export const useAuthStore = defineStore('auth', {
       name: '',
       email: '',
       role: '',
+      googleDriveId: '',
     },
   }),
   actions: {
@@ -22,6 +23,7 @@ export const useAuthStore = defineStore('auth', {
         this.$state.user.name = response.data.name
         this.$state.user.email = response.data.email
         this.$state.user.role = response.data.role
+        this.$state.user.googleDriveId = response.data.googleDriveId
         cookie.set('accessToken', response.data.accessToken)
         cookie.set('refreshToken', response.data.refreshToken)
         axios.defaults.headers.common['Authorization'] = `Bearer ${cookie.get('accessToken')}`
@@ -53,6 +55,7 @@ export const useAuthStore = defineStore('auth', {
         this.$state.user.name = response.data.name
         this.$state.user.email = response.data.email
         this.$state.user.role = response.data.role
+        this.$state.user.googleDriveId = response.data.googleDriveId
         cookie.set('accessToken', response.data.accessToken)
         cookie.set('refreshToken', response.data.refreshToken)
         axios.defaults.headers.common['Authorization'] = `Bearer ${cookie.get('accessToken')}`
@@ -67,6 +70,7 @@ export const useAuthStore = defineStore('auth', {
           this.$state.user.name = response.data.name
           this.$state.user.email = response.data.email
           this.$state.user.role = response.data.role
+          this.$state.user.googleDriveId = response.data.googleDriveId
         }
       } catch (error) {
         this.logout()
@@ -76,6 +80,7 @@ export const useAuthStore = defineStore('auth', {
       this.$state.user.name = ''
       this.$state.user.email = ''
       this.$state.user.role = ''
+      this.$state.user.googleDriveId = ''
       cookie.remove('accessToken')
     },
     async isAuthenticated() {
