@@ -13,7 +13,37 @@
     </div>
     <div class="card space-y-5 p-4">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
-        <label v-if="authStore.$state.user.googleDriveId" class="block space-y-1">
+        <div v-if="!isGrantedUploadGoogleDrive()" class="grid grid-cols-1 gap-4 font-semibold text-gray-600">
+          <span class="font-semibold">Activity photos or videos</span>
+          <p class="-mt-3 font-light">Please Sign in with Google below to grant access your Google Drive account</p>
+          <button type="button" class="flex rounded" @click="onGoogleSignin()">
+            <img
+              v-if="isGoogleSigninPressed"
+              src="@/assets/images/google/btn_google_signin_light_pressed_web@2x.png"
+              alt=""
+              class="h-12 dark:hidden"
+            />
+            <img
+              v-else
+              src="@/assets/images/google/btn_google_signin_light_normal_web@2x.png"
+              alt=""
+              class="h-12 dark:hidden"
+            />
+            <img
+              v-if="isGoogleSigninPressed"
+              src="@/assets/images/google/btn_google_signin_dark_pressed_web@2x.png"
+              alt=""
+              class="hidden h-12 dark:block"
+            />
+            <img
+              v-else
+              src="@/assets/images/google/btn_google_signin_dark_normal_web@2x.png"
+              alt=""
+              class="hidden h-12 dark:block"
+            />
+          </button>
+        </div>
+        <label v-if="isGrantedUploadGoogleDrive()" class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
           <div v-if="!form.file" class="flex w-full items-center justify-center">
             <label
@@ -249,6 +279,11 @@ import { baseURL } from '@/config/api'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
+
+const isGrantedUploadGoogleDrive = () => {
+  const googleScopes = authStore.$state.user.googleScopes
+  return googleScopes?.includes('https://www.googleapis.com/auth/drive.file')
+}
 
 const { notification } = useBaseNotification()
 const { convertToDateFormat } = useDateHelper()
