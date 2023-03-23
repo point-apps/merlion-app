@@ -4,7 +4,7 @@
       <h2>Account</h2>
       <component :is="Breadcrumb" :breadcrumbs="[{ name: 'account', path: '/account' }, { name: 'profile' }]" />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="flex flex-col space-y-3">
         <label class="block space-y-1">
           <span>Name</span>
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <button class="btn btn-base py-2 bg-red-600 text-white" @click="onSignout()">Sign Out</button>
+    <button class="btn btn-base bg-red-600 py-2 text-white" @click="onSignout()">Sign Out</button>
   </div>
 </template>
 

@@ -11,7 +11,7 @@
         ]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="grid grid-cols-2">
         <router-link
           to="/strength-mapping/report/spider-chart"
@@ -22,15 +22,15 @@
         <router-link to="/strength-mapping/report/ikigai" class="btn btn-base btn-blue">Ikigai</router-link>
       </div>
       <p class="">
-        The typologies found to be your <span class="capitalize font-semibold">{{ $route.params.id }}</span> is:
+        The typologies found to be your <span class="font-semibold capitalize">{{ $route.params.id }}</span> is:
       </p>
-      <div class="bg-gray-100 dark:bg-slate-800 p-4 rounded">
+      <div class="rounded bg-gray-100 p-4 dark:bg-slate-800">
         <ul v-if="captures.length" class="mb-20">
           <li v-for="capture in captures" :key="capture._id" class="capitalize">- {{ capture._id }}</li>
         </ul>
         <div v-else class="mb-20 font-light">Not found</div>
-        <hr class="py-1 my-3" />
-        <p class="italic font-light">BE FAITHFUL IN SMALL THINGS BECAUSE IT IS IN THEM THAT YOUR STRENGTH LIES.</p>
+        <hr class="my-3 py-1" />
+        <p class="font-light italic">BE FAITHFUL IN SMALL THINGS BECAUSE IT IS IN THEM THAT YOUR STRENGTH LIES.</p>
         <p class="font-semibold">- Mother Theresa -</p>
       </div>
     </div>

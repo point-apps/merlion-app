@@ -63,7 +63,7 @@
                   <fa-icon
                     v-if="menu.submenu"
                     icon="fa-solid fa-angle-right "
-                    :class="{ 'rotate-90 transition transform-gpu ': menu.active }"
+                    :class="{ 'rotate-90 transform-gpu transition ': menu.active }"
                   />
                 </button>
                 <!-- Internal Menu -->
@@ -90,9 +90,9 @@
                 </a>
                 <div v-if="menu.submenu && menu.submenu.length > 0">
                   <ul
-                    class="transition-all transform-gpu"
+                    class="transform-gpu transition-all"
                     :class="{
-                      'max-h-[1000px] overflow-auto bg-slate-700 p-1 rounded-lg': menu.active,
+                      'max-h-[1000px] overflow-auto rounded-lg bg-slate-700 p-1': menu.active,
                       'max-h-0 overflow-hidden': !menu.active,
                     }"
                   >

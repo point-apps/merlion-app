@@ -11,7 +11,7 @@
         ]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="flex flex-col space-y-3">
         <div class="flex justify-end">
           <div class="space-x-3">

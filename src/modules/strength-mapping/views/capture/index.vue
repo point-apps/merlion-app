@@ -7,7 +7,7 @@
         :breadcrumbs="[{ name: 'strength mapping', path: '/strength-mapping' }, { name: 'capture' }]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div>
         <div class="space-y-1">
           <label class="input-group relative">
@@ -17,10 +17,10 @@
             <input v-model="searchText" class="form-input rounded-r-lg" placeholder="Search" type="text" />
             <div
               v-if="isLoadingSearch"
-              class="dark:text-slate-300 pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400"
+              class="pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
             >
               <div
-                class="border-slate-150 dark:border-slate-500 dark:border-r-slate-300 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400"
+                class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
               ></div>
             </div>
           </label>
@@ -54,17 +54,17 @@
               <td class="basic-table-body">
                 <div
                   v-if="!capture.isDraft"
-                  class="bg-green-500 font-bold py-1 px-3 rounded text-green-100 text-center"
+                  class="rounded bg-green-500 py-1 px-3 text-center font-bold text-green-100"
                 >
                   Captured
                 </div>
-                <div v-else class="bg-slate-500 py-1 px-3 rounded font-bold text-slate-100 text-center">Draft</div>
+                <div v-else class="rounded bg-slate-500 py-1 px-3 text-center font-bold text-slate-100">Draft</div>
               </td>
             </tr>
           </tbody>
         </table>
 
-        <div v-if="pagination.pageCount > 1" class="flex flex-wrap gap-2 items-center justify-center mt-10">
+        <div v-if="pagination.pageCount > 1" class="mt-10 flex flex-wrap items-center justify-center gap-2">
           <button
             v-for="i in pagination.pageCount"
             :key="i"

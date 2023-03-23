@@ -4,7 +4,7 @@
       <h2>Accordion</h2>
       <component :is="Breadcrumb" :breadcrumbs="[{ name: 'template' }, { name: 'element' }, { name: 'typography' }]" />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <h3>Breadcrumb</h3>
       <p>
         Breadcrumb consist of a list of links that help a user visualize a page's location within the hierarchical

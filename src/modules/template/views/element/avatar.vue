@@ -4,7 +4,7 @@
       <h2>Avatar</h2>
       <component :is="Breadcrumb" :breadcrumbs="[{ name: 'Template' }, { name: 'Element' }, { name: 'Avatar' }]" />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="flex justify-between">
         <h3>Avatar</h3>
         <component :is="Switch" v-model="avatarCodeToggle" label="code" />
@@ -21,17 +21,17 @@
         </div>
       </div>
       <div
-        class="card bg-slate-800 dark:bg-slate-700 px-2 text-white transition-all transform-gpu"
+        class="card transform-gpu bg-slate-800 px-2 text-white transition-all dark:bg-slate-700"
         :class="{
           'max-h-[1000px] overflow-auto py-2': avatarCodeToggle,
           'max-h-0 overflow-hidden': !avatarCodeToggle,
         }"
       >
-        <div class="text-sm p-1">html</div>
+        <div class="p-1 text-sm">html</div>
         <highlightjs autodetect :code="avatarCode" />
       </div>
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="flex justify-between">
         <h3>Avatar</h3>
         <component :is="Switch" v-model="avatarInitialCodeToggle" label="code" />
@@ -54,13 +54,13 @@
         </div>
       </div>
       <div
-        class="card bg-slate-800 dark:bg-slate-700 px-2 text-white transition-all transform-gpu"
+        class="card transform-gpu bg-slate-800 px-2 text-white transition-all dark:bg-slate-700"
         :class="{
           'max-h-[1000px] overflow-auto py-2': avatarInitialCodeToggle,
           'max-h-0 overflow-hidden': !avatarInitialCodeToggle,
         }"
       >
-        <div class="text-sm p-1">html</div>
+        <div class="p-1 text-sm">html</div>
         <highlightjs autodetect :code="avatarInitialCode" />
       </div>
     </div>

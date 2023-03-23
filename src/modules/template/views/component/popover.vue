@@ -4,7 +4,7 @@
       <h2>Popover</h2>
       <component :is="Breadcrumb" :breadcrumbs="[{ name: 'template' }, { name: 'component' }, { name: 'popover' }]" />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <h3>Popover</h3>
       <p>
         Breadcrumb consist of a list of links that help a user visualize a page's location within the hierarchical
@@ -12,16 +12,16 @@
       </p>
       <div>
         <popper>
-          <button class="btn px-5 py-2 bg-blue-500">Trigger element</button>
+          <button class="btn bg-blue-500 px-5 py-2">Trigger element</button>
           <template #content>
             <div class="popper-root">
               <div
-                class="popper-box border-slate-150 shadow-soft dark:shadow-soft-dark dark:border-slate-800 dark:bg-slate-700 mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col rounded-lg border bg-white sm:m-0 sm:w-80"
+                class="popper-box border-slate-150 shadow-soft dark:shadow-soft-dark mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col rounded-lg border bg-white dark:border-slate-800 dark:bg-slate-700 sm:m-0 sm:w-80"
               >
-                <div class="dark:bg-slate-800 dark:text-slate-200 rounded-t-lg bg-slate-100 text-slate-600">
+                <div class="rounded-t-lg bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-200">
                   <div class="flex items-center justify-between px-4 pt-2">
                     <div class="flex items-center space-x-2">
-                      <h3 class="dark:text-slate-100 font-medium text-slate-700">Notifications</h3>
+                      <h3 class="font-medium text-slate-700 dark:text-slate-100">Notifications</h3>
                       <div
                         class="badge bg-primary/10 text-primary dark:bg-accent-light/15 dark:text-accent-light h-5 rounded-full px-1.5"
                       >
@@ -30,7 +30,7 @@
                     </div>
 
                     <button
-                      class="btn dark:hover:bg-slate-300/20 dark:focus:bg-slate-300/20 dark:active:bg-slate-300/25 -mr-1.5 h-7 w-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25"
+                      class="btn -mr-1.5 h-7 w-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-slate-300/20 dark:focus:bg-slate-300/20 dark:active:bg-slate-300/25"
                     >
                       <fa-icon icon="fa-regular fa-maximize"></fa-icon>
                     </button>
@@ -71,8 +71,8 @@
                         <i class="fa fa-user-edit text-secondary dark:text-secondary-light"></i>
                       </div>
                       <div>
-                        <p class="dark:text-slate-100 font-medium text-slate-600">User Photo Changed</p>
-                        <div class="line-clamp-1 dark:text-slate-300 mt-1 text-xs text-slate-400">
+                        <p class="font-medium text-slate-600 dark:text-slate-100">User Photo Changed</p>
+                        <div class="mt-1 text-xs text-slate-400 line-clamp-1 dark:text-slate-300">
                           John Doe changed his avatar photo
                         </div>
                       </div>
@@ -84,10 +84,10 @@
                         <fa-icon icon="fa-solid fa-pencil"></fa-icon>
                       </div>
                       <div>
-                        <p class="dark:text-slate-100 font-medium text-slate-600">
+                        <p class="font-medium text-slate-600 dark:text-slate-100">
                           01 January 2022 <span class="text-xs font-light">08:00</span>
                         </p>
-                        <div class="dark:text-slate-300 mt-1 flex text-xs text-slate-400">
+                        <div class="mt-1 flex text-xs text-slate-400 dark:text-slate-300">
                           <span class="line-clamp-1">Create new invoice</span>
                         </div>
                       </div>
@@ -97,8 +97,8 @@
                     <div class="mt-8 pb-8 text-center">
                       <img class="mx-auto w-36" src="@/assets/images/no-data.svg" alt="image" />
                       <div class="mt-5">
-                        <p class="dark:text-slate-100 text-base font-semibold text-slate-700">Empty logs</p>
-                        <p class="dark:text-slate-300 text-slate-400">There are no unread logs</p>
+                        <p class="text-base font-semibold text-slate-700 dark:text-slate-100">Empty logs</p>
+                        <p class="text-slate-400 dark:text-slate-300">There are no unread logs</p>
                       </div>
                     </div>
                   </div>

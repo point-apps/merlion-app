@@ -11,7 +11,7 @@
         ]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="flex justify-end">
         <div class="space-x-3">
           <router-link
@@ -29,13 +29,13 @@
           <div v-if="!capture.file.url" class="font-light italic">Not captured any photo or video</div>
           <div
             v-else
-            class="my-2 relative min-h-[100px] max-h-[200px] lg:max-w-[200px] shadow dark:bg-slate-700 flex justify-center"
+            class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
           >
             <video v-if="capture.file.mimeType.includes('video')" controls class="w-full">
               <source :src="capture.file.url" />
               Your browser does not support HTML5 video.
             </video>
-            <img v-else :src="capture.file.url" alt="activity" class="max-h-[200px] lg:max-w-[200px] relative" />
+            <img v-else :src="capture.file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
           </div>
         </label>
         <label class="block space-y-1">
@@ -51,7 +51,7 @@
           <component
             :is="BaseTextarea"
             v-model="capture.description"
-            class="-mx-2 outline-none border-none"
+            class="-mx-2 border-none outline-none"
             readonly
           ></component>
         </label>
@@ -62,23 +62,23 @@
           <div
             v-for="cluster in capture.clusters"
             :key="cluster._id"
-            class="shadow p-4 bg-green-500 dark:bg-slate-800 space-y-4"
+            class="space-y-4 bg-green-500 p-4 shadow dark:bg-slate-800"
           >
             <div>
               <p class="space-x-1">
-                <span class="text-lg capitalize font-semibold">{{ cluster.name }} </span>
-                <span class="text-sm capitalize font-light">[{{ cluster.typology }}]</span>
+                <span class="text-lg font-semibold capitalize">{{ cluster.name }} </span>
+                <span class="text-sm font-light capitalize">[{{ cluster.typology }}]</span>
               </p>
               <p>Ikigai that suits you</p>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
               <button
                 type="button"
                 :class="{
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'easy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
                 }"
-                class="shadow py-2 px-3"
+                class="py-2 px-3 shadow"
               >
                 Easy
               </button>
@@ -88,7 +88,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'enjoy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
                 }"
-                class="shadow py-2 px-3"
+                class="py-2 px-3 shadow"
               >
                 Enjoy
               </button>
@@ -98,7 +98,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'excellent'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
                 }"
-                class="shadow py-2 px-3"
+                class="py-2 px-3 shadow"
               >
                 Excellent
               </button>
@@ -108,7 +108,7 @@
                   'bg-green-400 dark:bg-slate-700': isIkigaiChoosen(cluster, 'earn'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
                 }"
-                class="shadow py-2 px-3"
+                class="py-2 px-3 shadow"
               >
                 Earn
               </button>

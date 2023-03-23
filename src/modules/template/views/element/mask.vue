@@ -4,7 +4,7 @@
       <h2>Mask</h2>
       <component :is="Breadcrumb" :breadcrumbs="[{ name: 'Template' }, { name: 'Element' }, { name: 'Mask' }]" />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="flex justify-between">
         <h3>Mask</h3>
         <component :is="Switch" v-model="maskCodeToggle" label="code" />
@@ -40,13 +40,13 @@
         </div>
       </div>
       <div
-        class="card bg-slate-800 dark:bg-slate-700 px-2 text-white transition-all transform-gpu"
+        class="card transform-gpu bg-slate-800 px-2 text-white transition-all dark:bg-slate-700"
         :class="{
           'max-h-[1000px] overflow-auto py-2': maskCodeToggle,
           'max-h-0 overflow-hidden': !maskCodeToggle,
         }"
       >
-        <div class="text-sm p-1">html</div>
+        <div class="p-1 text-sm">html</div>
         <highlightjs autodetect :code="maskCode" />
       </div>
     </div>

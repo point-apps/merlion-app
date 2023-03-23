@@ -12,14 +12,14 @@
         ]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
         <label class="block space-y-1">
           <span class="font-semibold">Schedule notification date</span>
           <div class="flex space-x-4">
             <div>
               <component :is="Datepicker" v-model.lazy="form.date" />
-              <p v-for="(error, index) in errors?.date" :key="index" class="text-red-500 mt-1 text-xs">
+              <p v-for="(error, index) in errors?.date" :key="index" class="mt-1 text-xs text-red-500">
                 {{ error }}
               </p>
             </div>
@@ -31,7 +31,7 @@
                 class="form-input"
                 placeholder="00:00"
               />
-              <p v-for="(error, index) in errors?.time" :key="index" class="text-red-500 mt-1 text-xs">
+              <p v-for="(error, index) in errors?.time" :key="index" class="mt-1 text-xs text-red-500">
                 {{ error }}
               </p>
             </div>
@@ -50,26 +50,26 @@
               {{ institution.name }}
             </option>
           </select>
-          <p v-for="(error, index) in errors?.institution_id" :key="index" class="text-red-500 mt-1 text-xs">
+          <p v-for="(error, index) in errors?.institution_id" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
           </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Subject</span>
           <input v-model="form.subject" class="form-input" type="text" />
-          <p v-for="(error, index) in errors?.subject" :key="index" class="text-red-500 mt-1 text-xs">
+          <p v-for="(error, index) in errors?.subject" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
           </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Message</span>
           <component :is="BaseTextarea" v-model="form.message"></component>
-          <p v-for="(error, index) in errors?.message" :key="index" class="text-red-500 mt-1 text-xs">
+          <p v-for="(error, index) in errors?.message" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
           </p>
         </label>
         <div class="flex flex-row space-x-2">
-          <button type="submit" class="btn btn-base rounded flex-1 text-slate-100 bg-blue-500 hover:bg-blue-600">
+          <button type="submit" class="btn btn-base flex-1 rounded bg-blue-500 text-slate-100 hover:bg-blue-600">
             Send
           </button>
         </div>

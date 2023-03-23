@@ -7,7 +7,7 @@
         :breadcrumbs="[{ name: 'strength mapping', path: '/strength-mapping' }, { name: 'report' }]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="grid grid-cols-2">
         <router-link
           to="/strength-mapping/report/spider-chart"
@@ -18,7 +18,7 @@
         <router-link to="/strength-mapping/report/ikigai" class="btn btn-base btn-blue">Ikigai</router-link>
       </div>
 
-      <div class="p-4 bg-green-200 dark:text-gray-800 rounded flex space-x-2 items-center">
+      <div class="flex items-center space-x-2 rounded bg-green-200 p-4 dark:text-gray-800">
         <fa-icon icon="fa-solid fa-info-circle w-5 h-5"></fa-icon>
         <p>Please click the section on the chart to find out more information.</p>
       </div>

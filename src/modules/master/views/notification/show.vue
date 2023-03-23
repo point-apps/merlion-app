@@ -11,7 +11,7 @@
         ]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="flex flex-col space-y-3">
         <div class="flex justify-end">
           <div class="space-x-3">
@@ -29,12 +29,12 @@
           <span class="font-bold">Subject</span>
           <p>{{ notification.subject }}</p>
         </label>
-        <label class="space-y-1 flex flex-col">
+        <label class="flex flex-col space-y-1">
           <span class="font-bold">Message</span>
           <component
             :is="BaseTextarea"
             v-model="notification.message"
-            class="-mx-2 outline-none border-none"
+            class="-mx-2 border-none outline-none"
             readonly
           ></component>
         </label>

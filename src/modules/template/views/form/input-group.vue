@@ -4,7 +4,7 @@
       <h2>Input Group</h2>
       <component :is="Breadcrumb" :breadcrumbs="[{ name: 'template' }, { name: 'form' }, { name: 'input-group' }]" />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="flex justify-between">
         <h5 class="font-semibold">Input Addon</h5>
         <component :is="Switch" v-model="inputGroupCodeToggle" label="code" />
@@ -44,17 +44,17 @@
         </label>
       </div>
       <div
-        class="card bg-slate-800 dark:bg-slate-700 px-2 text-white transition-all transform-gpu"
+        class="card transform-gpu bg-slate-800 px-2 text-white transition-all dark:bg-slate-700"
         :class="{
           'max-h-[10000px] overflow-auto py-2': inputGroupCodeToggle,
           'max-h-0 overflow-hidden': !inputGroupCodeToggle,
         }"
       >
-        <div class="text-sm p-1">html</div>
+        <div class="p-1 text-sm">html</div>
         <highlightjs autodetect :code="inputGroupCode" />
       </div>
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="flex justify-between">
         <h5 class="font-semibold">Input Addon</h5>
         <component :is="Switch" v-model="inputGroupCodeToggle" label="code" />
@@ -66,57 +66,57 @@
       <div class="space-y-4">
         <label class="relative flex">
           <input
-            class="form-input peer focus:border-primary dark:focus:border-accent dark:border-slate-500 dark:hover:border-slate-400 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400"
+            class="form-input focus:border-primary dark:focus:border-accent peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pl-9 placeholder:text-slate-400/70 hover:border-slate-400 dark:border-slate-500 dark:hover:border-slate-400"
             placeholder="Search here..."
             type="text"
           />
           <div
-            class="peer-focus:text-primary dark:peer-focus:text-accent dark:text-slate-300 pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400"
+            class="peer-focus:text-primary dark:peer-focus:text-accent pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
           >
             <fa-icon icon="fa-regular fa-search"></fa-icon>
           </div>
         </label>
         <label class="relative flex">
           <input
-            class="form-input peer focus:border-primary dark:focus:border-accent dark:border-slate-500 dark:hover:border-slate-400 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pr-9 placeholder:text-slate-400/70 hover:border-slate-400"
+            class="form-input focus:border-primary dark:focus:border-accent peer w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 pr-9 placeholder:text-slate-400/70 hover:border-slate-400 dark:border-slate-500 dark:hover:border-slate-400"
             placeholder="Password"
             type="text"
           />
           <div
-            class="peer-focus:text-primary dark:peer-focus:text-accent dark:text-slate-300 pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400"
+            class="peer-focus:text-primary dark:peer-focus:text-accent pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
           >
             <fa-icon icon="fa-regular fa-eye"></fa-icon>
           </div>
         </label>
         <label class="relative flex">
           <input
-            class="form-input peer focus:border-primary dark:focus:border-accent dark:border-slate-500 dark:hover:border-slate-400 w-full rounded-lg border border-slate-300 bg-transparent px-9 py-2 placeholder:text-slate-400/70 hover:border-slate-400"
+            class="form-input focus:border-primary dark:focus:border-accent peer w-full rounded-lg border border-slate-300 bg-transparent px-9 py-2 placeholder:text-slate-400/70 hover:border-slate-400 dark:border-slate-500 dark:hover:border-slate-400"
             placeholder="Search here..."
             type="text"
           />
           <div
-            class="peer-focus:text-primary dark:peer-focus:text-accent dark:text-slate-300 pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400"
+            class="peer-focus:text-primary dark:peer-focus:text-accent pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
           >
             <fa-icon icon="fa-regular fa-search"></fa-icon>
           </div>
           <div
-            class="peer-focus:text-primary dark:peer-focus:text-accent dark:text-slate-300 pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400"
+            class="peer-focus:text-primary dark:peer-focus:text-accent pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
           >
             <div
-              class="border-slate-150 dark:border-slate-500 dark:border-r-slate-300 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400"
+              class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
             ></div>
           </div>
         </label>
       </div>
 
       <div
-        class="card bg-slate-800 dark:bg-slate-700 px-2 text-white transition-all transform-gpu"
+        class="card transform-gpu bg-slate-800 px-2 text-white transition-all dark:bg-slate-700"
         :class="{
           'max-h-[100000px] overflow-auto py-2': inputGroupCodeToggle,
           'max-h-0 overflow-hidden': !inputGroupCodeToggle,
         }"
       >
-        <div class="text-sm p-1">html</div>
+        <div class="p-1 text-sm">html</div>
         <highlightjs autodetect :code="inputGroupCode" />
       </div>
     </div>

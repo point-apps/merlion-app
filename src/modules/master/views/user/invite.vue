@@ -7,20 +7,20 @@
         :breadcrumbs="[{ name: 'master', path: '/master' }, { name: 'user', path: '/master/user' }, { name: 'invite' }]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
         <h4 class="font-bold">Invite User</h4>
         <label class="block space-y-1">
           <span class="font-semibold">Name</span>
           <input v-model="form.name" class="form-input" type="text" />
-          <p v-for="(error, index) in errors?.name" :key="index" class="text-red-500 mt-1 text-xs">
+          <p v-for="(error, index) in errors?.name" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
           </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Email</span>
           <input v-model="form.email" class="form-input" type="email" />
-          <p v-for="(error, index) in errors?.email" :key="index" class="text-red-500 mt-1 text-xs">
+          <p v-for="(error, index) in errors?.email" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
           </p>
         </label>
@@ -30,12 +30,12 @@
             <option value="user">User</option>
             <option value="admin">Admin</option>
           </select>
-          <p v-for="(error, index) in errors?.role" :key="index" class="text-red-500 mt-1 text-xs">
+          <p v-for="(error, index) in errors?.role" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
           </p>
         </label>
         <div>
-          <button type="submit" class="btn btn-base rounded text-slate-100 bg-blue-500 hover:bg-blue-600">Save</button>
+          <button type="submit" class="btn btn-base rounded bg-blue-500 text-slate-100 hover:bg-blue-600">Save</button>
         </div>
       </form>
     </div>

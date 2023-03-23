@@ -5,7 +5,7 @@
       <component :is="Breadcrumb" :breadcrumbs="[{ name: 'template' }, { name: 'element' }, { name: 'typography' }]" />
     </div>
     <div class="grid grid-cols-2 gap-5">
-      <div class="card p-4 space-y-5">
+      <div class="card space-y-5 p-4">
         <h2>Basic Heading</h2>
         <p>HTML headings are titles or subtitles that you want to display on a webpage.</p>
         <div class="space-y-3">
@@ -17,7 +17,7 @@
           <h6>Heading 6</h6>
         </div>
       </div>
-      <div class="card p-4 space-y-5">
+      <div class="card space-y-5 p-4">
         <h2>Light Heading</h2>
         <p>HTML headings are available with light variant.</p>
         <div class="space-y-3">
@@ -29,7 +29,7 @@
           <h6 class="font-light">Heading 6</h6>
         </div>
       </div>
-      <div class="card p-4 space-y-5">
+      <div class="card space-y-5 p-4">
         <h2>Bold Heading</h2>
         <p>HTML headings are available with light variant.</p>
         <div class="space-y-3">

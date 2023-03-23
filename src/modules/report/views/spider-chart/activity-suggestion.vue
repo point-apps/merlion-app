@@ -12,7 +12,7 @@
         ]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="grid grid-cols-2">
         <router-link class="btn btn-base btn-blue" to="/strength-mapping/report/spider-chart">
           Spider Chart
@@ -25,13 +25,13 @@
         </router-link>
       </div>
       <h2>Servicing</h2>
-      <div class="bg-gray-100 p-4 rounded space-y-4">
-        <component :is="BaseTextarea" v-model="suggestion" readonly class="outline-none border-none"></component>
+      <div class="space-y-4 rounded bg-gray-100 p-4">
+        <component :is="BaseTextarea" v-model="suggestion" readonly class="border-none outline-none"></component>
       </div>
       <a
         href="https://www.youtube.com/c/MerlionSchool"
         target="_blank"
-        class="text-blue-500 px-4 underline"
+        class="px-4 text-blue-500 underline"
         to="/strength-mapping/report/spider-chart/activity-suggestion"
       >
         Click here for more information and recommendations

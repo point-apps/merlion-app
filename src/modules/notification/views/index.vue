@@ -1,22 +1,22 @@
 <template>
-  <div class="flex flex-col space-y-4 justify-center py-5 lg:py-6 w-full">
+  <div class="flex w-full flex-col justify-center space-y-4 py-5 lg:py-6">
     <div
       v-for="(notification, index) in notifications"
       :key="notification._id"
-      class="bg-white dark:bg-slate-800 rounded shadow p-4 space-y-4"
+      class="space-y-4 rounded bg-white p-4 shadow dark:bg-slate-800"
     >
       <h4 class="">{{ notification.subject }}</h4>
       <component
         :is="BaseTextarea"
         v-model="notification.message"
-        class="-mx-2 outline-none border-none text-slate-500"
+        class="-mx-2 border-none text-slate-500 outline-none"
         readonly
       ></component>
       <p class="font-extralight">
         {{ formatDistance(new Date(notification.date), new Date(), { addSuffix: true }) }}
       </p>
     </div>
-    <div v-if="pagination.pageCount > 1" class="flex flex-wrap gap-2 items-center justify-center mt-10">
+    <div v-if="pagination.pageCount > 1" class="mt-10 flex flex-wrap items-center justify-center gap-2">
       <button
         v-for="i in pagination.pageCount"
         :key="i"

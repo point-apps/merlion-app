@@ -1,12 +1,12 @@
 <template>
   <div class="mx-auto max-w-4xl space-y-4 py-8 px-4">
-    <a href="/signin" class="flex items-center mb-6 text-2xl font-bold text-gray-900 dark:text-white">
+    <a href="/signin" class="mb-6 flex items-center text-2xl font-bold text-gray-900 dark:text-white">
       <img class="h-8" src="https://assets.pointhub.net/assets/images/logo/primary/logo.png" alt="logo" />
     </a>
     <div class="text-center">
       <h2 class="font-bold">Terms of Service</h2>
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div>
         <h3 class="font-semibold">1. Introduction</h3>
         <p>

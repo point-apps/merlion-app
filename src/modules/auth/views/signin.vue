@@ -1,19 +1,19 @@
 <template>
-  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-    <a href="#" class="flex items-center mb-6 text-2xl font-bold text-gray-900 dark:text-white">
+  <div class="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
+    <a href="#" class="mb-6 flex items-center text-2xl font-bold text-gray-900 dark:text-white">
       <img class="h-8" src="https://assets.pointhub.net/assets/images/logo/primary/logo.png" alt="logo" />
     </a>
     <form @submit.prevent="onSubmit()">
       <div
-        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+        class="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0"
       >
-        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-          <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+        <div class="space-y-4 p-6 sm:p-8 md:space-y-6">
+          <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
             Sign in to your account
           </h1>
           <div class="space-y-4 md:space-y-6">
             <div>
-              <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label for="username" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                 Username or email
               </label>
               <input
@@ -21,16 +21,16 @@
                 v-model="form.username"
                 type="text"
                 name="username"
-                class="focus:ring-blue-600 focus:border-blue-600 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder:text-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-600 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                 placeholder="name@company.com"
                 autocomplete="username"
               />
-              <p v-for="(error, index) in errors?.username" :key="index" class="text-red-500 mt-1 text-xs">
+              <p v-for="(error, index) in errors?.username" :key="index" class="mt-1 text-xs text-red-500">
                 {{ error }}
               </p>
             </div>
             <div>
-              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label for="password" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                 Password
               </label>
               <input
@@ -40,45 +40,45 @@
                 name="password"
                 placeholder="••••••••"
                 autocomplete="current-password"
-                class="focus:ring-blue-600 focus:border-blue-600 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder:text-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-600 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
               />
-              <p v-for="(error, index) in errors?.password" :key="index" class="text-red-500 mt-1 text-xs">
+              <p v-for="(error, index) in errors?.password" :key="index" class="mt-1 text-xs text-red-500">
                 {{ error }}
               </p>
             </div>
             <div class="flex items-center justify-between">
               <div class="flex items-start">
-                <div class="flex items-center h-5">
+                <div class="flex h-5 items-center">
                   <input
                     id="remember"
                     type="checkbox"
-                    class="focus:ring-3 focus:ring-blue-300 dark:focus:ring-blue-600 w-4 h-4 border border-gray-300 rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:ring-offset-gray-800"
+                    class="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                   />
                 </div>
                 <div class="ml-3 text-sm">
                   <label for="remember" class="text-gray-500 dark:text-gray-300">Remember me</label>
                 </div>
               </div>
-              <router-link to="#" class="text-blue-600 dark:text-blue-500 text-sm font-medium hover:underline">
+              <router-link to="#" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
                 Forgot password?
               </router-link>
             </div>
             <button
               type="submit"
-              class="bg-blue-600 hover:bg-blue-700 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              class="w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Sign in
             </button>
-            <div class="inline-flex items-center justify-center w-full">
-              <hr class="w-64 h-px my-2 bg-gray-200 border-0 dark:bg-gray-700" />
+            <div class="inline-flex w-full items-center justify-center">
+              <hr class="my-2 h-px w-64 border-0 bg-gray-200 dark:bg-gray-700" />
               <span
-                class="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-800"
+                class="absolute left-1/2 -translate-x-1/2 bg-white px-3 font-medium text-gray-900 dark:bg-gray-800 dark:text-white"
               >
                 or continue with
               </span>
             </div>
-            <div class="gap-4 grid grid-cols-1 font-semibold text-gray-600">
-              <button type="button" class="flex justify-center items-center rounded" @click="onGoogleSignin()">
+            <div class="grid grid-cols-1 gap-4 font-semibold text-gray-600">
+              <button type="button" class="flex items-center justify-center rounded" @click="onGoogleSignin()">
                 <img
                   v-if="isGoogleSigninPressed"
                   src="@/assets/images/google/btn_google_signin_light_pressed_web@2x.png"
@@ -95,13 +95,13 @@
                   v-if="isGoogleSigninPressed"
                   src="@/assets/images/google/btn_google_signin_dark_pressed_web@2x.png"
                   alt=""
-                  class="h-12 hidden dark:block"
+                  class="hidden h-12 dark:block"
                 />
                 <img
                   v-else
                   src="@/assets/images/google/btn_google_signin_dark_normal_web@2x.png"
                   alt=""
-                  class="h-12 hidden dark:block"
+                  class="hidden h-12 dark:block"
                 />
               </button>
             </div>

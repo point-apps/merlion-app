@@ -3,7 +3,7 @@
     ref="textarea"
     v-model="modelValue"
     rows="1"
-    class="form-input overflow-hidden outline-none pt-2 pb-10"
+    class="form-input overflow-hidden pt-2 pb-10 outline-none"
     type="text"
     style="resize: none"
     @keydown="resize()"

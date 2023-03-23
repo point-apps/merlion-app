@@ -11,7 +11,7 @@
         ]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <form class="flex flex-col space-y-5" @submit.prevent="onSubmit()">
         <label class="block space-y-1">
           <span class="font-bold">Name :</span>
@@ -32,7 +32,7 @@
           <component :is="BaseTextarea" v-model="form.suggestion"></component>
         </label>
         <div>
-          <button type="submit" class="btn btn-base rounded text-slate-100 bg-blue-500 hover:bg-blue-600">
+          <button type="submit" class="btn btn-base rounded bg-blue-500 text-slate-100 hover:bg-blue-600">
             Update
           </button>
         </div>

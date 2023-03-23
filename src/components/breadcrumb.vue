@@ -1,8 +1,8 @@
 <template>
-  <ul class="scrollbar-hidden flex overflow-x-auto items-center gap-2">
-    <li v-for="(breadcrumb, index) in props.breadcrumbs" :key="index" class="flex justify-center items-center gap-2">
+  <ul class="scrollbar-hidden flex items-center gap-2 overflow-x-auto">
+    <li v-for="(breadcrumb, index) in props.breadcrumbs" :key="index" class="flex items-center justify-center gap-2">
       <router-link
-        class="text-primary hover:text-primary-focus dark:text-accent-light dark:hover:text-accent lowercase whitespace-nowrap transition-colors"
+        class="text-primary hover:text-primary-focus dark:text-accent-light dark:hover:text-accent whitespace-nowrap lowercase transition-colors"
         :class="{ 'text-blue-500': breadcrumb.path }"
         :to="breadcrumb.path ?? '#'"
       >

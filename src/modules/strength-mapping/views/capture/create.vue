@@ -11,18 +11,18 @@
         ]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
         <label v-if="authStore.$state.user.googleDriveId" class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
-          <div v-if="!form.file" class="flex items-center justify-center w-full">
+          <div v-if="!form.file" class="flex w-full items-center justify-center">
             <label
               for="dropzone-file"
-              class="dark:hover:bg-bray-800 flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+              class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
             >
               <div class="flex flex-col items-center justify-center pt-5 pb-6">
                 <svg
-                  class="w-10 h-10 mb-3 text-gray-400"
+                  class="mb-3 h-10 w-10 text-gray-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -46,16 +46,16 @@
         </label>
         <div
           v-if="form.fileUrl"
-          class="my-2 relative min-h-[100px] max-h-[200px] lg:max-w-[200px] shadow dark:bg-slate-700 flex justify-center"
+          class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
         >
           <video v-if="form.fileMimeType.includes('video')" controls class="w-full">
             <source :src="form.fileUrl" />
             Your browser does not support HTML5 video.
           </video>
-          <img v-else :src="form.fileUrl" alt="activity" class="max-h-[200px] lg:max-w-[200px] relative" />
+          <img v-else :src="form.fileUrl" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
           <button
             type="button"
-            class="btn py-1 px-2.5 bg-white border-white absolute shadow rounded-full top-2 right-2 opacity-50"
+            class="btn absolute top-2 right-2 rounded-full border-white bg-white py-1 px-2.5 opacity-50 shadow"
             @click="onRemoveFile()"
           >
             <fa-icon icon="fa-solid fa-xmark" class="text-slate-800 shadow"></fa-icon>
@@ -64,21 +64,21 @@
         <label class="block space-y-1">
           <span class="font-semibold">Activity Date</span>
           <component :is="Datepicker" v-model="form.date" />
-          <p v-for="(error, index) in errors?.date" :key="index" class="text-red-500 mt-1 text-xs">
+          <p v-for="(error, index) in errors?.date" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
           </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Activity</span>
           <input v-model="form.activity" class="form-input" type="text" />
-          <p v-for="(error, index) in errors?.activity" :key="index" class="text-red-500 mt-1 text-xs">
+          <p v-for="(error, index) in errors?.activity" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
           </p>
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Describe the activity</span>
           <textarea v-model="form.description" rows="5" class="form-input" type="text" />
-          <p v-for="(error, index) in errors?.description" :key="index" class="text-red-500 mt-1 text-xs">
+          <p v-for="(error, index) in errors?.description" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
           </p>
         </label>
@@ -90,7 +90,7 @@
             type="text"
             placeholder="who assists in observing this activity"
           />
-          <p v-for="(error, index) in errors?.observer" :key="index" class="text-red-500 mt-1 text-xs">
+          <p v-for="(error, index) in errors?.observer" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
           </p>
         </label>
@@ -99,30 +99,30 @@
             <label class="input-group block">
               <label class="font-semibold">Clusters</label>
               <input v-model="searchCluster" type="text" class="form-input" placeholder="Choose Cluster (max 3)" />
-              <p v-for="(error, index) in errors?.clusters" :key="index" class="text-red-500 mt-1 text-xs">
+              <p v-for="(error, index) in errors?.clusters" :key="index" class="mt-1 text-xs text-red-500">
                 {{ error }}
               </p>
             </label>
             <template #content="contentProps">
               <div
-                class="border-slate-100 dark:border-slate-800 mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col rounded-lg bg-white dark:bg-slate-700 sm:m-0 sm:w-80 overflow-auto"
+                class="mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col overflow-auto rounded-lg border-slate-100 bg-white dark:border-slate-800 dark:bg-slate-700 sm:m-0 sm:w-80"
               >
                 <ul class="my-2">
                   <div v-for="cluster in clusters" :key="cluster.name">
                     <li v-for="typology in cluster.typologies" :key="typology">
                       <button
                         type="button"
-                        class="dark:hover:bg-slate-600 dark:focus:bg-slate-600 flex items-center p-4 pr-8 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 w-full text-left"
+                        class="flex w-full items-center p-4 pr-8 text-left tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-slate-600 dark:focus:bg-slate-600"
                         @click="onChooseCluster(cluster, typology) || contentProps.close()"
                       >
                         <div>
                           <div class="flex">
-                            <p class="dark:text-slate-100 capitalize text-slate-900 line-clamp-1 space-x-1">
+                            <p class="space-x-1 capitalize text-slate-900 line-clamp-1 dark:text-slate-100">
                               <span class="font-semibold">{{ cluster.name }} </span>
                               <span class="text-sm font-light">[{{ typology }}]</span>
                             </p>
                           </div>
-                          <p class="dark:text-slate-300 text-sm capitalize font-light text-slate-700">
+                          <p class="text-sm font-light capitalize text-slate-700 dark:text-slate-300">
                             {{ cluster.description }}
                           </p>
                         </div>
@@ -135,23 +135,23 @@
           </popper>
         </label>
         <div class="block space-y-4">
-          <div v-for="cluster in form.clusters" class="shadow p-4 bg-green-50 dark:bg-slate-800 space-y-4">
+          <div v-for="cluster in form.clusters" class="space-y-4 bg-green-50 p-4 shadow dark:bg-slate-800">
             <div>
               <p class="space-x-1">
-                <span class="text-lg capitalize font-semibold">{{ cluster.name }} </span>
-                <span class="text-sm capitalize font-light">[{{ cluster.typology }}]</span>
+                <span class="text-lg font-semibold capitalize">{{ cluster.name }} </span>
+                <span class="text-sm font-light capitalize">[{{ cluster.typology }}]</span>
               </p>
               <p>Choose the Ikigai that suits you</p>
               <p class="text-sm font-light">You can choose more than 1 options</p>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
               <button
                 type="button"
                 :class="{
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'easy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
                 }"
-                class="shadow py-2 px-3"
+                class="py-2 px-3 shadow"
                 @click="onChooseIkigai(cluster, 'easy')"
               >
                 Easy
@@ -162,7 +162,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'enjoy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
                 }"
-                class="shadow py-2 px-3"
+                class="py-2 px-3 shadow"
                 @click="onChooseIkigai(cluster, 'enjoy')"
               >
                 Enjoy
@@ -173,7 +173,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'excellent'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
                 }"
-                class="shadow py-2 px-3"
+                class="py-2 px-3 shadow"
                 @click="onChooseIkigai(cluster, 'excellent')"
               >
                 Excellent
@@ -184,7 +184,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'earn'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
                 }"
-                class="shadow py-2 px-3"
+                class="py-2 px-3 shadow"
                 @click="onChooseIkigai(cluster, 'earn')"
               >
                 Earn
@@ -198,15 +198,15 @@
             :disabled="isSaving"
             type="submit"
             :class="[{ 'bg-gray-500': isSaving }]"
-            class="btn btn-base rounded relative flex-1 text-slate-100 bg-blue-500 dark:bg-blue-700 hover:bg-blue-600"
+            class="btn btn-base relative flex-1 rounded bg-blue-500 text-slate-100 hover:bg-blue-600 dark:bg-blue-700"
           >
             Save
             <div
               v-if="isSaving && !isSavingDraftMode"
-              class="dark:text-slate-300 pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400"
+              class="pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
             >
               <div
-                class="border-slate-150 dark:border-slate-500 dark:border-r-slate-300 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400"
+                class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
               ></div>
             </div>
           </button>
@@ -215,16 +215,16 @@
             :disabled="isSaving"
             :class="[{ 'bg-gray-500': isSaving }]"
             type="button"
-            class="btn btn-base rounded flex-1 text-slate-100 bg-red-500 hover:bg-red-600"
+            class="btn btn-base flex-1 rounded bg-red-500 text-slate-100 hover:bg-red-600"
             @click="onSavingDraft()"
           >
             Save as a Draft
             <div
               v-if="isSaving && isSavingDraftMode"
-              class="dark:text-slate-300 pointer-events-none absolute right-5 flex h-full w-10 items-center justify-center text-slate-400"
+              class="pointer-events-none absolute right-5 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
             >
               <div
-                class="border-slate-150 dark:border-slate-500 dark:border-r-slate-300 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400"
+                class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
               ></div>
             </div>
           </button>

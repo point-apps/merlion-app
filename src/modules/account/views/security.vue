@@ -4,7 +4,7 @@
       <h2>Account</h2>
       <component :is="Breadcrumb" :breadcrumbs="[{ name: 'account', path: '/account' }, { name: 'security' }]" />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
         <h4 class="font-bold">Update Password</h4>
         <label class="block space-y-1">
@@ -20,7 +20,7 @@
           <input v-model="form.confirmPassword" class="form-input" type="password" />
         </label>
         <div>
-          <button type="submit" class="btn btn-base rounded text-slate-100 bg-blue-500 hover:bg-blue-600">Save</button>
+          <button type="submit" class="btn btn-base rounded bg-blue-500 text-slate-100 hover:bg-blue-600">Save</button>
         </div>
       </form>
     </div>

@@ -4,7 +4,7 @@
       <h2>Form Switch</h2>
       <component :is="Breadcrumb" :breadcrumbs="[{ name: 'Template' }, { name: 'Form' }, { name: 'Switch' }]" />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div class="flex justify-between">
         <h3>Basic Switch</h3>
         <component :is="Switch" v-model="isShowBasicSwitchSourceCode" label="code" />
@@ -17,23 +17,23 @@
         <component :is="Switch" v-model="checked" label="Check" />
       </div>
       <div
-        class="card bg-slate-800 dark:bg-slate-700 px-2 text-white transition-all transform-gpu"
+        class="card transform-gpu bg-slate-800 px-2 text-white transition-all dark:bg-slate-700"
         :class="{
           'max-h-[1000px] overflow-auto py-2': isShowBasicSwitchSourceCode,
           'max-h-0 overflow-hidden': !isShowBasicSwitchSourceCode,
         }"
       >
-        <div class="text-sm p-1">html</div>
+        <div class="p-1 text-sm">html</div>
         <highlightjs autodetect :code="basicSwitchHtmlCode" />
       </div>
       <div
-        class="card bg-slate-800 dark:bg-slate-700 px-2 text-white transition-all transform-gpu"
+        class="card transform-gpu bg-slate-800 px-2 text-white transition-all dark:bg-slate-700"
         :class="{
           'max-h-[1000px] overflow-auto py-2': isShowBasicSwitchSourceCode,
           'max-h-0 overflow-hidden': !isShowBasicSwitchSourceCode,
         }"
       >
-        <div class="text-sm p-1">script</div>
+        <div class="p-1 text-sm">script</div>
         <highlightjs autodetect :code="basicSwitchScriptCode" />
       </div>
     </div>

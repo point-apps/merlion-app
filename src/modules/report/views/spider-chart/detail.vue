@@ -11,10 +11,10 @@
         ]"
       />
     </div>
-    <div class="card p-4 space-y-5">
+    <div class="card space-y-5 p-4">
       <div>
         <div class="flex">
-          <div class="grid grid-cols-2 flex-1">
+          <div class="grid flex-1 grid-cols-2">
             <router-link class="btn btn-base btn-blue" to="/strength-mapping/report/spider-chart">
               Spider Chart
             </router-link>
@@ -25,16 +25,16 @@
               Ikigai
             </router-link>
           </div>
-          <button class="py-1 px-2 border-y border-r border-gray-500" @click="isFilterOpen = !isFilterOpen">
+          <button class="border-y border-r border-gray-500 py-1 px-2" @click="isFilterOpen = !isFilterOpen">
             <fa-icon icon="fa-light fa-calendar-day w-4 h-4"></fa-icon>
           </button>
         </div>
-        <div v-if="isFilterOpen" class="p-2 grid grid-cols-2 gap-4 border-x border-black">
+        <div v-if="isFilterOpen" class="grid grid-cols-2 gap-4 border-x border-black p-2">
           <div>
             <span class="text-xs">Year</span>
             <select
               v-model="filterHelper.filterYear.value"
-              class="form-input bg-white pr-2 mr-2"
+              class="form-input mr-2 bg-white pr-2"
               @change="filterHelper.update()"
             >
               <option v-for="counter in 5" :key="counter" :value="dateHelper.getCurrentYear() - counter + 1">
@@ -54,20 +54,20 @@
             </select>
           </div>
         </div>
-        <div v-if="isFilterOpen" class="grid grid-cols-2 gap-4 border-x p-2 dark:text-black border-black">
+        <div v-if="isFilterOpen" class="grid grid-cols-2 gap-4 border-x border-black p-2 dark:text-black">
           <div>
             <span class="text-xs">Date From</span>
-            <component :is="Datepicker" v-model="filterHelper.dateFrom.value" class="bg-white rounded" />
+            <component :is="Datepicker" v-model="filterHelper.dateFrom.value" class="rounded bg-white" />
           </div>
           <div>
             <span class="text-xs">Date To</span>
-            <component :is="Datepicker" v-model="filterHelper.dateTo.value" class="bg-white rounded" />
+            <component :is="Datepicker" v-model="filterHelper.dateTo.value" class="rounded bg-white" />
           </div>
         </div>
-        <div v-if="isFilterOpen" class="border-x p-2 dark:text-black border-black border-b">
+        <div v-if="isFilterOpen" class="border-x border-b border-black p-2 dark:text-black">
           <button
             type="button"
-            class="btn bg-blue-600 w-full p-2 text-white space-x-2"
+            class="btn w-full space-x-2 bg-blue-600 p-2 text-white"
             :class="{ 'bg-gray-300 text-gray-600': isLoading }"
             :disabled="isLoading"
             @click="getCaptures()"
@@ -75,7 +75,7 @@
             <span>Generate Report</span>
             <div
               v-if="isLoading"
-              class="border-slate-150 dark:border-slate-500 dark:border-r-slate-300 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400"
+              class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
             ></div>
           </button>
         </div>
@@ -84,7 +84,7 @@
         <div id="container"></div>
       </figure>
       <router-link
-        class="text-blue-500 px-4 underline"
+        class="px-4 text-blue-500 underline"
         :to="`/strength-mapping/report/spider-chart/${route.params.id}/activity-suggestion`"
         >Click here for activity suggestion</router-link
       >
