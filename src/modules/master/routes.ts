@@ -191,7 +191,7 @@ export const routes = {
   ],
   beforeEnter: async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     const authStore = useAuthStore()
-    if (!(await authStore.isAuthenticated())) {
+    if (!(await authStore.isAuthenticated()) || authStore.$state.user.role === 'user') {
       next('/signin')
     } else {
       next()

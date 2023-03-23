@@ -8,6 +8,7 @@ export interface ShortcutInterface {
   active?: boolean
   path?: string
   link?: string
+  roles?: string[]
 }
 
 export interface MenuInterface {
@@ -18,6 +19,7 @@ export interface MenuInterface {
   link?: string
   separator?: boolean
   submenu?: Array<SubmenuInterface>
+  roles?: string[]
 }
 
 export interface SubmenuInterface {
@@ -27,6 +29,7 @@ export interface SubmenuInterface {
   path?: string
   link?: string
   separator?: boolean
+  roles?: string[]
 }
 
 interface StateInterface {
@@ -52,6 +55,7 @@ const menuMain = {
     {
       name: 'Master',
       meta: 'master',
+      roles: ['admin'],
       submenu: [
         {
           name: 'User',

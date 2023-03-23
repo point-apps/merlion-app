@@ -49,72 +49,74 @@
           <div class="sidebar-panel-body">
             <ul class="flex flex-1 flex-col px-4">
               <li v-for="menu in activeShortcut.menu" :key="menu.name">
-                <!-- Sub Menu Wrapper -->
-                <button
-                  v-if="menu.submenu"
-                  class="menu-link-button"
-                  :class="{
-                    '!text-white': route.meta.menu === menu.meta,
-                    '!text-slate-100/80': route.meta.menu !== menu.meta,
-                  }"
-                  @click="onClickMenu(menu)"
-                >
-                  {{ menu.name }}
-                  <fa-icon
+                <div v-if="!menu.roles || menu.roles?.includes(userRole)">
+                  <!-- Sub Menu Wrapper -->
+                  <button
                     v-if="menu.submenu"
-                    icon="fa-solid fa-angle-right "
-                    :class="{ 'rotate-90 transform-gpu transition ': menu.active }"
-                  />
-                </button>
-                <!-- Internal Menu -->
-                <router-link
-                  v-if="menu.path"
-                  :to="menu.path as string"
-                  class="menu-link-button"
-                  :class="{
-                    '!text-white': route.meta.menu === menu.meta,
-                    '!text-slate-100/80': route.meta.menu !== menu.meta,
-                  }"
-                >
-                  {{ menu.name }}
-                </router-link>
-                <!-- External Menu -->
-                <a
-                  v-if="menu.link"
-                  :href="menu.link as string"
-                  target="_blank"
-                  class="menu-link-button !text-slate-200/80"
-                >
-                  {{ menu.name }}
-                  <fa-icon icon="fa-solid fa-up-right-from-square" />
-                </a>
-                <div v-if="menu.submenu && menu.submenu.length > 0">
-                  <ul
-                    class="transform-gpu transition-all"
+                    class="menu-link-button"
                     :class="{
-                      'max-h-[1000px] overflow-auto rounded-lg bg-slate-700 p-1': menu.active,
-                      'max-h-0 overflow-hidden': !menu.active,
+                      '!text-white': route.meta.menu === menu.meta,
+                      '!text-slate-100/80': route.meta.menu !== menu.meta,
+                    }"
+                    @click="onClickMenu(menu)"
+                  >
+                    {{ menu.name }}
+                    <fa-icon
+                      v-if="menu.submenu"
+                      icon="fa-solid fa-angle-right "
+                      :class="{ 'rotate-90 transform-gpu transition ': menu.active }"
+                    />
+                  </button>
+                  <!-- Internal Menu -->
+                  <router-link
+                    v-if="menu.path"
+                    :to="menu.path as string"
+                    class="menu-link-button"
+                    :class="{
+                      '!text-white': route.meta.menu === menu.meta,
+                      '!text-slate-100/80': route.meta.menu !== menu.meta,
                     }"
                   >
-                    <li v-for="submenu in menu.submenu" :key="submenu.name" class="overflow-hidden">
-                      <router-link :to="submenu.path as string" class="submenu-link">
-                        <div class="flex items-center space-x-2">
-                          <div class="bullet-list" :class="{ 'bg-white': route.meta.submenu === submenu.meta }"></div>
-                          <span
-                            :class="{
-                              '!text-white': route.meta.submenu === submenu.meta,
-                              '!text-slate-100/80': route.meta.submenu !== submenu.meta,
-                            }"
-                          >
-                            {{ submenu.name }}
-                          </span>
-                        </div>
-                      </router-link>
-                      <div v-if="submenu.separator" class="submenu-separator"></div>
-                    </li>
-                  </ul>
+                    {{ menu.name }}
+                  </router-link>
+                  <!-- External Menu -->
+                  <a
+                    v-if="menu.link"
+                    :href="menu.link as string"
+                    target="_blank"
+                    class="menu-link-button !text-slate-200/80"
+                  >
+                    {{ menu.name }}
+                    <fa-icon icon="fa-solid fa-up-right-from-square" />
+                  </a>
+                  <div v-if="menu.submenu && menu.submenu.length > 0">
+                    <ul
+                      class="transform-gpu transition-all"
+                      :class="{
+                        'max-h-[1000px] overflow-auto rounded-lg bg-slate-700 p-1': menu.active,
+                        'max-h-0 overflow-hidden': !menu.active,
+                      }"
+                    >
+                      <li v-for="submenu in menu.submenu" :key="submenu.name" class="overflow-hidden">
+                        <router-link :to="submenu.path as string" class="submenu-link">
+                          <div class="flex items-center space-x-2">
+                            <div class="bullet-list" :class="{ 'bg-white': route.meta.submenu === submenu.meta }"></div>
+                            <span
+                              :class="{
+                                '!text-white': route.meta.submenu === submenu.meta,
+                                '!text-slate-100/80': route.meta.submenu !== submenu.meta,
+                              }"
+                            >
+                              {{ submenu.name }}
+                            </span>
+                          </div>
+                        </router-link>
+                        <div v-if="submenu.separator" class="submenu-separator"></div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div v-if="menu.separator" class="menu-separator"></div>
                 </div>
-                <div v-if="menu.separator" class="menu-separator"></div>
               </li>
             </ul>
           </div>
@@ -151,6 +153,7 @@ const { isMobileBreakpoint } = useMobileBreakpoint()
 const { onClickShortcut, onClickMenu, activeShortcut } = useSidebar()
 
 const authStore = useAuthStore()
+const userRole = authStore.$state.user.role
 
 const onSignout = () => {
   authStore.logout()
