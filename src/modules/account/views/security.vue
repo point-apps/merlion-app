@@ -53,11 +53,26 @@ onMounted(async () => {
 })
 
 const onSubmit = async () => {
-  if (!isNewPasswordConfirmed(form.value.newPassword, form.value.confirmPassword)) {
-    alert('password doesn match')
+  try {
+    if (!isNewPasswordConfirmed(form.value.newPassword, form.value.confirmPassword)) {
+      alert("password doesn't match")
+    }
+
+    if (form.value.newPassword.length < 8) {
+      alert('Password should have 8 digit or more')
+    }
+
+    const response = await axios.post('/users/update-password', form.value)
+
+    if (response.status === 204) {
+      form.value.newPassword = ''
+      form.value.confirmPassword = ''
+      form.value.currentPassword = ''
+      alert('Update password success')
+    }
+  } catch (error) {
+    alert(error?.response?.data?.errors?.password)
   }
-  // await axios.post('/user', form.value)
-  // router.push('/master/user')
 }
 
 const isNewPasswordConfirmed = (newPassword: string, confirmPassword: string) => {
