@@ -45,7 +45,7 @@
         </div>
         <label v-if="isGrantedUploadGoogleDrive()" class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
-          <div v-if="!form.file" class="flex w-full items-center justify-center">
+          <div class="flex w-full items-center justify-center">
             <label
               for="dropzone-file"
               class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
@@ -74,7 +74,27 @@
             </label>
           </div>
         </label>
-        <div
+        <div class="flex space-x-3">
+          <div
+            v-for="(file, index) in form.files"
+            :key="index"
+            class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+          >
+            <video v-if="file.mimeType.includes('video')" controls class="w-full">
+              <source :src="file.url" />
+              Your browser does not support HTML5 video.
+            </video>
+            <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
+            <button
+              type="button"
+              class="btn absolute top-2 right-2 rounded-full border-white bg-white py-1 px-2.5 opacity-50 shadow"
+              @click="onRemoveFile(index)"
+            >
+              <fa-icon icon="fa-solid fa-xmark" class="text-slate-800 shadow"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <!-- <div
           v-if="form.fileUrl"
           class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
         >
@@ -90,7 +110,7 @@
           >
             <fa-icon icon="fa-solid fa-xmark" class="text-slate-800 shadow"></fa-icon>
           </button>
-        </div>
+        </div> -->
         <label class="block space-y-1">
           <span class="font-semibold">Activity Date</span>
           <component :is="Datepicker" v-model="form.date" />
@@ -297,12 +317,16 @@ interface CaptureClusterInterface {
   typology: string
   ikigai: string[]
 }
+interface IFile {
+  file: any
+  url: string
+  size: number
+  mimeType: string
+}
+
 interface CaptureInterface {
   date: string
-  file: string
-  fileUrl: string
-  fileMimeType: string
-  fileSize: number
+  files: IFile[]
   activity: string
   description: string
   observer: string
@@ -311,10 +335,7 @@ interface CaptureInterface {
 }
 const form = ref<CaptureInterface>({
   date: format(new Date(), 'dd-MM-yyyy'),
-  file: '',
-  fileUrl: '',
-  fileMimeType: '',
-  fileSize: 0,
+  files: [],
   activity: '',
   description: '',
   observer: '',
@@ -325,17 +346,16 @@ const isLoadingSearch = ref(false)
 
 const onFileChange = (e: any) => {
   const file = e.target.files[0]
-  form.value.file = file
-  form.value.fileUrl = URL.createObjectURL(file)
-  form.value.fileSize = file.size
-  form.value.fileMimeType = file.type
+  form.value.files.push({
+    file: file,
+    url: URL.createObjectURL(file),
+    size: file.size,
+    mimeType: file.type,
+  })
 }
 
-const onRemoveFile = () => {
-  form.value.file = ''
-  form.value.fileUrl = ''
-  form.value.fileSize = 0
-  form.value.fileMimeType = ''
+const onRemoveFile = (index: number) => {
+  form.value.files.splice(index, 1)
 }
 
 const onChooseCluster = (cluster: any, typology: string) => {
@@ -394,11 +414,15 @@ const onSubmit = async () => {
       ...form.value,
       date: date.toISOString(),
     })
-
-    if (form.value.file) {
+    console.log(form.value)
+    console.log(form.value.files)
+    if (form.value.files) {
       const formData = new FormData()
       formData.append('capture_id', response.data._id)
-      formData.append('files', form.value.file)
+      for (let i = 0; i < form.value.files.length; i++) {
+        console.log(form.value.files[i])
+        formData.append('files[]', form.value.files[i].file)
+      }
       await axios.post('/captures/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',

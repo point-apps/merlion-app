@@ -14,16 +14,19 @@
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
         <label class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
-          <div v-if="!capture.file.url" class="font-light italic">Not captured any photo or video</div>
-          <div
-            v-else
-            class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
-          >
-            <video v-if="capture.file.mimeType.includes('video')" controls class="w-full">
-              <source :src="capture.file.url" />
-              Your browser does not support HTML5 video.
-            </video>
-            <img v-else :src="capture.file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
+          <div v-if="!capture.files" class="font-light italic">Not captured any photo or video</div>
+          <div v-else class="flex space-x-3">
+            <div
+              v-for="(file, index) in capture.files"
+              :key="index"
+              class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+            >
+              <video v-if="file.mimeType.includes('video')" controls class="w-full">
+                <source :src="file.url" />
+                Your browser does not support HTML5 video.
+              </video>
+              <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
+            </div>
           </div>
         </label>
         <label class="block space-y-1">
@@ -198,6 +201,7 @@ interface CaptureClusterInterface {
 }
 interface CaptureInterface {
   date: string
+  files: []
   activity: string
   description: string
   observer: string
@@ -206,10 +210,7 @@ interface CaptureInterface {
 }
 const form = ref<CaptureInterface>({
   date: format(new Date(), 'dd-MM-yyyy'),
-  file: '',
-  fileUrl: '',
-  fileMimeType: '',
-  fileSize: 0,
+  files: [],
   activity: '',
   description: '',
   observer: '',
@@ -312,8 +313,8 @@ const getCapture = async () => {
   form.value.description = result.data.description
   form.value.clusters = result.data.clusters
   form.value.observer = result.data.observer
-  if (result.data.file) {
-    capture.value.file = result.data.file
+  if (result.data.files) {
+    capture.value.files = result.data.files
   }
 }
 const getClusters = async (search = '') => {
