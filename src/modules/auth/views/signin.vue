@@ -59,9 +59,9 @@
                   <label for="remember" class="text-gray-500 dark:text-gray-300">Remember me</label>
                 </div>
               </div>
-              <router-link to="#" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+              <!-- <router-link to="#" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
                 Forgot password?
-              </router-link>
+              </router-link> -->
             </div>
             <button
               type="submit"
