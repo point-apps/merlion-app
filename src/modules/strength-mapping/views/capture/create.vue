@@ -74,7 +74,7 @@
             </label>
           </div>
         </label>
-        <div class="flex space-x-3">
+        <div class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap">
           <div
             v-for="(file, index) in form.files"
             :key="index"

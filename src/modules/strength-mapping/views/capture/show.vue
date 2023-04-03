@@ -27,7 +27,7 @@
         <label class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
           <div v-if="!capture.files" class="font-light italic">Not captured any photo or video</div>
-          <div v-else class="flex space-x-3">
+          <div v-else class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap">
             <div
               v-for="(file, index) in capture.files"
               :key="index"
