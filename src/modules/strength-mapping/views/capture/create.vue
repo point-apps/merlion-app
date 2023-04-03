@@ -94,23 +94,6 @@
             </button>
           </div>
         </div>
-        <!-- <div
-          v-if="form.fileUrl"
-          class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
-        >
-          <video v-if="form.fileMimeType.includes('video')" controls class="w-full">
-            <source :src="form.fileUrl" />
-            Your browser does not support HTML5 video.
-          </video>
-          <img v-else :src="form.fileUrl" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
-          <button
-            type="button"
-            class="btn absolute top-2 right-2 rounded-full border-white bg-white py-1 px-2.5 opacity-50 shadow"
-            @click="onRemoveFile()"
-          >
-            <fa-icon icon="fa-solid fa-xmark" class="text-slate-800 shadow"></fa-icon>
-          </button>
-        </div> -->
         <label class="block space-y-1">
           <span class="font-semibold">Activity Date</span>
           <component :is="Datepicker" v-model="form.date" />
@@ -414,9 +397,8 @@ const onSubmit = async () => {
       ...form.value,
       date: date.toISOString(),
     })
-    console.log(form.value)
-    console.log(form.value.files)
-    if (form.value.files) {
+
+    if (form.value.files.length) {
       const formData = new FormData()
       formData.append('capture_id', response.data._id)
       for (let i = 0; i < form.value.files.length; i++) {

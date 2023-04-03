@@ -12,23 +12,105 @@
     </div>
     <div class="card space-y-5 p-4">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
-        <label class="block space-y-1">
+        <div v-if="!isGrantedUploadGoogleDrive()" class="grid grid-cols-1 gap-4 font-semibold text-gray-600">
           <span class="font-semibold">Activity photos or videos</span>
-          <div v-if="!capture.files" class="font-light italic">Not captured any photo or video</div>
-          <div v-else class="flex space-x-3">
-            <div
-              v-for="(file, index) in capture.files"
-              :key="index"
-              class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+          <p class="-mt-3 font-light">Please Sign in with Google below to grant access your Google Drive account</p>
+          <button type="button" class="flex rounded" @click="onGoogleSignin()">
+            <img
+              v-if="isGoogleSigninPressed"
+              src="@/assets/images/google/btn_google_signin_light_pressed_web@2x.png"
+              alt=""
+              class="h-12 dark:hidden"
+            />
+            <img
+              v-else
+              src="@/assets/images/google/btn_google_signin_light_normal_web@2x.png"
+              alt=""
+              class="h-12 dark:hidden"
+            />
+            <img
+              v-if="isGoogleSigninPressed"
+              src="@/assets/images/google/btn_google_signin_dark_pressed_web@2x.png"
+              alt=""
+              class="hidden h-12 dark:block"
+            />
+            <img
+              v-else
+              src="@/assets/images/google/btn_google_signin_dark_normal_web@2x.png"
+              alt=""
+              class="hidden h-12 dark:block"
+            />
+          </button>
+        </div>
+        <label v-if="isGrantedUploadGoogleDrive()" class="block space-y-1">
+          <span class="font-semibold">Activity photos or videos</span>
+          <div class="flex w-full items-center justify-center">
+            <label
+              for="dropzone-file"
+              class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
             >
-              <video v-if="file.mimeType.includes('video')" controls class="w-full">
-                <source :src="file.url" />
-                Your browser does not support HTML5 video.
-              </video>
-              <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
-            </div>
+              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <svg
+                  class="mb-3 h-10 w-10 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                  ></path>
+                </svg>
+                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                  <span class="font-semibold">Click to upload</span>
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or MP4</p>
+              </div>
+              <input id="dropzone-file" type="file" class="hidden" any @change="onFileChange($event)" />
+            </label>
           </div>
         </label>
+        <div class="flex space-x-3">
+          <div
+            v-for="(file, index) in capture.files"
+            :key="index"
+            class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+          >
+            <video v-if="file.mimeType.includes('video')" controls class="w-full">
+              <source :src="file.url" />
+              Your browser does not support HTML5 video.
+            </video>
+            <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
+            <button
+              type="button"
+              class="btn absolute top-2 right-2 rounded-full border-white bg-white py-1 px-2.5 opacity-50 shadow"
+              @click="onRemoveSubmittedFile(index)"
+            >
+              <fa-icon icon="fa-solid fa-xmark" class="text-slate-800 shadow"></fa-icon>
+            </button>
+          </div>
+          <div
+            v-for="(file, index) in form.files"
+            :key="index"
+            class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+          >
+            <video v-if="file.mimeType.includes('video')" controls class="w-full">
+              <source :src="file.url" />
+              Your browser does not support HTML5 video.
+            </video>
+            <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
+            <button
+              type="button"
+              class="btn absolute top-2 right-2 rounded-full border-white bg-white py-1 px-2.5 opacity-50 shadow"
+              @click="onRemoveFile(index)"
+            >
+              <fa-icon icon="fa-solid fa-xmark" class="text-slate-800 shadow"></fa-icon>
+            </button>
+          </div>
+        </div>
         <label class="block space-y-1">
           <span class="font-semibold">Activity Date</span>
           <component :is="Datepicker" v-model="form.date" />
@@ -161,15 +243,38 @@
           </p>
         </label>
         <div class="flex flex-row space-x-2">
-          <button type="submit" class="btn btn-base flex-1 rounded bg-blue-500 text-slate-100 hover:bg-blue-600">
+          <button
+            :disabled="isSaving"
+            :class="[{ 'bg-gray-500': isSaving }]"
+            type="submit"
+            class="btn btn-base relative flex-1 rounded bg-blue-500 text-slate-100 hover:bg-blue-600 dark:bg-blue-700"
+          >
             Save
+            <div
+              v-if="isSaving && !isSavingDraftMode"
+              class="pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
+            >
+              <div
+                class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
+              ></div>
+            </div>
           </button>
           <button
+            :disabled="isSaving"
+            :class="[{ 'bg-gray-500': isSaving }]"
             type="button"
-            class="btn btn-base flex-1 rounded bg-slate-500 text-slate-100 hover:bg-slate-600"
+            class="btn btn-base flex-1 rounded bg-red-500 text-slate-100 hover:bg-red-600"
             @click="onSavingDraft()"
           >
             Save as a Draft
+            <div
+              v-if="isSaving && isSavingDraftMode"
+              class="pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
+            >
+              <div
+                class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
+              ></div>
+            </div>
           </button>
         </div>
       </form>
@@ -187,6 +292,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { format } from 'date-fns'
 import { useBaseNotification } from '@/composable/notification'
 import { AxiosError } from 'axios'
+import { useAuthStore } from '@/stores/auth'
 
 const { notification } = useBaseNotification()
 const route = useRoute()
@@ -199,9 +305,15 @@ interface CaptureClusterInterface {
   typology: string
   ikigai: string[]
 }
+interface IFile {
+  file: any
+  url: string
+  size: number
+  mimeType: string
+}
 interface CaptureInterface {
   date: string
-  files: []
+  files: IFile[]
   activity: string
   description: string
   observer: string
@@ -218,6 +330,35 @@ const form = ref<CaptureInterface>({
   isDraft: false,
 })
 const isLoadingSearch = ref(false)
+const isSaving = ref(false)
+const isSavingDraftMode = ref(false)
+
+const authStore = useAuthStore()
+const isGrantedUploadGoogleDrive = () => {
+  const googleScopes = authStore.$state.user.googleScopes
+  return googleScopes?.includes('https://www.googleapis.com/auth/drive.file')
+}
+
+const onFileChange = (e: any) => {
+  const file = e.target.files[0]
+  form.value.files.push({
+    file: file,
+    url: URL.createObjectURL(file),
+    size: file.size,
+    mimeType: file.type,
+  })
+}
+
+const onRemoveFile = (index: number) => {
+  form.value.files.splice(index, 1)
+}
+
+const onRemoveSubmittedFile = (index: number) => {
+  axios.post('/captures/' + route.params.id + '/delete-upload', {
+    id: capture.value.files[0].id,
+  })
+  capture.value.files.splice(index, 1)
+}
 
 const onChooseCluster = (cluster: any, typology: string) => {
   if (form.value.clusters.length >= 3) {
@@ -249,6 +390,7 @@ onMounted(async () => {
 
 const onSubmit = async () => {
   try {
+    isSaving.value = true
     const inputDate = form.value.date.split('-')
 
     if (inputDate.length !== 3) {
@@ -280,6 +422,20 @@ const onSubmit = async () => {
     }
 
     const response = await axios.patch('/captures/' + route.params.id, { ...form.value, date: date })
+
+    if (form.value.files.length) {
+      const formData = new FormData()
+      formData.append('capture_id', route.params.id.toString())
+      for (let i = 0; i < form.value.files.length; i++) {
+        formData.append('files[]', form.value.files[i].file)
+      }
+      await axios.post('/captures/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    }
+
     if (response.status === 204) {
       notification('Update', 'Update success', 'success')
       router.push('/strength-mapping/capture/' + route.params.id)
@@ -292,9 +448,12 @@ const onSubmit = async () => {
     } else {
       notification('Unknown Error', '', 'warning')
     }
+  } finally {
+    isSaving.value = false
   }
 }
 
+const isGoogleSigninPressed = ref(false)
 const searchCluster = ref()
 const clusters = ref({})
 const capture = ref({
@@ -357,6 +516,8 @@ const isIkigaiChoosen = (cluster, ikigai) => {
 
 const onSavingDraft = async () => {
   form.value.isDraft = true
+  isSavingDraftMode.value = true
   await onSubmit()
+  isSavingDraftMode.value = false
 }
 </script>
