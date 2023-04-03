@@ -41,6 +41,14 @@
               </td>
               <td class="basic-table-body">{{ user.email }}</td>
               <td class="basic-table-body">{{ user.role }}</td>
+              <td class="basic-table-body">
+                <button
+                  class="btn btn-sm rounded bg-red-500 text-xs text-white"
+                  @click="onDelete(user._id, user.email)"
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -66,9 +74,7 @@ import { onMounted, ref, watch } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { watchDebounced } from '@vueuse/core'
-import { useHttpUser } from '@/modules/master/api/http'
-
-const httpUser = useHttpUser()
+import { useBaseNotification } from '@/composable/notification'
 
 interface UserInterface {
   _id: string
@@ -88,6 +94,19 @@ const isLoadingSearch = ref(false)
 const searchText = ref('')
 const currentPage = ref(1)
 const pageLimit = 10
+const { notification } = useBaseNotification()
+
+const onDelete = async (id: string, email: string) => {
+  try {
+    if (confirm(`are you sure want to delete this user "${email}" ?`)) {
+      await axios.delete(`/users/${id}`)
+      await getUsers()
+      notification('Notification', `Delete user "${email}" success`, 'warning')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 const getUsers = async (page = 1) => {
   const result = await axios.get('/users', {
