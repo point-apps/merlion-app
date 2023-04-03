@@ -56,10 +56,12 @@ const onSubmit = async () => {
   try {
     if (!isNewPasswordConfirmed(form.value.newPassword, form.value.confirmPassword)) {
       alert("password doesn't match")
+      return
     }
 
     if (form.value.newPassword.length < 8) {
       alert('Password should have 8 digit or more')
+      return
     }
 
     const response = await axios.post('/users/update-password', form.value)
