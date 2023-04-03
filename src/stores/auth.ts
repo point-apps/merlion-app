@@ -13,6 +13,27 @@ export const useAuthStore = defineStore('auth', {
     },
   }),
   actions: {
+    async requestPassword(email: string) {
+      const response = await axios.post('/auth/request-password', {
+        email: email,
+      })
+
+      return response
+    },
+    async resetPassword(email: string, newPassword: string, code: string) {
+      console.log({
+        email: email,
+        newPassword: newPassword,
+        code: code,
+      })
+      const response = await axios.post('/auth/reset-password', {
+        email: email,
+        newPassword: newPassword,
+        code: code,
+      })
+
+      return response
+    },
     async login(username: string, password: string) {
       const response = await axios.post('/auth/signin', {
         username: username,

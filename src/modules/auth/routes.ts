@@ -13,6 +13,14 @@ export const routes = {
           path: 'signin',
           component: () => import('./views/signin.vue'),
         },
+        {
+          path: 'forgot-password',
+          component: () => import('./views/forgot-password.vue'),
+        },
+        {
+          path: 'reset-password',
+          component: () => import('./views/reset-password.vue'),
+        },
       ],
     },
     {

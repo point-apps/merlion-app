@@ -100,6 +100,7 @@ const onDelete = async (id: string, email: string) => {
   try {
     if (confirm(`are you sure want to delete this user "${email}" ?`)) {
       await axios.delete(`/users/${id}`)
+      currentPage.value = 1
       await getUsers()
       notification('Notification', `Delete user "${email}" success`, 'warning')
     }
