@@ -76,7 +76,7 @@
         <div class="flex space-x-3">
           <div
             v-for="(file, index) in capture.files"
-            :key="index"
+            :key="'old-' + index"
             class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
           >
             <video v-if="file.mimeType.includes('video')" controls class="w-full">
@@ -355,7 +355,7 @@ const onRemoveFile = (index: number) => {
 
 const onRemoveSubmittedFile = (index: number) => {
   axios.post('/captures/' + route.params.id + '/delete-upload', {
-    id: capture.value.files[0].id,
+    id: capture.value.files[index].id,
   })
   capture.value.files.splice(index, 1)
 }
