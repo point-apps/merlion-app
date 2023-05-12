@@ -382,7 +382,8 @@ const onSubmit = async () => {
       return
     }
 
-    const date = convertToDateFormat(form.value.date)
+    const time = format(new Date(), 'HH:mm')
+    const date = convertToDateFormat(form.value.date, time)
     if (!date) {
       notification('Date error', 'Format date error', 'warning')
       return
