@@ -50,7 +50,7 @@
               for="dropzone-file"
               class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
             >
-              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+              <div class="flex flex-col items-center justify-center pb-6 pt-5">
                 <svg
                   class="mb-3 h-10 w-10 text-gray-400"
                   fill="none"
@@ -87,7 +87,7 @@
             <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
             <button
               type="button"
-              class="btn absolute top-2 right-2 rounded-full border-white bg-white py-1 px-2.5 opacity-50 shadow"
+              class="btn absolute right-2 top-2 rounded-full border-white bg-white px-2.5 py-1 opacity-50 shadow"
               @click="onRemoveFile(index)"
             >
               <fa-icon icon="fa-solid fa-xmark" class="text-slate-800 shadow"></fa-icon>
@@ -184,7 +184,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'easy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
                 @click="onChooseIkigai(cluster, 'easy')"
               >
                 Easy
@@ -195,7 +195,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'enjoy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
                 @click="onChooseIkigai(cluster, 'enjoy')"
               >
                 Enjoy
@@ -206,7 +206,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'excellent'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
                 @click="onChooseIkigai(cluster, 'excellent')"
               >
                 Excellent
@@ -217,7 +217,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'earn'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
                 @click="onChooseIkigai(cluster, 'earn')"
               >
                 Earn
@@ -382,7 +382,8 @@ const onSubmit = async () => {
       return
     }
 
-    const date = convertToDateFormat(form.value.date)
+    const time = format(new Date(), 'HH:mm')
+    const date = convertToDateFormat(form.value.date, time)
     if (!date) {
       notification('Date error', 'Format date error', 'warning')
       return
@@ -479,6 +480,7 @@ const onSavingDraft = async () => {
 const isGoogleSigninPressed = ref(false)
 const onGoogleSignin = async () => {
   try {
+    console.log(window.location.hostname)
     isGoogleSigninPressed.value = true
     const response = await axios.get(
       `${baseURL}/auth/google-drive/get-auth-url?callback=//${window.location.hostname}${

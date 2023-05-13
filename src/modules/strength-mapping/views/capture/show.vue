@@ -81,7 +81,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'easy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
               >
                 Easy
               </button>
@@ -91,7 +91,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'enjoy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
               >
                 Enjoy
               </button>
@@ -101,7 +101,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'excellent'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
               >
                 Excellent
               </button>
@@ -111,7 +111,7 @@
                   'bg-green-400 dark:bg-slate-700': isIkigaiChoosen(cluster, 'earn'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
               >
                 Earn
               </button>
