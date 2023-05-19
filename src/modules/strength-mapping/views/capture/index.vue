@@ -14,6 +14,7 @@
         </div>
       </div>
     </div>
+
     <div class="flex justify-between pt-4">
       <div class="flex space-x-4">
         <button
@@ -193,6 +194,8 @@ SwiperCore.use([Navigation, Pagination, A11y])
 
 const searchStore = useSearchStore()
 
+const fromDate = ref<string | null>('')
+const toDate = ref<string | null>('')
 const captures = ref([])
 const pagination = ref({
   page: 1,
@@ -218,6 +221,8 @@ const getCaptures = async (page = 1) => {
       search: {
         activity: searchText.value,
         cluster: searchText.value,
+        fromDate: fromDate.value,
+        toDate: toDate.value,
       },
       filter: {
         isDraft: isDraft.value as boolean,
@@ -262,20 +267,26 @@ watchDebounced(
 )
 
 const searchFeedState = computed(() => searchStore.searchText)
+const searchDateState = computed(() => searchStore.searchDate)
 
 watch(searchFeedState, async () => {
-  // reload data if modal success state change
   currentPage.value = 1
   await getCaptures()
   isLoadingSearch.value = false
 })
 
-const onSwiper = (swiper) => {
-  console.log(swiper)
-}
-const onSlideChange = () => {
-  console.log('slide change')
-}
+watch(searchDateState, async () => {
+  if (searchDateState.value) {
+    fromDate.value = format(searchDateState.value[0], 'yyyy-MM-dd')
+    toDate.value = format(searchDateState.value[1], 'yyyy-MM-dd')
+  } else {
+    fromDate.value = null
+    toDate.value = null
+  }
+  currentPage.value = 1
+  await getCaptures()
+  isLoadingSearch.value = false
+})
 
 onMounted(async () => {
   await getCaptures()
