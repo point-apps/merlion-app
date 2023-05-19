@@ -68,7 +68,11 @@
                     {{ capture.createdBy.name }}
                   </div>
                   <div class="md:text-md text-xs font-normal text-gray-500 dark:text-gray-400">
-                    {{ formatDistance(new Date(capture.date), new Date(), { addSuffix: true }) }}
+                    {{
+                      differenceInDays(new Date(), new Date(capture.date)) > 1
+                        ? format(new Date(capture.date), 'dd MMMM yyyy')
+                        : formatDistance(new Date(capture.date), new Date(), { addSuffix: true })
+                    }}
                   </div>
                 </div>
               </div>
@@ -182,7 +186,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { watchDebounced } from '@vueuse/core'
-import { format, formatDistance } from 'date-fns'
+import { differenceInDays, format, formatDistance } from 'date-fns'
 import { useSearchStore } from '@/stores/search'
 import { storeToRefs } from 'pinia'
 import SwiperCore, { Navigation, Pagination, A11y } from 'swiper'
