@@ -38,9 +38,11 @@
         </button>
       </div>
       <div class="absolute right-8 flex place-items-end space-x-2">
-        <router-link to="/strength-mapping/capture/create">
-          <fa-icon icon="fa-regular fa-camera fa-lg" />
-        </router-link>
+        <div class="hidden lg:block">
+          <router-link to="/strength-mapping/capture/create">
+            <fa-icon icon="fa-regular fa-camera fa-lg" />
+          </router-link>
+        </div>
         <button
           type="button"
           class="text-md inline-block font-semibold uppercase leading-normal focus:outline-none focus:ring-0"
