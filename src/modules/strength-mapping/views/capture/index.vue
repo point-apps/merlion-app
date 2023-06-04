@@ -6,7 +6,10 @@
           <h2>Capture</h2>
           <component
             :is="Breadcrumb"
-            :breadcrumbs="[{ name: 'strength mapping', path: '/strength-mapping' }, { name: 'capture' }]"
+            :breadcrumbs="[
+              { name: 'strength mapping', path: '/strength-mapping' },
+              { name: 'capture' },
+            ]"
           />
         </div>
         <div>
@@ -35,6 +38,9 @@
         </button>
       </div>
       <div class="absolute right-8 flex place-items-end space-x-2">
+        <router-link to="/strength-mapping/capture/create">
+          <fa-icon icon="fa-regular fa-camera fa-lg" />
+        </router-link>
         <button
           type="button"
           class="text-md inline-block font-semibold uppercase leading-normal focus:outline-none focus:ring-0"
@@ -62,16 +68,28 @@
           <router-link :to="`/strength-mapping/capture/${capture._id}`">
             <div class="space-y-5">
               <div class="flex space-x-4">
-                <img class="h-12 w-12 rounded-full md:h-14 md:w-14" src="/blank-profile-picture.svg" alt="avatar" />
-                <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                  <div class="text-xs font-semibold text-gray-900 dark:text-white md:text-lg">
+                <img
+                  class="h-12 w-12 rounded-full md:h-14 md:w-14"
+                  src="/blank-profile-picture.svg"
+                  alt="avatar"
+                />
+                <div
+                  class="text-sm font-normal text-gray-500 dark:text-gray-400"
+                >
+                  <div
+                    class="text-xs font-semibold text-gray-900 dark:text-white md:text-lg"
+                  >
                     {{ capture.createdBy.name }}
                   </div>
-                  <div class="md:text-md text-xs font-normal text-gray-500 dark:text-gray-400">
+                  <div
+                    class="md:text-md text-xs font-normal text-gray-500 dark:text-gray-400"
+                  >
                     {{
                       differenceInDays(new Date(), new Date(capture.date)) > 1
-                        ? format(new Date(capture.date), 'dd MMMM yyyy')
-                        : formatDistance(new Date(capture.date), new Date(), { addSuffix: true })
+                        ? format(new Date(capture.date), "dd MMMM yyyy")
+                        : formatDistance(new Date(capture.date), new Date(), {
+                            addSuffix: true,
+                          })
                     }}
                   </div>
                 </div>
@@ -83,11 +101,24 @@
           </router-link>
 
           <div class="w-full items-center">
-            <div v-if="!capture.files" class="font-light italic">Not captured any photo or video</div>
+            <div v-if="!capture.files" class="font-light italic">
+              Not captured any photo or video
+            </div>
             <div v-else>
-              <swiper :slides-per-view="1" navigation :pagination="{ clickable: true }">
-                <swiper-slide v-for="(file, index) in capture.files" :key="index">
-                  <video v-if="file.mimeType.includes('video')" controls class="w-full">
+              <swiper
+                :slides-per-view="1"
+                navigation
+                :pagination="{ clickable: true }"
+              >
+                <swiper-slide
+                  v-for="(file, index) in capture.files"
+                  :key="index"
+                >
+                  <video
+                    v-if="file.mimeType.includes('video')"
+                    controls
+                    class="w-full"
+                  >
                     <source :src="file.url" />
                     Your browser does not support HTML5 video.
                   </video>
@@ -109,24 +140,6 @@
     </div>
 
     <div v-if="view === 'list'" class="card space-y-5 p-4">
-      <div>
-        <div class="space-y-1">
-          <label class="input-group relative">
-            <router-link to="/strength-mapping/capture/create" class="prepend-input">
-              <fa-icon icon="fa-solid fa-plus"></fa-icon>
-            </router-link>
-            <input v-model="searchText" class="form-input rounded-r-lg" placeholder="Search" type="text" />
-            <div
-              v-if="isLoadingSearch"
-              class="pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
-            >
-              <div
-                class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
-              ></div>
-            </div>
-          </label>
-        </div>
-      </div>
       <div class="table-container">
         <table class="table">
           <thead>
@@ -138,18 +151,32 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(capture, index) in captures" :key="capture._id" class="basic-table-row">
+            <tr
+              v-for="(capture, index) in captures"
+              :key="capture._id"
+              class="basic-table-row"
+            >
               <td class="basic-table-body whitespace-nowrap">
-                {{ format(new Date(capture.date), 'dd-MM-yyyy') }}
+                {{ format(new Date(capture.date), "dd-MM-yyyy") }}
               </td>
               <td class="basic-table-body">
-                <router-link :to="`/strength-mapping/capture/${capture._id}`" class="text-blue-500 hover:text-blue-600">
+                <router-link
+                  :to="`/strength-mapping/capture/${capture._id}`"
+                  class="text-blue-500 hover:text-blue-600"
+                >
                   {{ capture.activity }}
                 </router-link>
               </td>
               <td class="basic-table-body">
-                <span v-for="(cluster, clusterIndex) in capture.clusters" :key="cluster.name" class="capitalize">
-                  {{ cluster.name }}<span v-if="clusterIndex + 1 < capture.clusters.length">, </span>
+                <span
+                  v-for="(cluster, clusterIndex) in capture.clusters"
+                  :key="cluster.name"
+                  class="capitalize"
+                >
+                  {{ cluster.name
+                  }}<span v-if="clusterIndex + 1 < capture.clusters.length"
+                    >,
+                  </span>
                 </span>
               </td>
               <td class="basic-table-body">
@@ -159,13 +186,21 @@
                 >
                   Captured
                 </div>
-                <div v-else class="rounded bg-slate-500 px-3 py-1 text-center font-bold text-slate-100">Draft</div>
+                <div
+                  v-else
+                  class="rounded bg-slate-500 px-3 py-1 text-center font-bold text-slate-100"
+                >
+                  Draft
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
 
-        <div v-if="pagination.pageCount > 1" class="mt-10 flex flex-wrap items-center justify-center gap-2">
+        <div
+          v-if="pagination.pageCount > 1"
+          class="mt-10 flex flex-wrap items-center justify-center gap-2"
+        >
           <button
             v-for="i in pagination.pageCount"
             :key="i"
@@ -182,45 +217,45 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
-import Breadcrumb from '@/components/breadcrumb.vue'
-import axios from '@/axios'
-import { watchDebounced } from '@vueuse/core'
-import { differenceInDays, format, formatDistance } from 'date-fns'
-import { useSearchStore } from '@/stores/search'
-import { storeToRefs } from 'pinia'
-import SwiperCore, { Navigation, Pagination, A11y } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import 'swiper/swiper.css'
-import 'swiper/css/pagination'
+import { computed, onMounted, ref, watch } from "vue";
+import Breadcrumb from "@/components/breadcrumb.vue";
+import axios from "@/axios";
+import { watchDebounced } from "@vueuse/core";
+import { differenceInDays, format, formatDistance } from "date-fns";
+import { useSearchStore } from "@/stores/search";
+import { storeToRefs } from "pinia";
+import SwiperCore, { Navigation, Pagination, A11y } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/swiper.css";
+import "swiper/css/pagination";
 
-SwiperCore.use([Navigation, Pagination, A11y])
+SwiperCore.use([Navigation, Pagination, A11y]);
 
-const searchStore = useSearchStore()
+const searchStore = useSearchStore();
 
-const fromDate = ref<string | null>('')
-const toDate = ref<string | null>('')
-const captures = ref([])
+const fromDate = ref<string | null>("");
+const toDate = ref<string | null>("");
+const captures = ref([]);
 const pagination = ref({
   page: 1,
   pageCount: 0,
   pageSize: 0,
   totalDocument: 0,
-})
-const view = ref('feed')
-const isLoadingSearch = ref(false)
-const isDraft = ref(false)
-const { searchText } = storeToRefs(searchStore)
-const currentPage = ref(1)
-const pageSize = 10
+});
+const view = ref("feed");
+const isLoadingSearch = ref(false);
+const isDraft = ref(false);
+const { searchText } = storeToRefs(searchStore);
+const currentPage = ref(1);
+const pageSize = 10;
 
 const getCaptures = async (page = 1) => {
-  const result = await axios.get('/captures', {
+  const result = await axios.get("/captures", {
     params: {
       pageSize: pageSize,
       page: page,
       sort: {
-        date: 'desc',
+        date: "desc",
       },
       search: {
         activity: searchText.value,
@@ -232,67 +267,67 @@ const getCaptures = async (page = 1) => {
         isDraft: isDraft.value as boolean,
       },
     },
-  })
-  captures.value = result.data.data
+  });
+  captures.value = result.data.data;
   pagination.value = {
     page: result.data.pagination.page,
     pageCount: result.data.pagination.pageCount,
     pageSize: result.data.pagination.pageSize,
     totalDocument: result.data.pagination.totalDocument,
-  }
-}
+  };
+};
 
 const onClickView = (value: string) => {
-  view.value = value
-}
+  view.value = value;
+};
 
 const onClickStatus = async (value: boolean) => {
-  isDraft.value = value
-  await getCaptures(currentPage.value)
-}
+  isDraft.value = value;
+  await getCaptures(currentPage.value);
+};
 
 const onClickPage = async (page: number) => {
-  currentPage.value = page
-  await getCaptures(page)
-}
+  currentPage.value = page;
+  await getCaptures(page);
+};
 
 watch(searchText, () => {
-  isLoadingSearch.value = true
-})
+  isLoadingSearch.value = true;
+});
 
 watchDebounced(
   searchText,
   async () => {
-    currentPage.value = 1
-    await getCaptures()
-    isLoadingSearch.value = false
+    currentPage.value = 1;
+    await getCaptures();
+    isLoadingSearch.value = false;
   },
   { debounce: 500, maxWait: 1000 }
-)
+);
 
-const searchFeedState = computed(() => searchStore.searchText)
-const searchDateState = computed(() => searchStore.searchDate)
+const searchFeedState = computed(() => searchStore.searchText);
+const searchDateState = computed(() => searchStore.searchDate);
 
 watch(searchFeedState, async () => {
-  currentPage.value = 1
-  await getCaptures()
-  isLoadingSearch.value = false
-})
+  currentPage.value = 1;
+  await getCaptures();
+  isLoadingSearch.value = false;
+});
 
 watch(searchDateState, async () => {
   if (searchDateState.value) {
-    fromDate.value = format(searchDateState.value[0], 'yyyy-MM-dd')
-    toDate.value = format(searchDateState.value[1], 'yyyy-MM-dd')
+    fromDate.value = format(searchDateState.value[0], "yyyy-MM-dd");
+    toDate.value = format(searchDateState.value[1], "yyyy-MM-dd");
   } else {
-    fromDate.value = null
-    toDate.value = null
+    fromDate.value = null;
+    toDate.value = null;
   }
-  currentPage.value = 1
-  await getCaptures()
-  isLoadingSearch.value = false
-})
+  currentPage.value = 1;
+  await getCaptures();
+  isLoadingSearch.value = false;
+});
 
 onMounted(async () => {
-  await getCaptures()
-})
+  await getCaptures();
+});
 </script>
