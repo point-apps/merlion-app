@@ -74,6 +74,12 @@
             </label>
           </div>
         </label>
+        <p v-if="errors?.file" class="mt-1 text-xs text-red-500">
+            {{ errors?.file }}
+        </p>
+        <p v-if="formErrors.mimeType" class="text-red-500 text-sm text-center my-2">
+          {{formErrors.mimeType}}
+        </p>
         <div class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap">
           <div
             v-for="(file, index) in form.files"
@@ -293,6 +299,7 @@ const { convertToDateFormat } = useDateHelper()
 
 const router = useRouter()
 const errors = ref()
+const formErrors = ref<any>({ mimeType: '' })
 
 interface CaptureClusterInterface {
   cluster_id: string
@@ -329,6 +336,11 @@ const isLoadingSearch = ref(false)
 
 const onFileChange = (e: any) => {
   const file = e.target.files[0]
+  formErrors.value.mimeType = '';
+  if(!['image/png', 'image/jpg', 'image/jpeg', 'video/mp4'].some(s => s === file.type)){
+    formErrors.value.mimeType = 'Invalid file format. Supported types: PNG, JPG, and MP4';
+    return;
+  }
   form.value.files.push({
     file: file,
     url: URL.createObjectURL(file),
