@@ -68,17 +68,17 @@
                 <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
                   <span class="font-semibold">Click to upload</span>
                 </p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or MP4</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Only Support file format: PNG, JPG, MP4</p>
               </div>
               <input id="dropzone-file" type="file" class="hidden" any @change="onFileChange($event)" />
             </label>
           </div>
         </label>
         <p v-if="errors?.file" class="mt-1 text-xs text-red-500">
-            {{ errors?.file }}
+          {{ errors?.file }}
         </p>
-        <p v-if="formErrors.mimeType" class="text-red-500 text-sm text-center my-2">
-          {{formErrors.mimeType}}
+        <p v-if="formErrors.mimeType" class="my-2 text-center text-sm text-red-500">
+          {{ formErrors.mimeType }}
         </p>
         <div class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap">
           <div
@@ -156,7 +156,7 @@
                       >
                         <div>
                           <div class="flex">
-                            <p class="space-x-1 capitalize text-slate-900 line-clamp-1 dark:text-slate-100">
+                            <p class="line-clamp-1 space-x-1 capitalize text-slate-900 dark:text-slate-100">
                               <span class="font-semibold">{{ cluster.name }} </span>
                               <span class="text-sm font-light">[{{ typology }}]</span>
                             </p>
@@ -336,10 +336,10 @@ const isLoadingSearch = ref(false)
 
 const onFileChange = (e: any) => {
   const file = e.target.files[0]
-  formErrors.value.mimeType = '';
-  if(!['image/png', 'image/jpg', 'image/jpeg', 'video/mp4'].some(s => s === file.type)){
-    formErrors.value.mimeType = 'Invalid file format. Supported types: PNG, JPG, and MP4';
-    return;
+  formErrors.value.mimeType = ''
+  if (!['image/png', 'image/jpg', 'image/jpeg', 'video/mp4'].some((s) => s === file.type)) {
+    formErrors.value.mimeType = 'Upload Failed, Please Try Again'
+    return
   }
   form.value.files.push({
     file: file,
