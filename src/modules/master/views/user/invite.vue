@@ -69,6 +69,7 @@ const onSubmit = async () => {
     const response = await axios.post('/users', form.value)
 
     if (response.status === 201) {
+      notification('Success Invite using ' + form.value.role + ' role', '', 'success')
       form.value.name = ''
       form.value.email = ''
       form.value.role = ''
