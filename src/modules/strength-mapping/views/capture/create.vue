@@ -48,7 +48,11 @@
           <div class="flex w-full items-center justify-center">
             <label
               for="dropzone-file"
-              class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+              class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+              :class="{
+                'border-gray-300 dark:border-gray-600': !formErrors.mimeType,
+                'border-red-500': formErrors.mimeType,
+              }"
             >
               <div class="flex flex-col items-center justify-center pb-6 pt-5">
                 <svg
@@ -77,7 +81,7 @@
         <p v-if="errors?.file" class="mt-1 text-xs text-red-500">
           {{ errors?.file }}
         </p>
-        <p v-if="formErrors.mimeType" class="my-2 text-center text-sm text-red-500">
+        <p v-if="formErrors.mimeType" class="my-2 text-center text-sm font-semibold text-red-500">
           {{ formErrors.mimeType }}
         </p>
         <div class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap">
@@ -492,7 +496,6 @@ const onSavingDraft = async () => {
 const isGoogleSigninPressed = ref(false)
 const onGoogleSignin = async () => {
   try {
-    console.log(window.location.hostname)
     isGoogleSigninPressed.value = true
     const response = await axios.get(
       `${baseURL}/auth/google-drive/get-auth-url?callback=//${window.location.hostname}${
