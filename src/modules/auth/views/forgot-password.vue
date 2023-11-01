@@ -12,32 +12,12 @@
             Forgot Password
           </h1>
           <div class="space-y-4 md:space-y-6">
-            <div>
-              <label for="email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Email </label>
-              <input
-                id="email"
-                v-model="form.email"
-                type="text"
-                name="email"
-                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-600 focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
-                placeholder="name@company.com"
-                autocomplete="email"
-              />
-              <p v-for="(error, index) in errors?.email" :key="index" class="mt-1 text-xs text-red-500">
-                {{ error }}
-              </p>
-            </div>
+            <p>Please contact administrator to request reset your password</p>
             <div class="flex items-center justify-between">
               <router-link to="/signin" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-                Remember my password
+                Remember my password?
               </router-link>
             </div>
-            <button
-              type="submit"
-              class="w-full rounded-lg bg-blue-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Request Reset Password
-            </button>
           </div>
         </div>
       </div>

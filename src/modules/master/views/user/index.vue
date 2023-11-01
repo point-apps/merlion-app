@@ -41,7 +41,13 @@
               </td>
               <td class="basic-table-body">{{ user.email }}</td>
               <td class="basic-table-body">{{ user.role }}</td>
-              <td class="basic-table-body">
+              <td class="basic-table-body flex gap-2">
+                <router-link
+                  :to="`/master/user/${user._id}/edit`"
+                  class="btn btn-sm rounded bg-blue-500 text-xs text-white"
+                >
+                  Reset Password
+                </router-link>
                 <button
                   class="btn btn-sm rounded bg-red-500 text-xs text-white"
                   @click="onDelete(user._id, user.email)"

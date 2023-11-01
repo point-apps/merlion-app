@@ -20,15 +20,13 @@
         </label>
         <label class="block space-y-1">
           <span class="font-semibold">Name</span>
-          <input v-model="form.name" class="form-input" type="text" />
+          <p>{{ user.name }}</p>
         </label>
         <label class="block space-y-1">
-          <span class="font-semibold">Role</span>
-          <select class="form-input">
-            <option :selected="user.role === 'user'" value="student">User</option>
-            <option :selected="user.role === 'admin'" value="admin">Admin</option>
-          </select>
+          <span class="font-semibold">New Password</span>
+          <input v-model="form.password" class="form-input" type="password" />
         </label>
+
         <div>
           <button type="submit" class="btn btn-base bg-blue-500 text-slate-100 hover:bg-blue-600">Update</button>
         </div>
@@ -41,13 +39,14 @@
 import { ref, onMounted } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
-import { useRoute } from 'vue-router'
-
+import { useRoute, useRouter } from 'vue-router'
+import { useBaseNotification } from '@/composable/notification'
+const { notification } = useBaseNotification()
 const route = useRoute()
+const router = useRouter()
 
 const form = ref({
-  name: '',
-  role: '',
+  password: '',
 })
 
 const user = ref({
@@ -60,17 +59,17 @@ const user = ref({
 onMounted(async () => {
   const result = await axios.get('/users/' + route.params.id)
   user.value = result.data
-
-  form.value.name = result.data.name
-  form.value.role = result.data.role
 })
 
 const onSubmit = async () => {
-  await axios.patch('/users/' + route.params.id, {
-    name: form.value.name,
-    role: form.value.role,
-  })
+  try {
+    await axios.patch('/users/' + route.params.id, {
+      password: form.value.password,
+    })
+    notification('Update Success', 'success')
+    router.push('/master/user')
+  } catch (error) {
+    notification('Update Failed', 'Please use minimum 8 digit password', 'warning')
+  }
 }
-
-const onSubmitPassword = () => {}
 </script>
