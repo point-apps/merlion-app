@@ -27,13 +27,16 @@
         <label class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
           <div v-if="!capture.files" class="font-light italic">Not captured any photo or video</div>
-          <div v-else class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap">
+          <div
+            v-if="capture.files && capture.files[0].id != null"
+            class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap"
+          >
             <div
               v-for="(file, index) in capture.files"
               :key="index"
               class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
             >
-              <video v-if="file.mimeType.includes('video')" controls class="w-full">
+              <video v-if="file?.mimeType?.includes('video')" controls class="w-full">
                 <source :src="file.url" />
                 Your browser does not support HTML5 video.
               </video>
