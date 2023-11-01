@@ -27,11 +27,12 @@ export function useDateHelper() {
     const monthNumber: number = Number(dateInputSplit[1])
     const yearNumber: number = Number(dateInputSplit[2])
 
+    console.log(timeInput)
     let timeInputSplit = undefined
     if (timeInput) {
       timeInputSplit = timeInput.split(':')
     }
-    if (timeInput && timeInput.length !== 2) {
+    if (timeInput && timeInputSplit?.length !== 2) {
       return undefined
     }
 

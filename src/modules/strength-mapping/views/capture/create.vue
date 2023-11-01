@@ -48,9 +48,13 @@
           <div class="flex w-full items-center justify-center">
             <label
               for="dropzone-file"
-              class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+              class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+              :class="{
+                'border-gray-300 dark:border-gray-600': !formErrors.mimeType,
+                'border-red-500': formErrors.mimeType,
+              }"
             >
-              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+              <div class="flex flex-col items-center justify-center pb-6 pt-5">
                 <svg
                   class="mb-3 h-10 w-10 text-gray-400"
                   fill="none"
@@ -68,12 +72,18 @@
                 <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
                   <span class="font-semibold">Click to upload</span>
                 </p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or MP4</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Only Support file format: PNG, JPG, MP4</p>
               </div>
               <input id="dropzone-file" type="file" class="hidden" any @change="onFileChange($event)" />
             </label>
           </div>
         </label>
+        <p v-if="errors?.file" class="mt-1 text-xs text-red-500">
+          {{ errors?.file }}
+        </p>
+        <p v-if="formErrors.mimeType" class="my-2 text-center text-sm font-semibold text-red-500">
+          {{ formErrors.mimeType }}
+        </p>
         <div class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap">
           <div
             v-for="(file, index) in form.files"
@@ -87,7 +97,7 @@
             <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
             <button
               type="button"
-              class="btn absolute top-2 right-2 rounded-full border-white bg-white py-1 px-2.5 opacity-50 shadow"
+              class="btn absolute right-2 top-2 rounded-full border-white bg-white px-2.5 py-1 opacity-50 shadow"
               @click="onRemoveFile(index)"
             >
               <fa-icon icon="fa-solid fa-xmark" class="text-slate-800 shadow"></fa-icon>
@@ -150,7 +160,7 @@
                       >
                         <div>
                           <div class="flex">
-                            <p class="space-x-1 capitalize text-slate-900 line-clamp-1 dark:text-slate-100">
+                            <p class="line-clamp-1 space-x-1 capitalize text-slate-900 dark:text-slate-100">
                               <span class="font-semibold">{{ cluster.name }} </span>
                               <span class="text-sm font-light">[{{ typology }}]</span>
                             </p>
@@ -184,7 +194,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'easy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
                 @click="onChooseIkigai(cluster, 'easy')"
               >
                 Easy
@@ -195,7 +205,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'enjoy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
                 @click="onChooseIkigai(cluster, 'enjoy')"
               >
                 Enjoy
@@ -206,7 +216,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'excellent'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
                 @click="onChooseIkigai(cluster, 'excellent')"
               >
                 Excellent
@@ -217,7 +227,7 @@
                   'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'earn'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
                 }"
-                class="py-2 px-3 shadow"
+                class="px-3 py-2 shadow"
                 @click="onChooseIkigai(cluster, 'earn')"
               >
                 Earn
@@ -293,6 +303,7 @@ const { convertToDateFormat } = useDateHelper()
 
 const router = useRouter()
 const errors = ref()
+const formErrors = ref<any>({ mimeType: '' })
 
 interface CaptureClusterInterface {
   cluster_id: string
@@ -329,6 +340,11 @@ const isLoadingSearch = ref(false)
 
 const onFileChange = (e: any) => {
   const file = e.target.files[0]
+  formErrors.value.mimeType = ''
+  if (!['image/png', 'image/jpg', 'image/jpeg', 'video/mp4'].some((s) => s === file.type)) {
+    formErrors.value.mimeType = 'Upload Failed, Please Try Again'
+    return
+  }
   form.value.files.push({
     file: file,
     url: URL.createObjectURL(file),
@@ -382,7 +398,8 @@ const onSubmit = async () => {
       return
     }
 
-    const date = convertToDateFormat(form.value.date)
+    const time = format(new Date(), 'HH:mm')
+    const date = convertToDateFormat(form.value.date, time)
     if (!date) {
       notification('Date error', 'Format date error', 'warning')
       return
