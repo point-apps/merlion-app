@@ -143,104 +143,6 @@
           </p>
         </label>
         <label class="block space-y-1">
-          <popper placement="bottom-start">
-            <label class="input-group block">
-              <label class="font-semibold">Clusters</label>
-              <input v-model="searchCluster" type="text" class="form-input" placeholder="Choose Cluster" />
-              <p v-for="(error, index) in errors?.clusters" :key="index" class="mt-1 text-xs text-red-500">
-                {{ error }}
-              </p>
-            </label>
-            <template #content="contentProps">
-              <div
-                class="mx-4 mt-1 flex max-h-[calc(100vh-6rem)] w-[calc(100vw-2rem)] flex-col overflow-auto rounded-lg border-slate-100 bg-white dark:border-slate-800 dark:bg-slate-700 sm:m-0 sm:w-80"
-              >
-                <ul class="my-2">
-                  <div v-for="cluster in clusters" :key="cluster.name">
-                    <li v-for="typology in cluster.typologies" :key="typology">
-                      <button
-                        type="button"
-                        class="flex w-full items-center p-4 pr-8 text-left tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-slate-600 dark:focus:bg-slate-600"
-                        @click="onChooseCluster(cluster, typology) || contentProps.close()"
-                      >
-                        <div>
-                          <div class="flex">
-                            <p class="line-clamp-1 space-x-1 capitalize text-slate-900 dark:text-slate-100">
-                              <span class="font-semibold">{{ cluster.name }} </span>
-                              <span class="text-sm font-light">[{{ typology }}]</span>
-                            </p>
-                          </div>
-                          <p class="text-sm font-light capitalize text-slate-700 dark:text-slate-300">
-                            {{ cluster.description }}
-                          </p>
-                        </div>
-                      </button>
-                    </li>
-                  </div>
-                </ul>
-              </div>
-            </template>
-          </popper>
-        </label>
-        <div class="block space-y-4">
-          <div v-for="cluster in form.clusters" class="space-y-4 bg-green-50 p-4 shadow">
-            <div>
-              <p class="space-x-1">
-                <span class="text-lg font-semibold capitalize">{{ cluster.name }} </span>
-                <span class="text-sm font-light capitalize">[{{ cluster.typology }}]</span>
-              </p>
-              <p>Choose the Ikigai that suits you</p>
-              <p class="text-sm font-light">You can choose more than 1 options</p>
-            </div>
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <button
-                type="button"
-                :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'easy'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'easy'),
-                }"
-                class="px-3 py-2 shadow"
-                @click="onChooseIkigai(cluster, 'easy')"
-              >
-                Easy
-              </button>
-              <button
-                type="button"
-                :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'enjoy'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'enjoy'),
-                }"
-                class="px-3 py-2 shadow"
-                @click="onChooseIkigai(cluster, 'enjoy')"
-              >
-                Enjoy
-              </button>
-              <button
-                type="button"
-                :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'excellent'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'excellent'),
-                }"
-                class="px-3 py-2 shadow"
-                @click="onChooseIkigai(cluster, 'excellent')"
-              >
-                Excellent
-              </button>
-              <button
-                type="button"
-                :class="{
-                  'bg-green-400': isIkigaiChoosen(cluster, 'earn'),
-                  'bg-slate-50': !isIkigaiChoosen(cluster, 'earn'),
-                }"
-                class="px-3 py-2 shadow"
-                @click="onChooseIkigai(cluster, 'earn')"
-              >
-                Earn
-              </button>
-            </div>
-          </div>
-        </div>
-        <label class="block space-y-1">
           <span class="font-semibold">Observer</span>
           <input
             v-model="form.observer"
@@ -252,6 +154,117 @@
             {{ error }}
           </p>
         </label>
+        <div class="rounded-lg border border-gray-300 bg-white p-4">
+          <p class="font-semibold">Tentukan Cluster dan typology yang anda butuhkan?</p>
+          <p><i>Anda hanya dapat memilih maksimal 3 cluster </i></p>
+          <div class="mt-2 block space-y-4">
+            <div
+              v-for="(cluster, index) in form.clusters"
+              :key="index"
+              class="space-y-4 bg-green-50 p-4 shadow dark:bg-slate-800"
+            >
+              <div>
+                <p class="mb-2 font-semibold">Pilih Cluster</p>
+                <div class="flex flex-row flex-wrap gap-1">
+                  <p
+                    v-for="cl in clusters"
+                    :key="cl._id"
+                    class="cursor-pointer space-x-1 rounded-sm border px-3 py-2"
+                    :class="[
+                      cl._id === cluster.cluster_id ? 'bg-' + cl.name.replace(' ', '-') : 'bg-gray-50',
+                      'border-' + cl.name.replace(' ', '-'),
+                    ]"
+                    @click="chooseCluster(index, cl)"
+                  >
+                    <span class="rounded-sm text-sm capitalize">{{ cl.name }} </span>
+                  </p>
+                </div>
+                <template v-if="cluster.selectedCluster">
+                  <p
+                    class="mt-2 flex w-full flex-col gap-1 rounded-sm p-2"
+                    :class="'bg-' + cluster.selectedCluster.name.replace(' ', '-')"
+                  >
+                    <span>{{ cluster.selectedCluster?.descriptionId }}</span>
+                    <i>{{ cluster.selectedCluster?.description }}</i>
+                  </p>
+                  <p class="my-2 font-semibold">Pilih Typology</p>
+                  <div class="flex flex-row flex-wrap gap-2">
+                    <template v-for="(group, a) in cluster.selectedCluster.groups" :key="a">
+                      <div
+                        v-for="(typology, i) in group.typologies"
+                        :key="i"
+                        :class="[
+                          cluster.typology === typology.name
+                            ? 'bg-' + cluster.selectedCluster.name.replace(' ', '-')
+                            : 'bg-gray-50',
+                          'border-' + cluster.selectedCluster.name.replace(' ', '-'),
+                        ]"
+                        class="cursor-pointer space-x-1 rounded-sm border px-3 py-2 capitalize"
+                        @click="chooseTypology(index, typology.name)"
+                      >
+                        {{ typology.name }}
+                      </div>
+                    </template>
+                  </div>
+                </template>
+              </div>
+              <div v-if="cluster.typology" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <p class="col-span-2 mb-2 font-semibold sm:col-span-4">Pilih Penilaian</p>
+                <button
+                  type="button"
+                  :class="{
+                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'easy'),
+                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
+                  }"
+                  class="border border-sky-400 px-3 py-2 shadow"
+                  @click="onChooseIkigai(cluster, 'easy')"
+                >
+                  Easy
+                </button>
+                <button
+                  type="button"
+                  :class="{
+                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'enjoy'),
+                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
+                  }"
+                  class="border border-sky-400 px-3 py-2 shadow"
+                  @click="onChooseIkigai(cluster, 'enjoy')"
+                >
+                  Enjoy
+                </button>
+                <button
+                  type="button"
+                  :class="{
+                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'excellent'),
+                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
+                  }"
+                  class="border border-sky-400 px-3 py-2 shadow"
+                  @click="onChooseIkigai(cluster, 'excellent')"
+                >
+                  Excellent
+                </button>
+                <button
+                  type="button"
+                  :class="{
+                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'earn'),
+                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
+                  }"
+                  class="border border-sky-400 px-3 py-2 shadow"
+                  @click="onChooseIkigai(cluster, 'earn')"
+                >
+                  Earn
+                </button>
+              </div>
+            </div>
+            <button
+              v-if="form.clusters.length < 3"
+              class="rounded bg-sky-500 px-4 py-2 font-medium text-white transition-all hover:bg-sky-600"
+              @click="addCluster()"
+            >
+              Add Cluster
+            </button>
+          </div>
+        </div>
         <div class="flex flex-row space-x-2">
           <button
             :disabled="isSaving"
@@ -311,7 +324,9 @@ const errors = ref()
 const formErrors = ref<any>({ mimeType: '' })
 
 interface CaptureClusterInterface {
-  cluster_id: string
+  cluster_id: string | null
+  selectedCluster?: any
+  selectedTypologyIndex?: any
   name: string
   typology: string
   ikigai: string[]
@@ -376,6 +391,29 @@ const onRemoveSubmittedFile = (index: number) => {
   capture.value.files.splice(index, 1)
 }
 
+const chooseCluster = function (index: number, cluster: any) {
+  form.value.clusters[index] = {
+    cluster_id: cluster._id,
+    name: cluster.name,
+    typology: '',
+    ikigai: [],
+    selectedCluster: cluster,
+  }
+}
+
+const chooseTypology = function (index: number, typology: string) {
+  form.value.clusters[index].typology = typology
+}
+
+const addCluster = function () {
+  form.value.clusters.push({
+    cluster_id: '',
+    name: '',
+    typology: '',
+    ikigai: [],
+  })
+}
+
 const onChooseCluster = (cluster: any, typology: string) => {
   if (form.value.clusters.length >= 3) {
     notification('Cluster error', 'Max 3 cluster allowed on each activity', 'warning')
@@ -437,7 +475,15 @@ const onSubmit = async () => {
       return
     }
 
-    const response = await axios.patch('/captures/' + route.params.id, { ...form.value, date: date })
+    let values = {
+      ...form.value,
+      clusters: form.value.clusters.map((c) => ({
+        ...c,
+        selectedCluster: null,
+      })),
+    }
+
+    const response = await axios.patch('/captures/' + route.params.id, { ...values, date: date })
 
     if (form.value.files.length) {
       const formData = new FormData()
@@ -471,7 +517,7 @@ const onSubmit = async () => {
 
 const isGoogleSigninPressed = ref(false)
 const searchCluster = ref()
-const clusters = ref({})
+const clusters = ref<any>([])
 const capture = ref({
   file: {
     id: '',
@@ -486,10 +532,15 @@ const getCapture = async () => {
   form.value.date = format(new Date(result.data.date), 'dd-MM-yyyy')
   form.value.activity = result.data.activity
   form.value.description = result.data.description
-  form.value.clusters = result.data.clusters
+  form.value.clusters = result.data.clusters.map((c: any) => {
+    return {
+      ...c,
+      selectedCluster: clusters.value.find((a: any) => a._id === c.cluster_id),
+    }
+  })
   form.value.observer = result.data.observer
   if (result.data.files) {
-    capture.value.files = result.data.files
+    form.value.files = result.data.files
   }
 }
 const getClusters = async (search = '') => {

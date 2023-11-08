@@ -1,0 +1,52 @@
+.border-servicing {
+    border-color: #5b55e0;
+}
+.border-thinking {
+    border-color: #489f7b;
+}
+.border-reasoning {
+    border-color: #ffdb94;
+}
+.border-elementary {
+    border-color: #bac94a;
+}
+.border-networking {
+    border-color: #b9e3fc;
+}
+.border-generating-idea {
+    border-color: #f2a593;
+}
+.border-technical {
+    border-color: #f36b79;
+}
+.border-headman {
+    border-color: #749df5;
+}
+.bg-servicing {
+    background-color: #5b55e0;
+    color: white;
+}
+.bg-thinking {
+    background-color: #489f7b;
+    color: white;
+}
+.bg-reasoning {
+    background-color: #ffdb94;
+}
+.bg-elementary {
+    background-color: #bac94a;
+}
+.bg-networking {
+    background-color: #b9e3fc;
+}
+.bg-generating-idea {
+    background-color: #f2a593;
+    color: white;
+}
+.bg-technical {
+    background-color: #f36b79;
+    color: white;
+}
+.bg-headman {
+    background-color: #749df5;
+}

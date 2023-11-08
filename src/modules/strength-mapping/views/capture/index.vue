@@ -70,7 +70,7 @@
                 <img class="h-12 w-12 rounded-full md:h-14 md:w-14" src="/blank-profile-picture.svg" alt="avatar" />
                 <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
                   <div class="text-xs font-semibold text-gray-900 dark:text-white md:text-lg">
-                    {{ capture.createdBy.name }}
+                    {{ capture.createdBy?.name }}
                   </div>
                   <div class="md:text-md text-xs font-normal text-gray-500 dark:text-gray-400">
                     {{
