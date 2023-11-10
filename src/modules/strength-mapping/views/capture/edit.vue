@@ -77,8 +77,8 @@
             </label>
           </div>
         </label>
-        <p v-if="errors?.file" class="mt-1 text-xs text-red-500">
-          {{ errors?.file }}
+        <p v-if="errors?.files?.[0]" class="mt-1 text-xs text-red-500">
+          {{ 'Please provide a photo to save this form' }}
         </p>
         <p v-if="formErrors.mimeType" class="my-2 text-center text-sm text-red-500">
           {{ formErrors.mimeType }}
