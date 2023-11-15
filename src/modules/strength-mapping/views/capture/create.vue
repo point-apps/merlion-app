@@ -159,7 +159,12 @@
                     ]"
                     @click="chooseCluster(index, cl)"
                   >
-                    <span class="rounded-sm text-sm capitalize">{{ cl.name }} </span>
+                    <span class="flex items-center gap-2 rounded-sm text-sm capitalize">
+                      {{ cl.name }}
+                      <div class="" :class="cluster.selectedCluster?._id === cl._id ? 'rotate-180' : 'rotate-0'">
+                        <fa-icon icon="fa-solid fa-caret-down" :class="''"></fa-icon>
+                      </div>
+                    </span>
                   </p>
                 </div>
                 <template v-if="cluster.selectedCluster">
@@ -182,13 +187,24 @@
                             : 'bg-gray-50',
                           'border-' + cluster.selectedCluster.name.replace(' ', '-'),
                         ]"
-                        class="cursor-pointer space-x-1 rounded-sm border px-3 py-2 capitalize"
+                        class="flex cursor-pointer items-center gap-2 rounded-sm border px-3 py-2 capitalize"
                         @click="chooseTypology(index, typology.name)"
                       >
                         {{ typology.name }}
+                        <div class="" :class="cluster.typology === typology.name ? 'rotate-180' : 'rotate-0'">
+                          <fa-icon icon="fa-solid fa-caret-down" :class="''"></fa-icon>
+                        </div>
                       </div>
                     </template>
                   </div>
+                  <p
+                    v-if="cluster.typology"
+                    class="mt-2 flex w-full flex-col gap-1 rounded-sm p-2"
+                    :class="'bg-' + cluster.selectedCluster.name.replace(' ', '-')"
+                  >
+                    <span>{{ getSelectedTypology(cluster)?.descriptionId }}</span>
+                    <i>{{ getSelectedTypology(cluster)?.description }}</i>
+                  </p>
                 </template>
               </div>
               <div v-if="cluster.typology" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -240,11 +256,17 @@
               </div>
             </div>
             <button
-              v-if="form.clusters.length < 3"
-              class="rounded bg-sky-500 px-4 py-2 font-medium text-white transition-all hover:bg-sky-600"
-              @click="addCluster()"
+              :disabled="form.clusters.length >= 3"
+              :class="[
+                {
+                  'bg-sky-500 text-white hover:bg-sky-600': form.clusters.length < 3,
+                  'cursor-not-allowed bg-slate-300 text-slate-600': form.clusters.length >= 3,
+                },
+              ]"
+              class="rounded px-4 py-2 font-medium transition-all"
+              @click="form.clusters.length < 3 ? addCluster() : ''"
             >
-              Add Cluster
+              Add new cluster
             </button>
           </div>
         </div>
@@ -413,6 +435,12 @@ const onFileChange = (e: any) => {
     size: file.size,
     mimeType: file.type,
   })
+}
+
+const getSelectedTypology = function (cluster: any) {
+  return cluster.selectedCluster?.groups
+    ?.find((g: any) => g.typologies.some((t: any) => t.name === cluster.typology))
+    ?.typologies?.find((t: any) => t.name === cluster.typology)
 }
 
 const onRemoveFile = (index: number) => {
