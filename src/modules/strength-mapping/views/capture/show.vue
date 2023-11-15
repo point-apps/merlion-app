@@ -28,7 +28,7 @@
           <span class="font-semibold">Activity photos or videos</span>
           <div v-if="!capture.files" class="font-light italic">Not captured any photo or video</div>
           <div
-            v-if="capture.files && capture.files[0].id != null"
+            v-if="capture.files && capture.files?.[0]?.id != null"
             class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap"
           >
             <div
@@ -81,30 +81,30 @@
               <button
                 type="button"
                 :class="{
-                  'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'easy'),
+                  'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'easy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
                 }"
-                class="px-3 py-2 shadow"
+                class="border border-sky-400 px-3 py-2 shadow"
               >
                 Easy
               </button>
               <button
                 type="button"
                 :class="{
-                  'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'enjoy'),
+                  'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'enjoy'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
                 }"
-                class="px-3 py-2 shadow"
+                class="border border-sky-400 px-3 py-2 shadow"
               >
                 Enjoy
               </button>
               <button
                 type="button"
                 :class="{
-                  'bg-green-400 dark:bg-green-700': isIkigaiChoosen(cluster, 'excellent'),
+                  'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'excellent'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
                 }"
-                class="px-3 py-2 shadow"
+                class="border border-sky-400 px-3 py-2 shadow"
               >
                 Excellent
               </button>
@@ -114,7 +114,7 @@
                   'bg-green-400 dark:bg-slate-700': isIkigaiChoosen(cluster, 'earn'),
                   'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
                 }"
-                class="px-3 py-2 shadow"
+                class="border border-sky-400 px-3 py-2 shadow"
               >
                 Earn
               </button>

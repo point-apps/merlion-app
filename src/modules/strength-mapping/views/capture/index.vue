@@ -61,16 +61,28 @@
       </div>
     </div>
 
+    <div
+      class="fixed left-0 z-[10000] flex w-full transition-all duration-500"
+      :class="isNewPostAvailable ? 'top-16' : '-top-16'"
+    >
+      <div
+        class="mx-auto rounded-full bg-white px-3 py-2 text-sm font-semibold shadow-lg"
+        @click="() => getCaptureFeed(1)"
+      >
+        Capture Baru
+      </div>
+    </div>
+
     <div v-if="view === 'feed'" class="space-y-5 md:space-y-8">
-      <div v-for="(capture, index) in captures" :key="capture._id">
+      <div v-for="capture in feedCaptures" :key="capture._id">
         <div class="card space-y-5 p-4 md:space-y-8 md:p-16">
           <router-link :to="`/strength-mapping/capture/${capture._id}`">
             <div class="space-y-5">
-              <div class="flex space-x-4">
+              <div class="flex w-full gap-4">
                 <img class="h-12 w-12 rounded-full md:h-14 md:w-14" src="/blank-profile-picture.svg" alt="avatar" />
                 <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
                   <div class="text-xs font-semibold text-gray-900 dark:text-white md:text-lg">
-                    {{ capture.createdBy.name }}
+                    {{ capture.createdBy?.name }}
                   </div>
                   <div class="md:text-md text-xs font-normal text-gray-500 dark:text-gray-400">
                     {{
@@ -80,6 +92,16 @@
                             addSuffix: true,
                           })
                     }}
+                  </div>
+                </div>
+                <div class="ml-auto flex flex-col items-end gap-2">
+                  <div
+                    v-for="{ name, _id } in capture._cluster"
+                    :key="_id"
+                    class="w-fit rounded-full px-2 py-1 text-xs font-semibold capitalize"
+                    :class="'bg-' + name.toString().replace(' ', '-')"
+                  >
+                    {{ name }}
                   </div>
                 </div>
               </div>
@@ -93,17 +115,8 @@
             <div v-if="!capture.files" class="font-light italic">Not captured any photo or video</div>
             <div v-if="capture.files && capture.files[0].id != null">
               <swiper :slides-per-view="1" navigation :pagination="{ clickable: true }">
-                <swiper-slide v-for="(file, index) in capture.files" :key="index">
-                  <video v-if="file?.mimeType?.includes('video')" controls class="w-full">
-                    <source :src="file.url" />
-                    Your browser does not support HTML5 video.
-                  </video>
-                  <img
-                    v-else
-                    :src="file.url"
-                    alt="activity"
-                    class="max-h-[200px] w-full object-cover md:max-h-[400px]"
-                  />
+                <swiper-slide v-for="(file, i) in capture.files" :key="i">
+                  <PostSlide :file="file"></PostSlide>
                 </swiper-slide>
               </swiper>
             </div>
@@ -112,6 +125,11 @@
         <!-- <router-link :to="`/strength-mapping/capture/${capture._id}`" class="text-blue-500 hover:text-blue-600">
           
         </router-link> -->
+      </div>
+      <div v-if="isEndScrolled" class="flex h-40 w-full items-center justify-center md:h-[400px]">
+        <div
+          class="block h-20 w-20 animate-spin rounded-full border border-gray-800 border-b-transparent bg-transparent transition"
+        ></div>
       </div>
     </div>
 
@@ -127,7 +145,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(capture, index) in captures" :key="capture._id" class="basic-table-row">
+            <tr v-for="capture in captures" :key="capture._id" class="basic-table-row">
               <td class="basic-table-body whitespace-nowrap">
                 {{ format(new Date(capture.date), 'dd-MM-yyyy') }}
               </td>
@@ -171,8 +189,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
+import PostSlide from '@/components/post-slide.vue'
 import axios from '@/axios'
 import { watchDebounced } from '@vueuse/core'
 import { differenceInDays, format, formatDistance } from 'date-fns'
@@ -189,7 +208,8 @@ const searchStore = useSearchStore()
 
 const fromDate = ref<string | null>('')
 const toDate = ref<string | null>('')
-const captures = ref([])
+const captures = ref<any[]>([])
+const feedCaptures = ref<any[]>([])
 const pagination = ref({
   page: 1,
   pageCount: 0,
@@ -202,6 +222,25 @@ const isDraft = ref(false)
 const { searchText } = storeToRefs(searchStore)
 const currentPage = ref(1)
 const pageSize = 10
+const currentFeedPage = ref(1)
+const isFetchingFeed = ref(false)
+const isEndScrolled = ref(false)
+
+const isNewPostAvailable = ref(false)
+const lastDateReceived = ref(new Date())
+
+const getPostAvailability = async function () {
+  const result = await axios.get('/captures/new', {
+    params: {
+      afterDate: lastDateReceived.value,
+    },
+  })
+
+  if (result.data?.data?.[0]?.total) {
+    isNewPostAvailable.value = true
+    currentFeedPage.value = 1
+  }
+}
 
 const getCaptures = async (page = 1) => {
   const result = await axios.get('/captures', {
@@ -245,6 +284,59 @@ const onClickPage = async (page: number) => {
   await getCaptures(page)
 }
 
+const checkEnd = function (e: any) {
+  if (!isFetchingFeed.value) {
+    currentFeedPage.value += 1
+    isEndScrolled.value = true
+    getCaptureFeed(currentFeedPage.value)
+  }
+}
+
+const getCaptureFeed = async (page: number = 1) => {
+  if (isFetchingFeed.value) {
+    return
+  }
+  isFetchingFeed.value = true
+  try {
+    const result = await axios.get('/captures', {
+      params: {
+        pageSize: pageSize,
+        page: page,
+        sort: {
+          date: 'desc',
+        },
+        search: {
+          activity: searchText.value,
+          cluster: searchText.value,
+          fromDate: fromDate.value,
+          toDate: toDate.value,
+        },
+        filter: {
+          isDraft: isDraft.value as boolean,
+        },
+      },
+    })
+    pagination.value = {
+      page: result.data.pagination.page,
+      pageCount: result.data.pagination.pageCount,
+      pageSize: result.data.pagination.pageSize,
+      totalDocument: result.data.pagination.totalDocument,
+    }
+    currentFeedPage.value = page
+    if (page === 1) {
+      feedCaptures.value = result.data.data
+    } else {
+      feedCaptures.value.push(...result.data.data)
+    }
+    lastDateReceived.value = new Date()
+    isNewPostAvailable.value = false
+  } catch (e) {
+    //
+  }
+  isEndScrolled.value = false
+  isFetchingFeed.value = false
+}
+
 watch(searchText, () => {
   isLoadingSearch.value = true
 })
@@ -282,6 +374,18 @@ watch(searchDateState, async () => {
 })
 
 onMounted(async () => {
-  await getCaptures()
+  window.addEventListener('scrollend', checkEnd)
+  try {
+    await getCaptures()
+    await getCaptureFeed(currentFeedPage.value)
+    setInterval(async () => {
+      await getPostAvailability()
+    }, 30000)
+  } catch (e) {
+    //
+  }
+})
+onUnmounted(() => {
+  window.removeEventListener('scrollend', checkEnd)
 })
 </script>
