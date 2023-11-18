@@ -176,7 +176,12 @@
                     ]"
                     @click="chooseCluster(index, cl)"
                   >
-                    <span class="rounded-sm text-sm capitalize">{{ cl.name }} </span>
+                    <span class="flex items-center gap-2 rounded-sm text-sm capitalize">
+                      {{ cl.name }}
+                      <div class="" :class="cluster.selectedCluster?._id === cl._id ? 'rotate-180' : 'rotate-0'">
+                        <fa-icon icon="fa-solid fa-caret-down" :class="''"></fa-icon>
+                      </div>
+                    </span>
                   </p>
                 </div>
                 <template v-if="cluster.selectedCluster">
@@ -199,14 +204,25 @@
                             : 'bg-gray-50',
                           'border-' + cluster.selectedCluster.name.replace(' ', '-'),
                         ]"
-                        class="cursor-pointer space-x-1 rounded-sm border px-3 py-2 capitalize"
+                        class="flex cursor-pointer items-center gap-2 rounded-sm border px-3 py-2 capitalize"
                         @click="chooseTypology(index, typology.name)"
                       >
                         {{ typology.name }}
+                        <div class="" :class="cluster.typology === typology.name ? 'rotate-180' : 'rotate-0'">
+                          <fa-icon icon="fa-solid fa-caret-down" :class="''"></fa-icon>
+                        </div>
                       </div>
                     </template>
                   </div>
                 </template>
+                <p
+                  v-if="cluster.typology"
+                  class="mt-2 flex w-full flex-col gap-1 rounded-sm p-2"
+                  :class="'bg-' + cluster.selectedCluster.name.replace(' ', '-')"
+                >
+                  <span>{{ getSelectedTypology(cluster)?.descriptionId }}</span>
+                  <i>{{ getSelectedTypology(cluster)?.description }}</i>
+                </p>
               </div>
               <div v-if="cluster.typology" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 <p class="col-span-2 mb-2 font-semibold sm:col-span-4">Pilih Penilaian</p>
@@ -363,6 +379,12 @@ const authStore = useAuthStore()
 const isGrantedUploadGoogleDrive = () => {
   const googleScopes = authStore.$state.user.googleScopes
   return googleScopes?.includes('https://www.googleapis.com/auth/drive.file')
+}
+
+const getSelectedTypology = function (cluster: any) {
+  return cluster.selectedCluster?.groups
+    ?.find((g: any) => g.typologies.some((t: any) => t.name === cluster.typology))
+    ?.typologies?.find((t: any) => t.name === cluster.typology)
 }
 
 const onFileChange = (e: any) => {

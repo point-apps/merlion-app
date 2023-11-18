@@ -66,7 +66,7 @@
       :class="isNewPostAvailable ? 'top-16' : '-top-16'"
     >
       <div
-        class="mx-auto rounded-full bg-white px-3 py-2 text-sm font-semibold shadow-lg"
+        class="mx-auto cursor-pointer rounded-full bg-white px-3 py-2 text-sm font-semibold shadow-lg"
         @click="() => getCaptureFeed(1)"
       >
         Capture Baru
@@ -230,7 +230,7 @@ const isNewPostAvailable = ref(false)
 const lastDateReceived = ref(new Date())
 
 const getPostAvailability = async function () {
-  const result = await axios.get('/captures/new', {
+  const result = await axios.get('/captures/post-counter', {
     params: {
       afterDate: lastDateReceived.value,
     },
@@ -286,9 +286,9 @@ const onClickPage = async (page: number) => {
 
 const checkEnd = function (e: any) {
   if (!isFetchingFeed.value) {
-    currentFeedPage.value += 1
-    isEndScrolled.value = true
-    getCaptureFeed(currentFeedPage.value)
+    // currentFeedPage.value += 1
+    // isEndScrolled.value = true
+    // getCaptureFeed(currentFeedPage.value)
   }
 }
 
@@ -300,8 +300,8 @@ const getCaptureFeed = async (page: number = 1) => {
   try {
     const result = await axios.get('/captures', {
       params: {
-        pageSize: pageSize,
-        page: page,
+        pageSize: 100000000,
+        page: 1,
         sort: {
           date: 'desc',
         },
@@ -333,7 +333,7 @@ const getCaptureFeed = async (page: number = 1) => {
   } catch (e) {
     //
   }
-  isEndScrolled.value = false
+  // isEndScrolled.value = false
   isFetchingFeed.value = false
 }
 
