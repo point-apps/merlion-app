@@ -155,8 +155,20 @@
           </p>
         </label>
         <div class="rounded-lg border border-gray-300 bg-white p-4">
-          <p class="font-semibold">Tentukan Cluster dan typology yang anda butuhkan?</p>
-          <p><i>Anda hanya dapat memilih maksimal 3 cluster </i></p>
+          <div class="flex flex-row gap-2">
+            <div>
+              <p class="font-semibold">Tentukan Cluster dan typology yang anda butuhkan?</p>
+              <p><i>Anda hanya dapat memilih maksimal 3 cluster </i></p>
+            </div>
+            <a
+              href="https://docs.google.com/spreadsheets/d/1mK8TA4WBoEq7Zdp2H5n3NXAec45uQltYvy0FoHj-noE/edit?usp=sharing"
+              target="_blank"
+              class="ml-auto flex flex-col gap-1 text-right text-xl"
+            >
+              <fa-icon icon="fa-solid fa-book" :class="''"></fa-icon>
+              <i class="text-xs text-sky-600">Cluster Library</i>
+            </a>
+          </div>
           <div class="mt-2 block space-y-4">
             <div
               v-for="(cluster, index) in form.clusters"
@@ -178,7 +190,19 @@
                   >
                     <span class="flex items-center gap-2 rounded-sm text-sm capitalize">
                       {{ cl.name }}
-                      <div class="" :class="cluster.selectedCluster?._id === cl._id ? 'rotate-180' : 'rotate-0'">
+                      <div
+                        class="-my-2 -mr-2 flex h-6 w-6 items-center justify-center"
+                        :class="
+                          cluster.selectedCluster?._id === cl._id && toggles['cluster_' + index]
+                            ? 'rotate-180'
+                            : 'rotate-0'
+                        "
+                        @click="
+                          () =>
+                            (toggles['cluster_' + index] =
+                              cluster.selectedCluster?._id !== cl._id ? true : !toggles['cluster_' + index]) || true
+                        "
+                      >
                         <fa-icon icon="fa-solid fa-caret-down" :class="''"></fa-icon>
                       </div>
                     </span>
@@ -186,6 +210,7 @@
                 </div>
                 <template v-if="cluster.selectedCluster">
                   <p
+                    v-if="toggles['cluster_' + index]"
                     class="mt-2 flex w-full flex-col gap-1 rounded-sm p-2"
                     :class="'bg-' + cluster.selectedCluster.name.replace(' ', '-')"
                   >
@@ -208,21 +233,35 @@
                         @click="chooseTypology(index, typology.name)"
                       >
                         {{ typology.name }}
-                        <div class="" :class="cluster.typology === typology.name ? 'rotate-180' : 'rotate-0'">
+                        <div
+                          class="-my-2 -mr-2 flex h-6 w-6 items-center justify-center"
+                          :class="
+                            cluster.typology === typology.name && toggles['cluster_' + index + '_typology']
+                              ? 'rotate-180'
+                              : 'rotate-0'
+                          "
+                          @click="
+                            () =>
+                              (toggles['cluster_' + index + '_typology'] =
+                                cluster.typology === typology.name
+                                  ? !toggles['cluster_' + index + '_typology']
+                                  : true) || true
+                          "
+                        >
                           <fa-icon icon="fa-solid fa-caret-down" :class="''"></fa-icon>
                         </div>
                       </div>
                     </template>
                   </div>
+                  <p
+                    v-if="cluster.typology && toggles['cluster_' + index + '_typology']"
+                    class="mt-2 flex w-full flex-col gap-1 rounded-sm p-2"
+                    :class="'bg-' + cluster.selectedCluster.name.replace(' ', '-')"
+                  >
+                    <span>{{ getSelectedTypology(cluster)?.descriptionId }}</span>
+                    <i>{{ getSelectedTypology(cluster)?.description }}</i>
+                  </p>
                 </template>
-                <p
-                  v-if="cluster.typology"
-                  class="mt-2 flex w-full flex-col gap-1 rounded-sm p-2"
-                  :class="'bg-' + cluster.selectedCluster.name.replace(' ', '-')"
-                >
-                  <span>{{ getSelectedTypology(cluster)?.descriptionId }}</span>
-                  <i>{{ getSelectedTypology(cluster)?.description }}</i>
-                </p>
               </div>
               <div v-if="cluster.typology" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 <p class="col-span-2 mb-2 font-semibold sm:col-span-4">Pilih Penilaian</p>
@@ -338,6 +377,7 @@ const route = useRoute()
 const router = useRouter()
 const errors = ref()
 const formErrors = ref<any>({ mimeType: '' })
+const toggles = ref<any>({})
 
 interface CaptureClusterInterface {
   cluster_id: string | null

@@ -286,9 +286,9 @@ const onClickPage = async (page: number) => {
 
 const checkEnd = function (e: any) {
   if (!isFetchingFeed.value) {
-    // currentFeedPage.value += 1
-    // isEndScrolled.value = true
-    // getCaptureFeed(currentFeedPage.value)
+    currentFeedPage.value += 1
+    isEndScrolled.value = true
+    getCaptureFeed(currentFeedPage.value)
   }
 }
 
@@ -300,8 +300,8 @@ const getCaptureFeed = async (page: number = 1) => {
   try {
     const result = await axios.get('/captures', {
       params: {
-        pageSize: 100000000,
-        page: 1,
+        pageSize: 10,
+        page: currentFeedPage.value,
         sort: {
           date: 'desc',
         },
@@ -333,7 +333,7 @@ const getCaptureFeed = async (page: number = 1) => {
   } catch (e) {
     //
   }
-  // isEndScrolled.value = false
+  isEndScrolled.value = false
   isFetchingFeed.value = false
 }
 
@@ -375,6 +375,7 @@ watch(searchDateState, async () => {
 
 onMounted(async () => {
   window.addEventListener('scrollend', checkEnd)
+  window.addEventListener('touchend', checkEnd)
   try {
     await getCaptures()
     await getCaptureFeed(currentFeedPage.value)
@@ -387,5 +388,6 @@ onMounted(async () => {
 })
 onUnmounted(() => {
   window.removeEventListener('scrollend', checkEnd)
+  window.removeEventListener('touchend', checkEnd)
 })
 </script>
