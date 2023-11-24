@@ -381,7 +381,7 @@ onMounted(async () => {
     await getCaptureFeed(currentFeedPage.value)
     setInterval(async () => {
       await getPostAvailability()
-    }, 30000)
+    }, 10000)
   } catch (e) {
     //
   }

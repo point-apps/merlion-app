@@ -180,7 +180,7 @@
                             ? 'rotate-180'
                             : 'rotate-0'
                         "
-                        @click="
+                        @click.stop="
                           () =>
                             (toggles['cluster_' + index] =
                               cluster.selectedCluster?._id !== cl._id ? true : !toggles['cluster_' + index]) || true
@@ -223,7 +223,7 @@
                               ? 'rotate-180'
                               : 'rotate-0'
                           "
-                          @click="
+                          @click.stop="
                             () =>
                               (toggles['cluster_' + index + '_typology'] =
                                 cluster.typology === typology.name
