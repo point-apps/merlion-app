@@ -192,15 +192,11 @@
                       {{ cl.name }}
                       <div
                         class="-my-2 -mr-2 flex h-6 w-6 items-center justify-center"
-                        :class="
-                          cluster.selectedCluster?._id === cl._id && toggles['cluster_' + index]
-                            ? 'rotate-180'
-                            : 'rotate-0'
-                        "
+                        :class="toggles['cluster_' + index]?._id === cl?._id ? 'rotate-180' : 'rotate-0'"
                         @click.stop="
                           () =>
-                            (toggles['cluster_' + index] =
-                              cluster.selectedCluster?._id !== cl._id ? true : !toggles['cluster_' + index]) || true
+                            (toggles['cluster_' + index] = toggles['cluster_' + index]?._id === cl?._id ? false : cl) ||
+                            cl
                         "
                       >
                         <fa-icon icon="fa-solid fa-caret-down" :class="''"></fa-icon>
@@ -208,15 +204,15 @@
                     </span>
                   </p>
                 </div>
+                <p
+                  v-if="toggles['cluster_' + index]"
+                  class="mt-2 flex w-full flex-col gap-1 rounded-sm p-2"
+                  :class="'bg-' + toggles['cluster_' + index].name.replace(' ', '-')"
+                >
+                  <span>{{ toggles['cluster_' + index]?.descriptionId }}</span>
+                  <i>{{ toggles['cluster_' + index]?.description }}</i>
+                </p>
                 <template v-if="cluster.selectedCluster">
-                  <p
-                    v-if="toggles['cluster_' + index]"
-                    class="mt-2 flex w-full flex-col gap-1 rounded-sm p-2"
-                    :class="'bg-' + cluster.selectedCluster.name.replace(' ', '-')"
-                  >
-                    <span>{{ cluster.selectedCluster?.descriptionId }}</span>
-                    <i>{{ cluster.selectedCluster?.description }}</i>
-                  </p>
                   <p class="my-2 font-semibold">Pilih Typology</p>
                   <div class="flex flex-row flex-wrap gap-2">
                     <template v-for="(group, a) in cluster.selectedCluster.groups" :key="a">
@@ -230,22 +226,21 @@
                           'border-' + cluster.selectedCluster.name.replace(' ', '-'),
                         ]"
                         class="flex cursor-pointer items-center gap-2 rounded-sm border px-3 py-2 capitalize"
-                        @click="chooseTypology(index, typology.name)"
+                        @click.stop="chooseTypology(index, typology.name)"
                       >
                         {{ typology.name }}
                         <div
                           class="-my-2 -mr-2 flex h-6 w-6 items-center justify-center"
                           :class="
-                            cluster.typology === typology.name && toggles['cluster_' + index + '_typology']
+                            toggles['cluster_' + index + '_typology']?.name === typology.name
                               ? 'rotate-180'
                               : 'rotate-0'
                           "
                           @click.stop="
                             () =>
                               (toggles['cluster_' + index + '_typology'] =
-                                cluster.typology === typology.name
-                                  ? !toggles['cluster_' + index + '_typology']
-                                  : true) || true
+                                toggles['cluster_' + index + '_typology']?.name === typology.name ? false : typology) ||
+                              typology
                           "
                         >
                           <fa-icon icon="fa-solid fa-caret-down" :class="''"></fa-icon>
@@ -254,12 +249,12 @@
                     </template>
                   </div>
                   <p
-                    v-if="cluster.typology && toggles['cluster_' + index + '_typology']"
+                    v-if="toggles['cluster_' + index + '_typology']"
                     class="mt-2 flex w-full flex-col gap-1 rounded-sm p-2"
                     :class="'bg-' + cluster.selectedCluster.name.replace(' ', '-')"
                   >
-                    <span>{{ getSelectedTypology(cluster)?.descriptionId }}</span>
-                    <i>{{ getSelectedTypology(cluster)?.description }}</i>
+                    <span>{{ toggles['cluster_' + index + '_typology']?.descriptionId }}</span>
+                    <i>{{ toggles['cluster_' + index + '_typology']?.description }}</i>
                   </p>
                 </template>
               </div>
