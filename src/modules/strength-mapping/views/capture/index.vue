@@ -94,16 +94,6 @@
                     }}
                   </div>
                 </div>
-                <div class="ml-auto flex flex-col items-end gap-2">
-                  <div
-                    v-for="{ name, _id } in capture._cluster"
-                    :key="_id"
-                    class="w-fit rounded-full px-2 py-1 text-xs font-semibold capitalize"
-                    :class="'bg-' + name.toString().replace(' ', '-')"
-                  >
-                    {{ name }}
-                  </div>
-                </div>
               </div>
               <div class="w-full text-justify">
                 {{ capture.description }}
