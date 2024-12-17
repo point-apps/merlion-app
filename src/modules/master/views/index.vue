@@ -9,28 +9,28 @@
         to="/master/user"
         class="flex flex-col space-y-1 rounded bg-white px-2 py-4 text-center shadow dark:bg-slate-800"
       >
-        <fa-icon icon="fa-thin fa-users w-12 h-12" />
+        <fa-icon icon="fa-thin fa-3x fa-users w-12 h-12" />
         <span>User</span>
       </router-link>
       <router-link
         to="/master/cluster"
         class="flex flex-col space-y-1 rounded bg-white px-2 py-4 text-center shadow dark:bg-slate-800"
       >
-        <fa-icon icon="fa-thin fa-circle-nodes w-12 h-12" />
+        <fa-icon icon="fa-thin fa-3x fa-circle-nodes w-12 h-12" />
         <span>Cluster</span>
       </router-link>
       <router-link
         to="/master/institution"
         class="flex flex-col space-y-1 rounded bg-white px-2 py-4 text-center shadow dark:bg-slate-800"
       >
-        <fa-icon icon="fa-thin fa-building-columns w-12 h-12" />
+        <fa-icon icon="fa-thin fa-3x fa-building-columns w-12 h-12" />
         <span>Institution</span>
       </router-link>
       <router-link
         to="/master/notification"
         class="flex flex-col space-y-1 rounded bg-white px-2 py-4 text-center shadow dark:bg-slate-800"
       >
-        <fa-icon icon="fa-thin fa-envelope w-12 h-12" />
+        <fa-icon icon="fa-thin fa-3x fa-envelope w-12 h-12" />
         <span>Notification</span>
       </router-link>
     </div>

@@ -61,11 +61,10 @@
         >
           Feed
         </button>
-        <div class="font-bold">|</div>
       </div>
     </div>
 
-    <div
+    <!-- <div
       class="fixed left-0 z-[10000] flex w-full transition-all duration-500"
       :class="isNewPostAvailable ? 'top-16' : '-top-16'"
     >
@@ -75,7 +74,7 @@
       >
         Capture Baru
       </div>
-    </div>
+    </div> -->
 
     <div v-if="view === 'feed'" class="space-y-5 md:space-y-8">
       <div v-for="capture in feedCaptures" :key="capture._id">
