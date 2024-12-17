@@ -12,7 +12,7 @@
   }
 
   .sidebar-shortcut-container {
-    @apply flex h-full w-full flex-col items-center border-r bg-slate-800 border-slate-700;
+    @apply flex h-full w-full flex-col items-center border-r bg-[#193851] border-slate-700;
   }
 
   .sidebar-shortcut-body {
@@ -36,7 +36,7 @@
   }
 
   .sidebar-panel-container {
-    @apply flex h-full grow flex-col bg-slate-800;
+    @apply flex h-full grow flex-col bg-[#193851];
   }
 
   .sidebar-panel-header {
