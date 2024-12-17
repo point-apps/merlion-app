@@ -34,12 +34,16 @@
           Draft
         </button>
       </div>
+
+      <div class="hidden lg:block">
+        <router-link to="/strength-mapping/capture/create" class="btn btn-base bg-[#4C9F82] px-12 py-2 text-white">
+          <fa-icon icon="fa-regular fa-camera fa-lg" /> <span class="ml-2">Capture New Activity</span>
+        </router-link>
+      </div>
+
+      <div></div>
+
       <div class="absolute right-8 flex place-items-end space-x-2">
-        <div class="hidden lg:block">
-          <router-link to="/strength-mapping/capture/create">
-            <fa-icon icon="fa-regular fa-camera fa-lg" />
-          </router-link>
-        </div>
         <button
           type="button"
           class="text-md inline-block font-semibold uppercase leading-normal focus:outline-none focus:ring-0"
@@ -79,7 +83,7 @@
           <router-link :to="`/strength-mapping/capture/${capture._id}`">
             <div class="space-y-5">
               <div class="flex w-full gap-4">
-                <img class="h-12 w-12 rounded-full md:h-14 md:w-14" src="/blank-profile-picture.svg" alt="avatar" />
+                <img class="size-12 rounded-full md:size-14" src="/blank-profile-picture.svg" alt="avatar" />
                 <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
                   <div class="text-xs font-semibold text-gray-900 dark:text-white md:text-lg">
                     {{ capture.createdBy?.name }}
@@ -128,7 +132,7 @@
       </div>
       <div v-if="isEndScrolled" class="flex h-40 w-full items-center justify-center md:h-[400px]">
         <div
-          class="block h-20 w-20 animate-spin rounded-full border border-gray-800 border-b-transparent bg-transparent transition"
+          class="block size-20 animate-spin rounded-full border border-gray-800 border-b-transparent bg-transparent transition"
         ></div>
       </div>
     </div>
@@ -380,7 +384,8 @@ onMounted(async () => {
     await getCaptures()
     await getCaptureFeed(currentFeedPage.value)
     setInterval(async () => {
-      await getPostAvailability()
+      // TODO: WHAT IS THIS ??? SHOULD NOT CALL API IN INTERVAL
+      // await getPostAvailability()
     }, 10000)
   } catch (e) {
     //

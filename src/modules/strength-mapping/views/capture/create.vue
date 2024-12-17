@@ -56,7 +56,7 @@
             >
               <div class="flex flex-col items-center justify-center pb-6 pt-5">
                 <svg
-                  class="mb-3 h-10 w-10 text-gray-400"
+                  class="mb-3 size-10 text-gray-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -140,8 +140,13 @@
         <div class="rounded-lg border border-gray-300 bg-white p-4">
           <div class="flex flex-row gap-2">
             <div>
-              <p class="font-semibold">Tentukan Cluster dan typology yang anda butuhkan?</p>
-              <p><i>Anda hanya dapat memilih maksimal 3 cluster </i></p>
+              <p class="font-semibold">Define the Strength Map from the Activity!</p>
+              <p>Instructions :</p>
+              <p>
+                1. For the activity you have described, you have to define the Strength Map, consist of Strength Cluster
+                - Strength Typology - Strength Experience
+              </p>
+              <p>2. You can only create maximum of 3 Strength Map, by clicking "Add New Strength Map" button</p>
             </div>
             <a
               href="https://docs.google.com/spreadsheets/d/1mK8TA4WBoEq7Zdp2H5n3NXAec45uQltYvy0FoHj-noE/edit?usp=sharing"
@@ -159,7 +164,7 @@
               class="space-y-4 bg-green-50 p-4 shadow dark:bg-slate-800"
             >
               <div>
-                <p class="mb-2 font-semibold">Pilih Cluster</p>
+                <p class="mb-2 font-semibold">Choose Cluster</p>
                 <div class="flex flex-row flex-wrap gap-1">
                   <p
                     v-for="cl in clusters"
@@ -174,7 +179,7 @@
                     <span class="flex items-center gap-2 rounded-sm text-sm capitalize">
                       {{ cl.name }}
                       <div
-                        class="-my-2 -mr-2 flex h-6 w-6 items-center justify-center"
+                        class="-my-2 -mr-2 flex size-6 items-center justify-center"
                         :class="toggles['cluster_' + index]?._id === cl?._id ? 'rotate-180' : 'rotate-0'"
                         @click.stop="
                           () =>
@@ -196,7 +201,7 @@
                   <i>{{ toggles['cluster_' + index]?.description }}</i>
                 </p>
                 <template v-if="cluster.selectedCluster">
-                  <p class="my-2 font-semibold">Pilih Typology</p>
+                  <p class="my-2 font-semibold">Choose Typology</p>
                   <div class="flex flex-row flex-wrap gap-2">
                     <template v-for="(group, a) in cluster.selectedCluster.groups" :key="a">
                       <div
@@ -213,7 +218,7 @@
                       >
                         {{ typology.name }}
                         <div
-                          class="-my-2 -mr-2 flex h-6 w-6 items-center justify-center"
+                          class="-my-2 -mr-2 flex size-6 items-center justify-center"
                           :class="
                             toggles['cluster_' + index + '_typology']?.name === typology.name
                               ? 'rotate-180'
@@ -242,7 +247,7 @@
                 </template>
               </div>
               <div v-if="cluster.typology" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <p class="col-span-2 mb-2 font-semibold sm:col-span-4">Pilih Penilaian</p>
+                <p class="col-span-2 mb-2 font-semibold sm:col-span-4">Choose Penilaian</p>
                 <button
                   type="button"
                   :class="{
@@ -288,8 +293,17 @@
                   Earn
                 </button>
               </div>
+              <button
+                v-if="index > 0"
+                type="button"
+                class="flex w-full items-end justify-end"
+                @click="removeCluster(index)"
+              >
+                <fa-icon icon="fa-solid fa-trash" />
+              </button>
             </div>
             <button
+              type="button"
               :disabled="form.clusters.length >= 3"
               :class="[
                 {
@@ -358,7 +372,7 @@
               class="pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
             >
               <div
-                class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
+                class="border-slate-150 size-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
               ></div>
             </div>
           </button>
@@ -376,7 +390,7 @@
               class="pointer-events-none absolute right-5 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
             >
               <div
-                class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
+                class="border-slate-150 size-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
               ></div>
             </div>
           </button>
@@ -456,6 +470,10 @@ const form = ref<CaptureInterface>({
   isDraft: false,
 })
 const isLoadingSearch = ref(false)
+
+const removeCluster = (index: number) => {
+  form.value.clusters.splice(index, 1)
+}
 
 const onFileChange = (e: any) => {
   const file = e.target.files[0]

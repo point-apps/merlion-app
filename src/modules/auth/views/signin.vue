@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
     <a href="#" class="mb-6 flex items-center text-2xl font-bold text-gray-900 dark:text-white">
-      <img class="h-8" src="https://assets.pointhub.net/assets/images/logo/primary/logo.png" alt="logo" />
+      <img class="h-20" src="@/assets/logo-horizontal.png" alt="logo" />
     </a>
     <form @submit.prevent="onSubmit()">
       <div

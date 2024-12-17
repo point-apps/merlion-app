@@ -1,6 +1,6 @@
 @layer components {
   .main-content {
-    @apply mt-[60px] w-full lg:w-full px-4 lg:px-8 text-black dark:text-white;
+    @apply mt-[60px] w-full lg:w-full px-4 lg:px-8 text-black dark:text-white bg-[#f6f1ec];
   }
   
   .is-sidebar-open .main-content {

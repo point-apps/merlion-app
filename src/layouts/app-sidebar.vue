@@ -7,7 +7,7 @@
         <div class="sidebar-shortcut-container">
           <div class="flex pt-4">
             <router-link to="/">
-              <img class="sidebar-logo" src="@/assets/logo-icon.png" alt="logo" />
+              <img class="sidebar-logo" src="@/assets/logo-sidebar.png" alt="logo" />
             </router-link>
           </div>
           <div class="sidebar-shortcut-body">
@@ -21,9 +21,9 @@
               <fa-icon :icon="shortcut.icon + ' w-6 h-6'" />
             </button>
           </div>
-          <div class="my-2">
+          <!-- <div class="my-2">
             <component :is="ComponentDarkMode" />
-          </div>
+          </div> -->
           <div class="my-2">
             <button class="sidebar-shortcut-link text-red-200" @click="onSignout()">
               <fa-icon icon="fa-solid fa-power-off w-6 h-6" />
@@ -135,7 +135,7 @@ import { useSidebarStore } from '@/stores/sidebar'
 import { useSidebarMenuStore } from '@/stores/sidebar-menu'
 import { useAuthStore } from '@/stores/auth'
 import { useMobileBreakpoint } from '@/composable/mobile-breakpoint'
-import ComponentDarkMode from './component-dark-mode.vue'
+// import ComponentDarkMode from './component-dark-mode.vue'
 
 const sidebarContainerRef = ref(null)
 

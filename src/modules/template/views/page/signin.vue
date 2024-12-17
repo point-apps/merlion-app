@@ -1,7 +1,7 @@
 <template>
   <div class="w-full max-w-[26rem] p-4 sm:px-5">
     <div class="text-center">
-      <img class="mx-auto h-16 w-16" src="@/assets/logo-icon.png" alt="logo" />
+      <img class="mx-auto size-16" src="@/assets/logo-icon.png" alt="logo" />
       <div class="mt-4">
         <h2 class="text-2xl font-semibold text-slate-600 dark:text-slate-100">Welcome To {{ name }}</h2>
         <p class="text-slate-400 dark:text-slate-300">Please sign up to continue</p>
@@ -19,7 +19,7 @@
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 transition-colors duration-200"
+            class="size-5 transition-colors duration-200"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -44,7 +44,7 @@
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 transition-colors duration-200"
+            class="size-5 transition-colors duration-200"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -69,7 +69,7 @@
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 transition-colors duration-200"
+            class="size-5 transition-colors duration-200"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -85,7 +85,7 @@
       </label>
       <div class="mt-4 flex items-center space-x-2">
         <input
-          class="form-checkbox is-basic dark:checked:border-accent dark:checked:bg-accent dark:hover:border-accent dark:focus:border-accent h-5 w-5 rounded border-slate-400/70 checked:border-blue-700 checked:bg-blue-700 hover:border-blue-700 focus:border-blue-700 dark:border-slate-400"
+          class="form-checkbox is-basic dark:checked:border-accent dark:checked:bg-accent dark:hover:border-accent dark:focus:border-accent size-5 rounded border-slate-400/70 checked:border-blue-700 checked:bg-blue-700 hover:border-blue-700 focus:border-blue-700 dark:border-slate-400"
           type="checkbox"
         />
         <p class="line-clamp-1">
@@ -117,13 +117,13 @@
         <button
           class="btn w-full space-x-3 border border-slate-300 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:border-slate-400 dark:text-slate-50 dark:hover:bg-slate-500 dark:focus:bg-slate-500 dark:active:bg-slate-500/90"
         >
-          <fa-icon class="fa-brands fa-google h-4 w-4"></fa-icon>
+          <fa-icon class="fa-brands fa-google size-4"></fa-icon>
           <span>Google</span>
         </button>
         <button
           class="btn w-full space-x-3 border border-slate-300 font-medium text-slate-800 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:border-slate-400 dark:text-slate-50 dark:hover:bg-slate-500 dark:focus:bg-slate-500 dark:active:bg-slate-500/90"
         >
-          <fa-icon class="fa-brands fa-github h-4 w-4"></fa-icon>
+          <fa-icon class="fa-brands fa-github size-4"></fa-icon>
           <span>Github</span>
         </button>
       </div>
