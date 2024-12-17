@@ -18,7 +18,7 @@
               :class="{ 'bg-slate-300/20': shortcut.active }"
               @click="onClickShortcut(shortcut)"
             >
-              <fa-icon :icon="shortcut.icon + ' w-6 h-6'" />
+              <fa-icon :icon="shortcut.icon + ' w-6 h-6'" class="fa-xl" />
             </button>
           </div>
           <!-- <div class="my-2">
@@ -26,7 +26,7 @@
           </div> -->
           <div class="my-2">
             <button class="sidebar-shortcut-link text-red-200" @click="onSignout()">
-              <fa-icon icon="fa-solid fa-power-off w-6 h-6" />
+              <fa-icon icon="fa-solid fa-power-off fa-xl w-6 h-6" />
             </button>
           </div>
         </div>
