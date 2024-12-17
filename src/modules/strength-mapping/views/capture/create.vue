@@ -413,6 +413,7 @@ import { AxiosError } from 'axios'
 import { useDateHelper } from '@/composable/date-helper'
 import { baseURL } from '@/config/api'
 import { useAuthStore } from '@/stores/auth'
+import Swal from 'sweetalert2'
 
 const authStore = useAuthStore()
 
@@ -472,7 +473,18 @@ const form = ref<CaptureInterface>({
 const isLoadingSearch = ref(false)
 
 const removeCluster = (index: number) => {
-  form.value.clusters.splice(index, 1)
+  Swal.fire({
+    title: '',
+    text: 'Are you sure want to delete this?',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Confirm',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      form.value.clusters.splice(index, 1)
+    }
+  })
 }
 
 const onFileChange = (e: any) => {

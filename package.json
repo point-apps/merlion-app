@@ -26,6 +26,7 @@
     "highcharts": "^10.3.3",
     "highlight.js": "^11.6.0",
     "pinia": "^2.0.23",
+    "sweetalert2": "^11.15.1",
     "swiper": "^9.3.1",
     "vue": "^3.2.41",
     "vue-router": "^4.1.6",

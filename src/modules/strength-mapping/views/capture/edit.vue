@@ -310,6 +310,14 @@
                   Earn
                 </button>
               </div>
+              <button
+                v-if="index > 0"
+                type="button"
+                class="flex w-full items-end justify-end"
+                @click="removeCluster(index)"
+              >
+                <fa-icon icon="fa-solid fa-trash" />
+              </button>
             </div>
             <button
               v-if="form.clusters.length < 3"
@@ -371,6 +379,7 @@ import { format } from 'date-fns'
 import { useBaseNotification } from '@/composable/notification'
 import { AxiosError } from 'axios'
 import { useAuthStore } from '@/stores/auth'
+import Swal from 'sweetalert2'
 
 const { notification } = useBaseNotification()
 const route = useRoute()
@@ -439,6 +448,21 @@ const onFileChange = (e: any) => {
     url: URL.createObjectURL(file),
     size: file.size,
     mimeType: file.type,
+  })
+}
+
+const removeCluster = (index: number) => {
+  Swal.fire({
+    title: '',
+    text: 'Are you sure want to delete this?',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Confirm',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      form.value.clusters.splice(index, 1)
+    }
   })
 }
 
