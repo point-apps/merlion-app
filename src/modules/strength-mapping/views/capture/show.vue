@@ -40,7 +40,12 @@
                 <source :src="file.url" />
                 Your browser does not support HTML5 video.
               </video>
-              <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
+              <img
+                v-else
+                :src="`https://drive.google.com/thumbnail?id=${file.id}`"
+                alt="activity"
+                class="relative max-h-[200px] lg:max-w-[200px]"
+              />
             </div>
           </div>
         </label>

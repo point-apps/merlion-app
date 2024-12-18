@@ -19,7 +19,7 @@ const onLoad = function () {
   </video>
   <img
     v-else
-    :src="file.url"
+    :src="`https://drive.google.com/thumbnail?id=${file.id}`"
     alt="activity"
     class="max-h-[800px] w-full object-cover md:max-h-[400px]"
     :class="isLoading ? 'hidden' : ''"
@@ -31,7 +31,7 @@ const onLoad = function () {
     @load="onLoad"
   >
     <div
-      class="block h-20 w-20 animate-spin rounded-full border border-white border-b-transparent bg-transparent transition"
+      class="block size-20 animate-spin rounded-full border border-white border-b-transparent bg-transparent transition"
     ></div>
   </div>
 </template>
