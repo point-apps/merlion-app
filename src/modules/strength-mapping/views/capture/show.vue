@@ -42,7 +42,7 @@
               </video>
               <img
                 v-else
-                :src="`https://drive.google.com/thumbnail?id=${file.id}`"
+                :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"
                 alt="activity"
                 class="relative max-h-[200px] lg:max-w-[200px]"
               />

@@ -19,7 +19,7 @@ const onLoad = function () {
   </video>
   <img
     v-else
-    :src="`https://drive.google.com/thumbnail?id=${file.id}`"
+    :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"
     alt="activity"
     class="max-h-[800px] w-full object-cover md:max-h-[400px]"
     :class="isLoading ? 'hidden' : ''"
