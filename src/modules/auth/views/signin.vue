@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
+  <div class="mx-auto flex flex-col items-center justify-center px-6 py-8 lg:py-0">
     <a href="#" class="mb-6 flex items-center text-2xl font-bold text-gray-900 dark:text-white">
       <img class="h-20" src="@/assets/logo-horizontal.png" alt="logo" />
     </a>
@@ -52,7 +52,7 @@
                   <input
                     id="remember"
                     type="checkbox"
-                    class="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                    class="focus:ring-3 size-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                   />
                 </div>
                 <div class="ml-3 text-sm">
