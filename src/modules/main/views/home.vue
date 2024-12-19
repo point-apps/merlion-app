@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="flex justify-end text-blue-600">
+    <div class="flex justify-end pb-12 text-blue-600 lg:pb-0">
       <fa-icon icon="fa-light fa-lightbulb w-4 h-4" />
       <a href="https://www.youtube.com/c/MerlionSchool" target="_blank">Click here for the guidance</a>
     </div>
