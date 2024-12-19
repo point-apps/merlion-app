@@ -295,7 +295,7 @@
               <button
                 v-if="index > 0"
                 type="button"
-                class="flex w-full items-end justify-end"
+                class="flex w-full items-end justify-end border-none outline-none"
                 @click="removeCluster(index)"
               >
                 <fa-icon icon="fa-solid fa-trash" />
@@ -474,6 +474,7 @@ const isLoadingSearch = ref(false)
 const removeCluster = (index: number) => {
   Swal.fire({
     title: '',
+    heightAuto: false,
     text: 'Are you sure want to delete this?',
     showCancelButton: true,
     confirmButtonColor: '#d33',
@@ -755,3 +756,22 @@ const onGoogleSignin = async () => {
   }
 }
 </script>
+
+<style>
+html.swal2-shown,
+body.swal2-shown {
+  overflow-y: visible !important;
+  height: auto !important;
+}
+body.swal2-height-auto {
+  overflow-y: visible !important;
+  height: 100% !important;
+}
+body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+  overflow-y: visible !important;
+}
+body.swal2-shown:not(.swal2-no-backdrop, .swal2-toast-shown) {
+  overflow-y: visible !important;
+  overflow: visible !important;
+}
+</style>

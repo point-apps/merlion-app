@@ -758,3 +758,22 @@ const onSavingDraft = async () => {
   isSavingDraftMode.value = false
 }
 </script>
+
+<style>
+html.swal2-shown,
+body.swal2-shown {
+  overflow-y: visible !important;
+  height: auto !important;
+}
+body.swal2-height-auto {
+  overflow-y: visible !important;
+  height: 100% !important;
+}
+body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+  overflow-y: visible !important;
+}
+body.swal2-shown:not(.swal2-no-backdrop, .swal2-toast-shown) {
+  overflow-y: visible !important;
+  overflow: visible !important;
+}
+</style>
