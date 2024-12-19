@@ -18,6 +18,7 @@ const onLoad = function () {
     :class="isLoading ? 'hidden' : ''"
     :src="`https://drive.google.com/file/d/${file.id}/preview`"
     frameborder="0"
+    height="360"
     allow="autoplay; encrypted-media"
     class="w-full"
     allowfullscreen
