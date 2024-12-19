@@ -83,7 +83,7 @@
         <p v-if="formErrors.mimeType" class="my-2 text-center text-sm text-red-500">
           {{ formErrors.mimeType }}
         </p>
-        <div class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap">
+        <div class="flex flex-col space-x-3">
           <div
             v-for="(file, index) in capture.files"
             :key="'old-' + index"
@@ -93,6 +93,8 @@
               v-if="file?.mimeType?.includes('video')"
               :src="`https://drive.google.com/file/d/${file.id}/preview`"
               frameborder="0"
+              height="360"
+              class="w-full"
               allow="autoplay; encrypted-media"
               allowfullscreen
             >
@@ -114,12 +116,18 @@
           <div
             v-for="(file, index) in form.files"
             :key="index"
-            class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+            class="relative my-2 flex max-h-[200px] min-h-[100px] flex-col justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
           >
-            <video v-if="file.mimeType.includes('video')" controls class="w-full">
-              <source :src="file.url" />
-              Your browser does not support HTML5 video.
-            </video>
+            <iframe
+              v-if="file?.mimeType?.includes('video')"
+              :src="`https://drive.google.com/file/d/${file.id}/preview`"
+              frameborder="0"
+              height="360"
+              class="w-full"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            >
+            </iframe>
             <img
               v-else
               :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"

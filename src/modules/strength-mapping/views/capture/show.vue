@@ -40,6 +40,8 @@
                 v-if="file?.mimeType?.includes('video')"
                 :src="`https://drive.google.com/file/d/${file.id}/preview`"
                 frameborder="0"
+                height="360"
+                class="w-full"
                 allow="autoplay; encrypted-media"
                 allowfullscreen
               >
