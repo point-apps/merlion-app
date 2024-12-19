@@ -15,10 +15,13 @@ const onLoad = function () {
 <template>
   <iframe
     v-if="file?.mimeType?.includes('video')"
+    :class="isLoading ? 'hidden' : ''"
     :src="`https://drive.google.com/file/d/${file.id}/preview`"
     frameborder="0"
     allow="autoplay; encrypted-media"
+    class="w-full"
     allowfullscreen
+    @load="onLoad"
   >
   </iframe>
   <img
