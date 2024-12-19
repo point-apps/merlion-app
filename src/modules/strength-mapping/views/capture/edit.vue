@@ -692,7 +692,69 @@ const isIkigaiChoosen = (cluster, ikigai) => {
 const onSavingDraft = async () => {
   form.value.isDraft = true
   isSavingDraftMode.value = true
-  await onSubmit()
+
+  try {
+    isSaving.value = true
+    const inputDate = form.value.date.split('-')
+
+    if (inputDate.length !== 3) {
+      notification('Date error', 'Format date error', 'warning')
+      return
+    }
+
+    const date = new Date()
+    date.setFullYear(Number(inputDate[2]))
+    date.setMonth(Number(inputDate[1]) - 1) // month start from 0 (january)
+    date.setDate(Number(inputDate[0]))
+    date.setHours(0)
+    date.setMinutes(0)
+    date.setSeconds(0)
+    date.setMilliseconds(0)
+
+    if (format(date, 'yyyy-MM-dd') > format(new Date(), 'yyyy-MM-dd')) {
+      notification('Date error', 'Activity date is for past or current activity only', 'warning')
+      return
+    }
+
+    let values = {
+      ...form.value,
+      clusters: form.value.clusters.map((c) => ({
+        ...c,
+        selectedCluster: null,
+      })),
+    }
+
+    const response = await axios.patch('/captures/' + route.params.id, { ...values, date: date })
+
+    if (form.value.files.length) {
+      const formData = new FormData()
+      formData.append('capture_id', route.params.id.toString())
+      for (let i = 0; i < form.value.files.length; i++) {
+        formData.append('files[]', form.value.files[i].file)
+      }
+      await axios.post('/captures/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    }
+
+    if (response.status === 204) {
+      notification('Update', 'Update success', 'success')
+      router.push('/strength-mapping/capture/' + route.params.id)
+    }
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      errors.value = error.response?.data.errors
+    } else if (error instanceof AxiosError) {
+      notification(error.code as string, error.message, 'warning')
+    } else {
+      notification('Unknown Error', '', 'warning')
+    }
+  } finally {
+    isSaving.value = false
+  }
+
   isSavingDraftMode.value = false
 }
 </script>
