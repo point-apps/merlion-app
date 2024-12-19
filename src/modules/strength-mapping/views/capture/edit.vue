@@ -343,6 +343,7 @@
             </div>
             <button
               v-if="form.clusters.length < 3"
+              type="button"
               class="rounded bg-sky-500 px-4 py-2 font-medium text-white transition-all hover:bg-sky-600"
               @click="addCluster()"
             >
