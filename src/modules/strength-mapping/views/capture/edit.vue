@@ -89,10 +89,14 @@
             :key="'old-' + index"
             class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
           >
-            <video v-if="file.mimeType.includes('video')" controls class="w-full">
-              <source :src="file.url" />
-              Your browser does not support HTML5 video.
-            </video>
+            <iframe
+              v-if="file?.mimeType?.includes('video')"
+              :src="`https://drive.google.com/file/d/${file.id}/preview`"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            >
+            </iframe>
             <img
               v-else
               :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"

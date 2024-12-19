@@ -13,10 +13,14 @@ const onLoad = function () {
 }
 </script>
 <template>
-  <video v-if="file?.mimeType?.includes('video')" controls class="w-full" :class="isLoading ? 'hidden' : ''">
-    <source :src="file.url" @load="onLoad" />
-    Your browser does not support HTML5 video.
-  </video>
+  <iframe
+    v-if="file?.mimeType?.includes('video')"
+    :src="`https://drive.google.com/file/d/${file.id}/preview`"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen
+  >
+  </iframe>
   <img
     v-else
     :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"
