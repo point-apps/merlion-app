@@ -12,7 +12,7 @@
             Capture
           </router-link>
           <router-link
-            to="/strength-mapping/capture"
+            to="/strength-mapping/report/spider-chart"
             class="btn btn-base bg-[#4C9F82] px-12 py-3 text-lg text-white xl:px-24"
           >
             Report
