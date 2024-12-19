@@ -4,8 +4,8 @@
       <img src="@/assets/logo.png" alt="Logo" class="w-80" />
       <div class="flex w-full flex-col space-y-3 px-8">
         <div>
-          <p class="text-3xl font-semibold">Hi {{ name }},</p>
-          <p>Lets Start Capturing</p>
+          <p class="text-3xl font-semibold">Hi, {{ name }}</p>
+          <p>Lets Start Capturing!</p>
         </div>
         <div class="flex flex-col space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
           <router-link to="/strength-mapping/capture" class="btn btn-base btn-blue px-12 py-3 text-lg xl:px-24">

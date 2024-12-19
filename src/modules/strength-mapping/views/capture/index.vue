@@ -35,7 +35,7 @@
         </button>
       </div>
 
-      <div class="hidden lg:block">
+      <div class="-ml-10 -mt-10 hidden lg:block">
         <router-link to="/strength-mapping/capture/create" class="btn btn-base bg-[#4C9F82] px-12 py-2 text-white">
           <fa-icon icon="fa-regular fa-camera fa-lg" /> <span class="ml-2">Capture New Activity</span>
         </router-link>
