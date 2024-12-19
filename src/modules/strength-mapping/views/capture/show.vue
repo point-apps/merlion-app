@@ -31,7 +31,7 @@
             <div
               v-for="(file, index) in capture.files"
               :key="index"
-              class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+              class="relative my-2 flex justify-center shadow dark:bg-slate-700"
             >
               <iframe
                 v-if="file?.mimeType?.includes('video')"
