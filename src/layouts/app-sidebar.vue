@@ -21,9 +21,9 @@
               <fa-icon :icon="shortcut.icon + ' w-6 h-6'" class="fa-xl" />
             </button>
           </div>
-          <!-- <div class="my-2">
-            <component :is="ComponentDarkMode" />
-          </div> -->
+          <div class="my-2">
+            <component :is="ComponentDarkMode" class="fa-xl" />
+          </div>
           <div class="my-2">
             <button class="sidebar-shortcut-link text-red-200" @click="onSignout()">
               <fa-icon icon="fa-solid fa-power-off fa-xl w-6 h-6" />
@@ -135,7 +135,7 @@ import { useSidebarStore } from '@/stores/sidebar'
 import { useSidebarMenuStore } from '@/stores/sidebar-menu'
 import { useAuthStore } from '@/stores/auth'
 import { useMobileBreakpoint } from '@/composable/mobile-breakpoint'
-// import ComponentDarkMode from './component-dark-mode.vue'
+import ComponentDarkMode from './component-dark-mode.vue'
 
 const sidebarContainerRef = ref(null)
 

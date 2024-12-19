@@ -137,7 +137,7 @@
             {{ error }}
           </p>
         </label>
-        <div class="rounded-lg border border-gray-300 bg-white p-4">
+        <div class="rounded-lg border border-gray-300 p-4">
           <div class="flex flex-row gap-2">
             <div>
               <p class="font-semibold">Define the Strength Map from the Activity!</p>
@@ -171,21 +171,20 @@
                     :key="cl._id"
                     class="cursor-pointer space-x-1 rounded-sm border px-3 py-2"
                     :class="[
-                      cl._id === cluster.cluster_id ? 'bg-' + cl.name.replace(' ', '-') : 'bg-gray-50',
+                      cl._id === cluster.cluster_id ? 'text-black bg-' + cl.name.replace(' ', '-') : '',
                       'border-' + cl.name.replace(' ', '-'),
                     ]"
                     @click="chooseCluster(index, cl)"
+                    @click.stop="
+                      () =>
+                        (toggles['cluster_' + index] = toggles['cluster_' + index]?._id === cl?._id ? false : cl) || cl
+                    "
                   >
                     <span class="flex items-center gap-2 rounded-sm text-sm capitalize">
                       {{ cl.name }}
                       <div
                         class="-my-2 -mr-2 flex size-6 items-center justify-center"
                         :class="toggles['cluster_' + index]?._id === cl?._id ? 'rotate-180' : 'rotate-0'"
-                        @click.stop="
-                          () =>
-                            (toggles['cluster_' + index] = toggles['cluster_' + index]?._id === cl?._id ? false : cl) ||
-                            cl
-                        "
                       >
                         <fa-icon icon="fa-solid fa-caret-down" :class="''"></fa-icon>
                       </div>
@@ -209,12 +208,18 @@
                         :key="i"
                         :class="[
                           cluster.typology === typology.name
-                            ? 'bg-' + cluster.selectedCluster.name.replace(' ', '-')
-                            : 'bg-gray-50',
+                            ? 'text-black bg-' + cluster.selectedCluster.name.replace(' ', '-')
+                            : '',
                           'border-' + cluster.selectedCluster.name.replace(' ', '-'),
                         ]"
                         class="flex cursor-pointer items-center gap-2 rounded-sm border px-3 py-2 capitalize"
-                        @click.stop="chooseTypology(index, typology.name)"
+                        @click="chooseTypology(index, typology.name)"
+                        @click.stop="
+                          () =>
+                            (toggles['cluster_' + index + '_typology'] =
+                              toggles['cluster_' + index + '_typology']?.name === typology.name ? false : typology) ||
+                            typology
+                        "
                       >
                         {{ typology.name }}
                         <div
@@ -223,12 +228,6 @@
                             toggles['cluster_' + index + '_typology']?.name === typology.name
                               ? 'rotate-180'
                               : 'rotate-0'
-                          "
-                          @click.stop="
-                            () =>
-                              (toggles['cluster_' + index + '_typology'] =
-                                toggles['cluster_' + index + '_typology']?.name === typology.name ? false : typology) ||
-                              typology
                           "
                         >
                           <fa-icon icon="fa-solid fa-caret-down" :class="''"></fa-icon>
@@ -675,7 +674,65 @@ const isIkigaiChoosen = (cluster: any, ikigai: string) => {
 const onSavingDraft = async () => {
   form.value.isDraft = true
   isSavingDraftMode.value = true
-  await onSubmit()
+
+  try {
+    isSaving.value = true
+
+    const time = format(new Date(), 'HH:mm')
+    const date = convertToDateFormat(form.value.date, time)
+    if (!date) {
+      notification('Date error', 'Format date error', 'warning')
+      return
+    }
+
+    if (format(date, 'yyyy-MM-dd') > format(new Date(), 'yyyy-MM-dd')) {
+      notification('Date error', 'Activity date is for past or current activity only', 'warning')
+      return
+    }
+
+    let values = {
+      ...form.value,
+      clusters: form.value.clusters.map((c) => ({
+        ...c,
+        selectedCluster: null,
+      })),
+    }
+
+    const response = await axios.post('/captures', {
+      ...values,
+      date: date.toISOString(),
+    })
+
+    if (form.value.files.length) {
+      const formData = new FormData()
+      formData.append('capture_id', response.data._id)
+      for (let i = 0; i < form.value.files.length; i++) {
+        console.log(form.value.files[i])
+        formData.append('files[]', form.value.files[i].file)
+      }
+      await axios.post('/captures/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    }
+
+    if (response.status === 201) {
+      notification('Create', 'Create success', 'success')
+      router.push('/strength-mapping/capture/' + response.data._id)
+    }
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      errors.value = error.response?.data.errors
+    } else if (error instanceof AxiosError) {
+      notification(error.code as string, error.message, 'warning')
+    } else {
+      notification('Unknown Error', '', 'warning')
+    }
+  } finally {
+    isSaving.value = false
+  }
+
   isSavingDraftMode.value = false
 }
 
