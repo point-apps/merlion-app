@@ -2,7 +2,7 @@
   <app-preloader class="print:hidden"></app-preloader>
 
   <!-- Page Wrapper -->
-  <div class="h-100vh flex grow bg-slate-100 dark:bg-slate-900">
+  <div class="h-100vh flex grow bg-[#f6f1ec] dark:bg-slate-900">
     <app-sidebar class="print:hidden"></app-sidebar>
     <app-header class="print:hidden"></app-header>
     <main class="main-content">
