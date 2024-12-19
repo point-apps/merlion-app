@@ -1,5 +1,5 @@
 <template>
-  <div class="flex size-full flex-col justify-between py-5 lg:py-6">
+  <div class="flex size-full flex-col justify-between gap-4 py-5 lg:py-6">
     <div class="flex w-full flex-col items-center space-y-10 lg:flex-row">
       <img src="@/assets/logo.png" alt="Logo" class="w-80" />
       <div class="flex w-full flex-col space-y-3 px-8">
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="flex justify-end pb-12 text-blue-600 lg:pb-0">
+    <div class="flex justify-end px-8 pb-20 text-blue-600 lg:pb-0">
       <fa-icon icon="fa-light fa-lightbulb w-4 h-4" />
       <a href="https://www.youtube.com/c/MerlionSchool" target="_blank">Click here for the guidance</a>
     </div>
