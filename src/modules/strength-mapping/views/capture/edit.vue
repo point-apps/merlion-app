@@ -210,7 +210,9 @@
                     :key="cl._id"
                     class="cursor-pointer space-x-1 rounded-sm border px-3 py-2"
                     :class="[
-                      cl._id === cluster.cluster_id ? 'bg-' + cl.name.replace(' ', '-') : 'bg-gray-50',
+                      cl._id === cluster.cluster_id
+                        ? 'bg-' + cl.name.replace(' ', '-')
+                        : 'bg-slate-50 dark:bg-slate-700',
                       'border-' + cl.name.replace(' ', '-'),
                     ]"
                     @click="chooseCluster(index, cl)"
@@ -249,7 +251,7 @@
                         :class="[
                           cluster.typology === typology.name
                             ? 'bg-' + cluster.selectedCluster.name.replace(' ', '-')
-                            : 'bg-gray-50',
+                            : 'bg-slate-50 dark:bg-slate-700',
                           'border-' + cluster.selectedCluster.name.replace(' ', '-'),
                         ]"
                         class="flex cursor-pointer items-center gap-2 rounded-sm border px-3 py-2 capitalize"
@@ -286,7 +288,7 @@
                 </template>
               </div>
               <div v-if="cluster.typology" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <p class="col-span-2 mb-2 font-semibold sm:col-span-4">Choose Penilaian</p>
+                <p class="col-span-2 mb-2 font-semibold sm:col-span-4">Choose Ikigai</p>
                 <button
                   type="button"
                   :class="{
