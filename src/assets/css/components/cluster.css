@@ -28,20 +28,23 @@
 }
 .bg-thinking {
     background-color: #489f7b;
-    color: white;
+    color: black;
 }
 .bg-reasoning {
     background-color: #ffdb94;
+    color: black;
 }
 .bg-elementary {
     background-color: #bac94a;
+    color: black;
 }
 .bg-networking {
     background-color: #b9e3fc;
+    color: black;
 }
 .bg-generating-idea {
     background-color: #f2a593;
-    color: white;
+    color: black;
 }
 .bg-technical {
     background-color: #f36b79;
@@ -49,4 +52,5 @@
 }
 .bg-headman {
     background-color: #749df5;
+    color: black;
 }
