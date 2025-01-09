@@ -42,6 +42,8 @@
               class="hidden h-12 dark:block"
             />
           </button>
+          <!-- {{ form }} -->
+          {{ errors }}
         </div>
         <label v-if="isGrantedUploadGoogleDrive()" class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
@@ -142,11 +144,7 @@
             <div>
               <p class="font-semibold">Define the Strength Map from the Activity!</p>
               <p>Instructions :</p>
-              <p>
-                1. For the activity you have described, you have to define the Strength Map, consist of Strength Cluster
-                - Strength Typology - Strength Experience
-              </p>
-              <p>2. You can only create maximum of 3 Strength Map, by clicking "Add New Strength Map" button</p>
+              <p>Please use this section to assess how the student felt or experienced the activity</p>
             </div>
             <a
               href="https://docs.google.com/spreadsheets/d/1mK8TA4WBoEq7Zdp2H5n3NXAec45uQltYvy0FoHj-noE/edit?usp=sharing"
@@ -164,7 +162,7 @@
               class="space-y-4 bg-green-50 p-4 shadow dark:bg-slate-800"
             >
               <div>
-                <p class="mb-2 font-semibold">Choose Cluster</p>
+                <p class="mb-2 font-semibold">Choose Strength Cluster</p>
                 <div class="flex flex-row flex-wrap gap-1">
                   <p
                     v-for="cl in clusters"
@@ -202,7 +200,7 @@
                   <i>{{ toggles['cluster_' + index]?.description }}</i>
                 </p>
                 <template v-if="cluster.selectedCluster">
-                  <p class="my-2 font-semibold">Choose Typology</p>
+                  <p class="my-2 font-semibold">Choose Strength Typology</p>
                   <div class="flex flex-row flex-wrap gap-2">
                     <template v-for="(group, a) in cluster.selectedCluster.groups" :key="a">
                       <div
@@ -248,7 +246,7 @@
                 </template>
               </div>
               <div v-if="cluster.typology" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <p class="col-span-2 mb-2 font-semibold sm:col-span-4">Choose Ikigai</p>
+                <p class="col-span-2 mb-2 font-semibold sm:col-span-4">Choose Strength Experience</p>
                 <button
                   type="button"
                   :class="{
@@ -294,6 +292,13 @@
                   Earn
                 </button>
               </div>
+              <p
+                v-for="(error, index2) in errors?.[`clusters.${index}.ikigai`]"
+                :key="index2"
+                class="mt-1 text-xs text-red-500"
+              >
+                Strength Experience is required
+              </p>
               <button
                 v-if="index > 0"
                 type="button"
@@ -315,7 +320,7 @@
               class="rounded px-4 py-2 font-medium transition-all"
               @click="form.clusters.length < 3 ? addCluster() : ''"
             >
-              Add new cluster
+              Add New Strength Map
             </button>
           </div>
         </div>
@@ -573,22 +578,22 @@ const onSubmit = async () => {
       return el.ikigai.length === 0
     })
 
-    if (isIkigaiEmpty) {
-      notification('Ikigai error', 'Please fill ikigai type at least 1', 'warning')
-      return
-    }
+    // if (isIkigaiEmpty) {
+    //   notification('Required fields', 'Please complete them to continue', 'warning')
+    //   return
+    // }
 
     const time = format(new Date(), 'HH:mm')
     const date = convertToDateFormat(form.value.date, time)
-    if (!date) {
-      notification('Date error', 'Format date error', 'warning')
-      return
-    }
+    // if (!date) {
+    //   notification('Date error', 'Format date error', 'warning')
+    //   return
+    // }
 
-    if (format(date, 'yyyy-MM-dd') > format(new Date(), 'yyyy-MM-dd')) {
-      notification('Date error', 'Activity date is for past or current activity only', 'warning')
-      return
-    }
+    // if (format(date, 'yyyy-MM-dd') > format(new Date(), 'yyyy-MM-dd')) {
+    //   notification('Date error', 'Activity date is for past or current activity only', 'warning')
+    //   return
+    // }
 
     let values = {
       ...form.value,
@@ -600,7 +605,7 @@ const onSubmit = async () => {
 
     const response = await axios.post('/captures', {
       ...values,
-      date: date.toISOString(),
+      date: date ? date.toISOString() : '',
     })
 
     if (form.value.files.length) {
@@ -624,6 +629,7 @@ const onSubmit = async () => {
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       errors.value = error.response?.data.errors
+      notification('Required fields', 'Please complete them to continue', 'warning')
     } else if (error instanceof AxiosError) {
       notification(error.code as string, error.message, 'warning')
     } else {
@@ -683,15 +689,15 @@ const onSavingDraft = async () => {
 
     const time = format(new Date(), 'HH:mm')
     const date = convertToDateFormat(form.value.date, time)
-    if (!date) {
-      notification('Date error', 'Format date error', 'warning')
-      return
-    }
+    // if (!date) {
+    //   notification('Date error', 'Format date error', 'warning')
+    //   return
+    // }
 
-    if (format(date, 'yyyy-MM-dd') > format(new Date(), 'yyyy-MM-dd')) {
-      notification('Date error', 'Activity date is for past or current activity only', 'warning')
-      return
-    }
+    // if (format(date, 'yyyy-MM-dd') > format(new Date(), 'yyyy-MM-dd')) {
+    //   notification('Date error', 'Activity date is for past or current activity only', 'warning')
+    //   return
+    // }
 
     let values = {
       ...form.value,
