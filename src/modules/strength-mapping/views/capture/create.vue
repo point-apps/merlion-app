@@ -42,8 +42,6 @@
               class="hidden h-12 dark:block"
             />
           </button>
-          <!-- {{ form }} -->
-          {{ errors }}
         </div>
         <label v-if="isGrantedUploadGoogleDrive()" class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
