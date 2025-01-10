@@ -83,7 +83,7 @@
                 <span class="text-lg font-semibold capitalize">{{ cluster.name }} </span>
                 <span class="text-sm font-light capitalize">[{{ cluster.typology }}]</span>
               </p>
-              <p>Ikigai that suits you</p>
+              <p>Strength Experience</p>
             </div>
             <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
               <button
