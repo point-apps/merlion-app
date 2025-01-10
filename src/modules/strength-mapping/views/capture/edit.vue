@@ -100,12 +100,10 @@
             >
             </iframe>
             <img
-              v-else-if="file.id"
               :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"
               alt="activity"
               class="relative max-h-[200px] lg:max-w-[200px]"
             />
-            <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
             <button
               type="button"
               class="btn absolute right-2 top-2 rounded-full border-white bg-white px-2.5 py-1 opacity-50 shadow"
@@ -119,22 +117,11 @@
             :key="index"
             class="relative my-2 flex max-h-[200px] min-h-[100px] flex-col justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
           >
-            <iframe
-              v-if="file?.mimeType?.includes('video')"
-              :src="`https://drive.google.com/file/d/${file.id}/preview`"
-              frameborder="0"
-              height="360"
-              class="w-full"
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-            >
-            </iframe>
-            <img
-              v-else
-              :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"
-              alt="activity"
-              class="relative max-h-[200px] lg:max-w-[200px]"
-            />
+            <video v-if="file.mimeType.includes('video')" controls class="w-full">
+              <source :src="file.url" />
+              Your browser does not support HTML5 video.
+            </video>
+            <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
             <button
               type="button"
               class="btn absolute right-2 top-2 rounded-full border-white bg-white px-2.5 py-1 opacity-50 shadow"
@@ -477,6 +464,7 @@ const onFileChange = (e: any) => {
     url: URL.createObjectURL(file),
     size: file.size,
     mimeType: file.type,
+    news: true,
   })
 }
 
