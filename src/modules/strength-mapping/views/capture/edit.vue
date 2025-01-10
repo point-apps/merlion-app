@@ -601,9 +601,11 @@ const onSubmit = async () => {
       })),
     }
 
+    console.log(values, date)
+
     const response = await axios.patch('/captures/' + route.params.id, {
       ...values,
-      date: date ? date.toISOString() : '',
+      date: date ? date : '',
     })
 
     if (form.value.files.length) {
