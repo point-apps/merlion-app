@@ -572,9 +572,9 @@ onMounted(async () => {
 const onSubmit = async () => {
   try {
     isSaving.value = true
-    const isIkigaiEmpty = form.value.clusters.some((el) => {
-      return el.ikigai.length === 0
-    })
+    // const isIkigaiEmpty = form.value.clusters.some((el) => {
+    //   return el.ikigai.length === 0
+    // })
 
     // if (isIkigaiEmpty) {
     //   notification('Required fields', 'Please complete them to continue', 'warning')

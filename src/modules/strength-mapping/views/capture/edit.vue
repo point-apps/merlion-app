@@ -575,15 +575,19 @@ const onSubmit = async () => {
     //   return
     // }
 
-    const date = new Date()
-    date.setFullYear(Number(inputDate[2]))
-    date.setMonth(Number(inputDate[1]) - 1) // month start from 0 (january)
-    date.setDate(Number(inputDate[0]))
-    date.setHours(0)
-    date.setMinutes(0)
-    date.setSeconds(0)
-    date.setMilliseconds(0)
-
+    var date = null
+    if (inputDate) {
+      date = new Date()
+      date.setFullYear(Number(inputDate[2]))
+      date.setMonth(Number(inputDate[1]) - 1) // month start from 0 (january)
+      date.setDate(Number(inputDate[0]))
+      date.setHours(0)
+      date.setMinutes(0)
+      date.setSeconds(0)
+      date.setMilliseconds(0)
+    } else {
+      date = ''
+    }
     // if (format(date, 'yyyy-MM-dd') > format(new Date(), 'yyyy-MM-dd')) {
     //   notification('Date error', 'Activity date is for past or current activity only', 'warning')
     //   return
