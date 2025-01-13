@@ -185,12 +185,16 @@
             {{ error }}
           </p>
         </label>
+        <p class="font-bold">Please use this section to assess how the student felt or experienced the activity</p>
         <div class="rounded-lg border border-gray-300 p-4 dark:border-gray-500">
           <div class="flex flex-row gap-2">
             <div>
               <p class="font-semibold">Define the Strength Map from the Activity!</p>
-              <p>Instructions :</p>
-              <p>Please use this section to assess how the student felt or experienced the activity</p>
+              <p>
+                1. For the activity you have described, you have to define the Strength Map, consist of Strength Cluster
+                - Strength Typology - Strength Experience
+              </p>
+              <p>2. You can only create maximum of 3 Strength Map, by clicking "Add New Strength Map" button</p>
             </div>
             <a
               href="https://docs.google.com/spreadsheets/d/1mK8TA4WBoEq7Zdp2H5n3NXAec45uQltYvy0FoHj-noE/edit?usp=sharing"
@@ -247,7 +251,7 @@
                   <i>{{ toggles['cluster_' + index]?.description }}</i>
                 </p>
                 <template v-if="cluster.selectedCluster">
-                  <p class="my-2 font-semibold">Choose Strength Typology</p>
+                  <p class="my-2 font-semibold">Choose Strength Activity Cluster</p>
                   <div class="flex flex-row flex-wrap gap-2">
                     <template v-for="(group, a) in cluster.selectedCluster.groups" :key="a">
                       <div
@@ -293,7 +297,11 @@
                 </template>
               </div>
               <div v-if="cluster.typology" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <p class="col-span-2 mb-2 font-semibold sm:col-span-4">Choose Strength Experience</p>
+                <p class="col-span-2 -mb-4 font-semibold sm:col-span-4">Choose Strength Experience</p>
+                <p class="col-span-2 sm:col-span-4">
+                  Choose the options that best describe how the student felt about the activity. You may select more
+                  than one option
+                </p>
                 <button
                   type="button"
                   :class="{
@@ -303,7 +311,8 @@
                   class="border border-sky-400 px-3 py-2 shadow"
                   @click="onChooseIkigai(cluster, 'easy')"
                 >
-                  Easy
+                  <p class="font-bold">Enjoy</p>
+                  <p>They had fun doing this activity</p>
                 </button>
                 <button
                   type="button"
@@ -314,7 +323,8 @@
                   class="border border-sky-400 px-3 py-2 shadow"
                   @click="onChooseIkigai(cluster, 'enjoy')"
                 >
-                  Enjoy
+                  <p class="font-bold">Easy</p>
+                  <p>This activity was easy for them to do</p>
                 </button>
                 <button
                   type="button"
@@ -325,7 +335,8 @@
                   class="border border-sky-400 px-3 py-2 shadow"
                   @click="onChooseIkigai(cluster, 'excellent')"
                 >
-                  Excellent
+                  <p class="font-bold">Excellent</p>
+                  <p>They did this activity really well</p>
                 </button>
                 <button
                   type="button"
@@ -336,7 +347,8 @@
                   class="border border-sky-400 px-3 py-2 shadow"
                   @click="onChooseIkigai(cluster, 'earn')"
                 >
-                  Earn
+                  <p class="font-bold">Earn</p>
+                  <p>This activity was rewarding for them</p>
                 </button>
               </div>
               <p
