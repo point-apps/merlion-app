@@ -39,7 +39,7 @@
         </label>
         <label class="block space-y-1">
           <span>Status Account</span>
-          <input v-model="user.name" class="form-input bg-slate-100 dark:bg-slate-700" type="text" readonly />
+          <input v-model="user.status" class="form-input bg-slate-100 dark:bg-slate-700" type="text" readonly />
         </label>
 
         <div>

@@ -31,6 +31,7 @@
               <th class="basic-table-head">Email</th>
               <th class="basic-table-head">Username</th>
               <th class="basic-table-head">Role</th>
+              <th class="basic-table-head">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -43,6 +44,7 @@
               <td class="basic-table-body">{{ user.email }}</td>
               <td class="basic-table-body">{{ user.username }}</td>
               <td class="basic-table-body">{{ user.role }}</td>
+              <td class="basic-table-body">{{ user.status ?? 'active' }}</td>
               <td class="basic-table-body flex gap-2">
                 <!-- <router-link
                   :to="`/master/user/${user._id}/edit`"
@@ -51,16 +53,25 @@
                   Reset Password
                 </router-link> -->
                 <button
+                  v-if="user.username !== 'admin'"
                   class="btn btn-sm rounded bg-red-500 text-xs text-white"
                   @click="onDelete(user._id, user.email)"
                 >
                   Delete
                 </button>
                 <button
+                  v-if="user.username !== 'admin' && user.status !== 'suspend'"
                   class="btn btn-sm rounded bg-red-500 text-xs text-white"
                   @click="onSuspend(user._id, user.email)"
                 >
                   Suspend
+                </button>
+                <button
+                  v-if="user.username !== 'admin' && user.status === 'suspend'"
+                  class="btn btn-sm rounded bg-blue-500 text-xs text-white"
+                  @click="onActivate(user._id, user.email)"
+                >
+                  Activate
                 </button>
               </td>
             </tr>
@@ -95,6 +106,7 @@ interface UserInterface {
   name: string
   email: string
   role: string
+  status: string
 }
 
 const users = ref<UserInterface[]>([])
@@ -126,10 +138,23 @@ const onDelete = async (id: string, email: string) => {
 const onSuspend = async (id: string, email: string) => {
   try {
     if (confirm(`are you sure want to suspend this user "${email}" ?`)) {
-      await axios.delete(`/users/${id}`)
+      await axios.patch(`/users/${id}/suspend`)
       currentPage.value = 1
       await getUsers()
-      notification('Notification', `Delete user "${email}" success`, 'warning')
+      notification('Notification', `Suspend user "${email}" success`, 'warning')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const onActivate = async (id: string, email: string) => {
+  try {
+    if (confirm(`are you sure want to activate this user "${email}" ?`)) {
+      await axios.patch(`/users/${id}/activate`)
+      currentPage.value = 1
+      await getUsers()
+      notification('Notification', `Activate user "${email}" success`, 'success')
     }
   } catch (error) {
     console.log(error)

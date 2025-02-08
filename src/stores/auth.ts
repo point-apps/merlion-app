@@ -9,6 +9,8 @@ export const useAuthStore = defineStore('auth', {
       name: '',
       email: '',
       role: '',
+      username: '',
+      status: 'active',
       googleScopes: '',
     },
   }),
@@ -45,6 +47,7 @@ export const useAuthStore = defineStore('auth', {
         this.$state.user.name = response.data.name
         this.$state.user.email = response.data.email
         this.$state.user.role = response.data.role
+        this.$state.user.status = response.data.status ?? 'active'
         this.$state.user.googleScopes = response.data.googleScopes
         cookie.set('accessToken', response.data.accessToken)
         cookie.set('refreshToken', response.data.refreshToken)
@@ -74,9 +77,11 @@ export const useAuthStore = defineStore('auth', {
       })
 
       if (response.status === 200) {
+        this.$state.user.username = response.data.username
         this.$state.user.name = response.data.name
         this.$state.user.email = response.data.email
         this.$state.user.role = response.data.role
+        this.$state.user.status = response.data.status ?? 'active'
         this.$state.user.googleScopes = response.data.googleScopes
         cookie.set('accessToken', response.data.accessToken)
         cookie.set('refreshToken', response.data.refreshToken)
@@ -89,10 +94,11 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await axios.post('/auth/verify-token')
         if (response.status === 200) {
-          console.log(response.data)
+          this.$state.user.username = response.data.username
           this.$state.user.name = response.data.name
           this.$state.user.email = response.data.email
           this.$state.user.role = response.data.role
+          this.$state.user.status = response.data.status ?? 'active'
           this.$state.user.googleScopes = response.data.googleScopes
         }
       } catch (error) {
@@ -100,9 +106,11 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     logout() {
+      this.$state.user.username = ''
       this.$state.user.name = ''
       this.$state.user.email = ''
       this.$state.user.role = ''
+      this.$state.user.status = ''
       this.$state.user.googleScopes = ''
       cookie.remove('accessToken')
     },

@@ -38,7 +38,7 @@
         </label>
         <label class="block space-y-1">
           <span class="font-bold">Status Account</span>
-          <div>{{ user }}</div>
+          <div>{{ user.status }}</div>
         </label>
       </div>
     </div>
@@ -58,6 +58,7 @@ const user = ref({
   name: '',
   email: '',
   role: '',
+  status: '',
 })
 
 onMounted(async () => {
@@ -67,5 +68,6 @@ onMounted(async () => {
   user.value.name = result.data.name
   user.value.email = result.data.email
   user.value.role = result.data.role
+  user.value.status = result.data.status
 })
 </script>
