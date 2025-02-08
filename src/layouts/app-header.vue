@@ -46,7 +46,7 @@
         <div v-else>
           <router-link to="/account/profile" class="flex items-center justify-center space-x-2">
             <fa-icon icon="fa-solid fa-user-circle w-5 h-5"></fa-icon>
-            <p>{{ name }}</p>
+            <p>{{ authStore.$state.user.name }}</p>
           </router-link>
         </div>
       </div>

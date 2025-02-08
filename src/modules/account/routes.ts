@@ -31,6 +31,14 @@ export const routes = {
           },
         },
         {
+          path: 'profile/:id/edit',
+          component: () => import('./views/profile-edit.vue'),
+          meta: {
+            shortcut: 'account',
+            menu: 'profile',
+          },
+        },
+        {
           path: 'security',
           component: () => import('./views/security.vue'),
           meta: {

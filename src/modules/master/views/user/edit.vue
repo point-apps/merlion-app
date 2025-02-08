@@ -87,7 +87,7 @@ const onSubmit = async () => {
     notification('Update Success', 'success')
     router.push('/master/user/' + route.params.id)
   } catch (error) {
-    notification('Update Failed', 'Please use minimum 8 digit password', 'warning')
+    notification('Update Failed', 'error')
   }
 }
 </script>

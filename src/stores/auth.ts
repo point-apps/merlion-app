@@ -6,6 +6,7 @@ import apiConfig from '@/config/api'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: {
+      _id: '',
       name: '',
       email: '',
       role: '',
@@ -43,6 +44,7 @@ export const useAuthStore = defineStore('auth', {
       })
 
       if (response.status === 200) {
+        this.$state.user._id = response.data._id
         this.$state.user.username = response.data.username
         this.$state.user.name = response.data.name
         this.$state.user.email = response.data.email
@@ -77,6 +79,7 @@ export const useAuthStore = defineStore('auth', {
       })
 
       if (response.status === 200) {
+        this.$state.user._id = response.data._id
         this.$state.user.username = response.data.username
         this.$state.user.name = response.data.name
         this.$state.user.email = response.data.email
@@ -94,6 +97,7 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await axios.post('/auth/verify-token')
         if (response.status === 200) {
+          this.$state.user._id = response.data._id
           this.$state.user.username = response.data.username
           this.$state.user.name = response.data.name
           this.$state.user.email = response.data.email
@@ -106,6 +110,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     logout() {
+      this.$state.user._id = ''
       this.$state.user.username = ''
       this.$state.user.name = ''
       this.$state.user.email = ''
