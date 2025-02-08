@@ -18,21 +18,27 @@
             <router-link class="btn btn-base btn-default text-xs" :to="`/master/user/${$route.params.id}/edit`">
               Edit
             </router-link>
-            <button class="btn btn-base btn-default text-xs">Delete</button>
           </div>
         </div>
         <label class="block space-y-1">
-          <span>Name</span>
-          <input v-model="user.name" class="form-input" type="text" readonly />
-        </label>
-
-        <label class="block space-y-1">
-          <span>Email:</span>
-          <input v-model="user.email" class="form-input" type="text" readonly />
+          <span class="font-bold">Username</span>
+          <div>{{ user.username }}</div>
         </label>
         <label class="block space-y-1">
-          <span>Role</span>
-          <input v-model="user.role" class="form-input" type="text" readonly />
+          <span class="font-bold">Name</span>
+          <div>{{ user.name }}</div>
+        </label>
+        <label class="block space-y-1">
+          <span class="font-bold">email</span>
+          <div>{{ user.email }}</div>
+        </label>
+        <label class="block space-y-1">
+          <span class="font-bold">Role</span>
+          <div>{{ user.role }}</div>
+        </label>
+        <label class="block space-y-1">
+          <span class="font-bold">Status Account</span>
+          <div>{{ user }}</div>
         </label>
       </div>
     </div>
@@ -48,6 +54,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 
 const user = ref({
+  username: '',
   name: '',
   email: '',
   role: '',
@@ -56,6 +63,7 @@ const user = ref({
 onMounted(async () => {
   const result = await axios.get('/users/' + route.params.id)
   console.log(result)
+  user.value.username = result.data.username
   user.value.name = result.data.name
   user.value.email = result.data.email
   user.value.role = result.data.role

@@ -11,7 +11,14 @@
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
         <h4 class="font-bold">Invite User</h4>
         <label class="block space-y-1">
-          <span class="font-semibold">Name</span>
+          <span class="font-semibold">Username</span>
+          <input v-model="form.username" class="form-input" type="text" />
+          <p v-for="(error, index) in errors?.username" :key="index" class="mt-1 text-xs text-red-500">
+            {{ error }}
+          </p>
+        </label>
+        <label class="block space-y-1">
+          <span class="font-semibold">Full Name</span>
           <input v-model="form.name" class="form-input" type="text" />
           <p v-for="(error, index) in errors?.name" :key="index" class="mt-1 text-xs text-red-500">
             {{ error }}
@@ -54,6 +61,7 @@ const router = useRouter()
 const { notification } = useBaseNotification()
 
 const form = ref({
+  username: '',
   name: '',
   email: '',
   role: 'user',
@@ -67,13 +75,15 @@ const onSubmit = async () => {
   try {
     isSubmitted.value = true
     const response = await axios.post('/users', form.value)
+    console.log(response)
 
     if (response.status === 201) {
       notification('Success Invite using ' + form.value.role + ' role', '', 'success')
+      form.value.username = ''
       form.value.name = ''
       form.value.email = ''
       form.value.role = ''
-      router.push('/master/user')
+      router.push('/master/user/' + response.data._id)
     }
   } catch (error) {
     if (error instanceof AxiosError && error.response) {

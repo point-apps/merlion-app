@@ -13,7 +13,7 @@ export const routes = {
       component: () => import('./module-index.vue'),
       meta: {
         shortcut: 'main',
-        menu: 'strength-mapping',
+        menu: 'report',
       },
       children: [
         {
@@ -21,7 +21,7 @@ export const routes = {
           component: () => import('./views/spider-chart/index.vue'),
           meta: {
             shortcut: 'main',
-            menu: 'strength-mapping',
+            menu: 'report',
             submenu: 'report',
           },
         },
@@ -30,7 +30,7 @@ export const routes = {
           component: () => import('./views/spider-chart/activity-suggestion.vue'),
           meta: {
             shortcut: 'main',
-            menu: 'strength-mapping',
+            menu: 'report',
             submenu: 'report',
           },
         },
@@ -39,7 +39,7 @@ export const routes = {
           component: () => import('./views/spider-chart/detail.vue'),
           meta: {
             shortcut: 'main',
-            menu: 'strength-mapping',
+            menu: 'report',
             submenu: 'report',
           },
         },
@@ -50,7 +50,7 @@ export const routes = {
       component: () => import('./module-index.vue'),
       meta: {
         shortcut: 'main',
-        menu: 'strength-mapping',
+        menu: 'report',
       },
       children: [
         {
@@ -58,7 +58,7 @@ export const routes = {
           component: () => import('./views/ikigai/index.vue'),
           meta: {
             shortcut: 'main',
-            menu: 'strength-mapping',
+            menu: 'report',
             submenu: 'report',
           },
         },
@@ -67,7 +67,7 @@ export const routes = {
           component: () => import('./views/ikigai/detail.vue'),
           meta: {
             shortcut: 'main',
-            menu: 'strength-mapping',
+            menu: 'report',
             submenu: 'report',
           },
         },

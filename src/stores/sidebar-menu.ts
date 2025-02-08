@@ -43,9 +43,9 @@ export const useSidebarMenuStore = defineStore('sidebar-menu', {
 })
 
 const menuMain = {
-  name: 'Main Menu',
+  name: 'STRENGTH MAPPING',
   meta: 'main',
-  icon: 'fa-regular fa-house',
+  icon: 'fa-regular fa-camera',
   menu: [
     {
       name: 'Home',
@@ -80,20 +80,30 @@ const menuMain = {
       ],
     },
     {
-      name: 'Strength Mapping',
-      meta: 'strength-mapping',
+      name: 'Capture',
+      meta: 'capture',
       submenu: [
         {
-          name: 'Capture',
+          name: 'Capture New Activity',
+          meta: 'capture-create',
+          path: '/strength-mapping/capture/create',
+        },
+        {
+          name: 'Captured Activities',
           meta: 'capture',
           path: '/strength-mapping/capture',
         },
         {
-          name: 'Report',
-          meta: 'report',
-          path: '/strength-mapping/report/spider-chart',
+          name: 'Draft',
+          meta: 'draft',
+          path: '/strength-mapping/capture/draft',
         },
       ],
+    },
+    {
+      name: 'Report',
+      meta: 'report',
+      path: '/strength-mapping/report/spider-chart',
     },
   ],
 }

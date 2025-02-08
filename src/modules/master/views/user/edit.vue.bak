@@ -15,31 +15,16 @@
     <div class="card space-y-5 p-4">
       <form class="flex flex-col space-y-3" @submit.prevent="onSubmit()">
         <label class="block space-y-1">
-          <span>Username</span>
-          <input v-model="user.username" class="form-input bg-slate-100 dark:bg-slate-700" type="text" readonly />
+          <span class="font-semibold">Email</span>
+          <p>{{ user.email }}</p>
         </label>
         <label class="block space-y-1">
-          <span>Full Name</span>
-          <input v-model="form.name" class="form-input" type="text" />
-        </label>
-
-        <label class="block space-y-1">
-          <span>Email:</span>
-          <input v-model="user.email" class="form-input bg-slate-100 dark:bg-slate-700" type="text" readonly />
+          <span class="font-semibold">Name</span>
+          <p>{{ user.name }}</p>
         </label>
         <label class="block space-y-1">
-          <span class="font-semibold">Role</span>
-          <select v-model="form.role" class="form-input">
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
-          <p v-for="(error, index) in errors?.role" :key="index" class="mt-1 text-xs text-red-500">
-            {{ error }}
-          </p>
-        </label>
-        <label class="block space-y-1">
-          <span>Status Account</span>
-          <input v-model="user.name" class="form-input bg-slate-100 dark:bg-slate-700" type="text" readonly />
+          <span class="font-semibold">New Password</span>
+          <input v-model="form.password" class="form-input" type="password" />
         </label>
 
         <div>
@@ -61,31 +46,28 @@ const route = useRoute()
 const router = useRouter()
 
 const form = ref({
-  _id: '',
-  name: '',
-  role: '',
+  password: '',
 })
 
 const user = ref({
   _id: '',
   name: '',
+  email: '',
   role: '',
 })
 
 onMounted(async () => {
   const result = await axios.get('/users/' + route.params.id)
   user.value = result.data
-  form.value = result.data
 })
 
 const onSubmit = async () => {
   try {
     await axios.patch('/users/' + route.params.id, {
-      name: form.value.name,
-      role: form.value.role,
+      password: form.value.password,
     })
     notification('Update Success', 'success')
-    router.push('/master/user/' + route.params.id)
+    router.push('/master/user')
   } catch (error) {
     notification('Update Failed', 'Please use minimum 8 digit password', 'warning')
   }

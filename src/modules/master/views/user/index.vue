@@ -17,7 +17,7 @@
               class="pointer-events-none absolute right-0 flex h-full w-10 items-center justify-center text-slate-400 dark:text-slate-300"
             >
               <div
-                class="border-slate-150 h-5 w-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
+                class="border-slate-150 size-5 animate-spin rounded-full border-2 border-r-slate-400 dark:border-slate-500 dark:border-r-slate-300"
               ></div>
             </div>
           </label>
@@ -29,17 +29,19 @@
             <tr class="basic-table-row">
               <th class="basic-table-head">Name</th>
               <th class="basic-table-head">Email</th>
+              <th class="basic-table-head">Username</th>
               <th class="basic-table-head">Role</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(user, index) in users" :key="user._id" class="basic-table-row">
               <td class="basic-table-body">
-                <!-- <router-link :to="`/master/user/${user._id}`" class="text-blue-500 hover:text-blue-600"> -->
-                {{ user.name }}
-                <!-- </router-link> -->
+                <router-link :to="`/master/user/${user._id}`" class="text-blue-500 hover:text-blue-600">
+                  {{ user.name }}
+                </router-link>
               </td>
               <td class="basic-table-body">{{ user.email }}</td>
+              <td class="basic-table-body">{{ user.username }}</td>
               <td class="basic-table-body">{{ user.role }}</td>
               <td class="basic-table-body flex gap-2">
                 <!-- <router-link
@@ -53,6 +55,12 @@
                   @click="onDelete(user._id, user.email)"
                 >
                   Delete
+                </button>
+                <button
+                  class="btn btn-sm rounded bg-red-500 text-xs text-white"
+                  @click="onSuspend(user._id, user.email)"
+                >
+                  Suspend
                 </button>
               </td>
             </tr>
@@ -115,6 +123,19 @@ const onDelete = async (id: string, email: string) => {
   }
 }
 
+const onSuspend = async (id: string, email: string) => {
+  try {
+    if (confirm(`are you sure want to suspend this user "${email}" ?`)) {
+      await axios.delete(`/users/${id}`)
+      currentPage.value = 1
+      await getUsers()
+      notification('Notification', `Delete user "${email}" success`, 'warning')
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const getUsers = async (page = 1) => {
   const result = await axios.get('/users', {
     params: {
@@ -125,6 +146,9 @@ const getUsers = async (page = 1) => {
         $or: [
           {
             email: { $regex: searchText.value, $options: 'i' },
+          },
+          {
+            username: { $regex: searchText.value, $options: 'i' },
           },
           {
             name: { $regex: searchText.value, $options: 'i' },

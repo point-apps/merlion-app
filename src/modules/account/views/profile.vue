@@ -7,16 +7,38 @@
     <div class="card space-y-5 p-4">
       <div class="flex flex-col space-y-3">
         <label class="block space-y-1">
-          <span>Name</span>
+          <span>Username</span>
+          <input
+            v-model="form.username"
+            class="form-input bg-slate-100 dark:bg-slate-700"
+            placeholder="Username"
+            type="text"
+            readonly
+          />
+        </label>
+        <label class="block space-y-1">
+          <span>Full Name</span>
           <input v-model="form.name" class="form-input" placeholder="Username" type="text" readonly />
         </label>
         <label class="block space-y-1">
           <span>Email</span>
-          <input v-model="form.email" class="form-input" placeholder="Email" type="text" readonly />
+          <input
+            v-model="form.email"
+            class="form-input bg-slate-100 dark:bg-slate-700"
+            placeholder="Email"
+            type="text"
+            readonly
+          />
         </label>
         <label class="block space-y-1">
           <span>Role</span>
-          <input v-model="form.role" class="form-input" placeholder="Email" type="text" readonly />
+          <input
+            v-model="form.role"
+            class="form-input bg-slate-100 dark:bg-slate-700"
+            placeholder="Email"
+            type="text"
+            readonly
+          />
         </label>
       </div>
     </div>
@@ -35,6 +57,7 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 const form = ref({
+  username: authStore.$state.user.username,
   name: authStore.$state.user.name,
   email: authStore.$state.user.email,
   role: authStore.$state.user.role,

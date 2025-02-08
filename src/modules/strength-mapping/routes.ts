@@ -40,12 +40,21 @@ export const routes = {
           },
         },
         {
+          path: 'draft',
+          component: () => import('./views/capture/draft.vue'),
+          meta: {
+            shortcut: 'main',
+            menu: 'strength-mapping',
+            submenu: 'draft',
+          },
+        },
+        {
           path: 'create',
           component: () => import('./views/capture/create.vue'),
           meta: {
             shortcut: 'main',
             menu: 'strength-mapping',
-            submenu: 'capture',
+            submenu: 'capture-create',
           },
         },
         {

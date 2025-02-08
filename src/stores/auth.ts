@@ -41,6 +41,7 @@ export const useAuthStore = defineStore('auth', {
       })
 
       if (response.status === 200) {
+        this.$state.user.username = response.data.username
         this.$state.user.name = response.data.name
         this.$state.user.email = response.data.email
         this.$state.user.role = response.data.role

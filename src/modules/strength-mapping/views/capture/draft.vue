@@ -1,0 +1,395 @@
+<template>
+  <div class="main-content-container">
+    <div class="main-content-header">
+      <div class="flex w-full justify-between">
+        <div>
+          <h2>Capture</h2>
+          <component
+            :is="Breadcrumb"
+            :breadcrumbs="[{ name: 'strength mapping', path: '/strength-mapping' }, { name: 'capture' }]"
+          />
+        </div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="flex justify-between pt-4">
+      <div class="flex space-x-4">
+        <button
+          type="button"
+          class="text-md inline-block uppercase leading-normal focus:outline-none focus:ring-0"
+          :class="{ 'font-semibold': isDraft === false }"
+          @click="onClickStatus(false)"
+        >
+          Captured
+        </button>
+        <button
+          type="button"
+          class="text-md inline-block uppercase leading-normal focus:outline-none focus:ring-0"
+          :class="{ 'font-semibold': isDraft === true }"
+          @click="onClickStatus(true)"
+        >
+          Draft
+        </button>
+      </div>
+
+      <div class="-ml-10 -mt-10 hidden lg:block">
+        <router-link to="/strength-mapping/capture/create" class="btn btn-base bg-[#4C9F82] px-12 py-2 text-white">
+          <fa-icon icon="fa-regular fa-camera fa-lg" /> <span class="ml-2">Capture New Activity</span>
+        </router-link>
+      </div>
+
+      <div></div>
+
+      <div class="absolute right-8 flex place-items-end space-x-2">
+        <button
+          type="button"
+          class="text-md inline-block font-semibold uppercase leading-normal focus:outline-none focus:ring-0"
+          :class="{ 'text-blue-500': view === 'feed' }"
+          @click="onClickView('list')"
+        >
+          List
+        </button>
+        <div class="font-bold">|</div>
+        <button
+          type="button"
+          class="text-md inline-block font-semibold uppercase leading-normal focus:outline-none focus:ring-0"
+          :class="{ 'text-blue-500': view === 'list' }"
+          @click="onClickView('feed')"
+        >
+          Feed
+        </button>
+      </div>
+    </div>
+
+    <!-- <div
+      class="fixed left-0 z-[10000] flex w-full transition-all duration-500"
+      :class="isNewPostAvailable ? 'top-16' : '-top-16'"
+    >
+      <div
+        class="mx-auto cursor-pointer rounded-full bg-white px-3 py-2 text-sm font-semibold shadow-lg"
+        @click="() => getCaptureFeed(1)"
+      >
+        Capture Baru
+      </div>
+    </div> -->
+
+    <div v-if="view === 'feed'" class="space-y-5 md:space-y-8">
+      <div v-for="capture in feedCaptures" :key="capture._id">
+        <div class="card space-y-5 p-4 md:space-y-8 md:p-16">
+          <router-link :to="`/strength-mapping/capture/${capture._id}`">
+            <div class="space-y-5">
+              <div class="flex w-full gap-4">
+                <img class="size-12 rounded-full md:size-14" src="/blank-profile-picture.svg" alt="avatar" />
+                <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                  <div class="text-xs font-semibold text-gray-900 dark:text-white md:text-lg">
+                    {{ capture.createdBy?.name }}
+                  </div>
+                  <div class="md:text-md text-xs font-normal text-gray-500 dark:text-gray-400">
+                    {{
+                      differenceInDays(new Date(), new Date(capture.date)) > 1
+                        ? format(new Date(capture.date), 'dd MMMM yyyy')
+                        : formatDistance(new Date(capture.date), new Date(), {
+                            addSuffix: true,
+                          })
+                    }}
+                  </div>
+                </div>
+                <div class="ml-auto flex flex-col items-end gap-2">
+                  <div
+                    v-for="{ name, _id } in capture._cluster"
+                    :key="_id"
+                    class="w-fit rounded-full px-2 py-1 text-xs font-semibold capitalize"
+                    :class="'bg-' + name.toString().replace(' ', '-')"
+                  >
+                    {{ name }}
+                  </div>
+                </div>
+              </div>
+              <div class="w-full text-justify">
+                {{ capture.description }}
+              </div>
+            </div>
+          </router-link>
+
+          <div class="w-full items-center">
+            <div v-if="!capture.files" class="font-light italic">Not captured any photo or video</div>
+            <div v-if="capture.files && capture.files[0].id != null">
+              <swiper :slides-per-view="1" navigation :pagination="{ clickable: true }">
+                <swiper-slide v-for="(file, i) in capture.files" :key="i">
+                  <PostSlide :file="file"></PostSlide>
+                </swiper-slide>
+              </swiper>
+            </div>
+          </div>
+        </div>
+        <!-- <router-link :to="`/strength-mapping/capture/${capture._id}`" class="text-blue-500 hover:text-blue-600">
+          
+        </router-link> -->
+      </div>
+      <div v-if="isEndScrolled" class="flex h-40 w-full items-center justify-center md:h-[400px]">
+        <div
+          class="block size-20 animate-spin rounded-full border border-gray-800 border-b-transparent bg-transparent transition"
+        ></div>
+      </div>
+    </div>
+
+    <div v-if="view === 'list'" class="card space-y-5 p-4">
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr class="basic-table-row">
+              <th class="basic-table-head w-1">Date</th>
+              <th class="basic-table-head">Activity</th>
+              <th class="basic-table-head">Cluster</th>
+              <th class="basic-table-head w-1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="capture in captures" :key="capture._id" class="basic-table-row">
+              <td class="basic-table-body whitespace-nowrap">
+                {{ format(new Date(capture.date), 'dd-MM-yyyy') }}
+              </td>
+              <td class="basic-table-body">
+                <router-link :to="`/strength-mapping/capture/${capture._id}`" class="text-blue-500 hover:text-blue-600">
+                  {{ capture.activity }}
+                </router-link>
+              </td>
+              <td class="basic-table-body">
+                <span v-for="(cluster, clusterIndex) in capture.clusters" :key="cluster.name" class="capitalize">
+                  {{ cluster.name }}<span v-if="clusterIndex + 1 < capture.clusters.length">, </span>
+                </span>
+              </td>
+              <td class="basic-table-body">
+                <div
+                  v-if="!capture.isDraft"
+                  class="rounded bg-green-500 px-3 py-1 text-center font-bold text-green-100"
+                >
+                  Captured
+                </div>
+                <div v-else class="rounded bg-slate-500 px-3 py-1 text-center font-bold text-slate-100">Draft</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div v-if="pagination.pageCount > 1" class="mt-10 flex flex-wrap items-center justify-center gap-2">
+          <button
+            v-for="i in pagination.pageCount"
+            :key="i"
+            class="btn btn-base border border-slate-800/20 dark:text-slate-100"
+            :class="{ 'bg-blue-500 text-slate-100': i === currentPage }"
+            @click="onClickPage(i)"
+          >
+            {{ i }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import Breadcrumb from '@/components/breadcrumb.vue'
+import PostSlide from '@/components/post-slide.vue'
+import axios from '@/axios'
+import { watchDebounced } from '@vueuse/core'
+import { differenceInDays, format, formatDistance } from 'date-fns'
+import { useSearchStore } from '@/stores/search'
+import { storeToRefs } from 'pinia'
+import SwiperCore, { Navigation, Pagination, A11y } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/swiper.css'
+import 'swiper/css/pagination'
+
+SwiperCore.use([Navigation, Pagination, A11y])
+
+const searchStore = useSearchStore()
+
+const fromDate = ref<string | null>('')
+const toDate = ref<string | null>('')
+const captures = ref<any[]>([])
+const feedCaptures = ref<any[]>([])
+const pagination = ref({
+  page: 1,
+  pageCount: 0,
+  pageSize: 0,
+  totalDocument: 0,
+})
+const view = ref('list')
+const isLoadingSearch = ref(false)
+const isDraft = ref(true)
+const { searchText } = storeToRefs(searchStore)
+const currentPage = ref(1)
+const pageSize = 10
+const currentFeedPage = ref(1)
+const isFetchingFeed = ref(false)
+const isEndScrolled = ref(false)
+
+const isNewPostAvailable = ref(false)
+const lastDateReceived = ref(new Date())
+
+const getPostAvailability = async function () {
+  const result = await axios.get('/captures/post-counter', {
+    params: {
+      afterDate: lastDateReceived.value,
+    },
+  })
+
+  if (result.data?.data?.[0]?.total) {
+    isNewPostAvailable.value = true
+    currentFeedPage.value = 1
+  }
+}
+
+const getCaptures = async (page = 1) => {
+  const result = await axios.get('/captures', {
+    params: {
+      pageSize: pageSize,
+      page: page,
+      sort: {
+        date: 'desc',
+      },
+      search: {
+        activity: searchText.value,
+        cluster: searchText.value,
+        fromDate: fromDate.value,
+        toDate: toDate.value,
+      },
+      filter: {
+        isDraft: isDraft.value as boolean,
+      },
+    },
+  })
+  captures.value = result.data.data
+  pagination.value = {
+    page: result.data.pagination.page,
+    pageCount: result.data.pagination.pageCount,
+    pageSize: result.data.pagination.pageSize,
+    totalDocument: result.data.pagination.totalDocument,
+  }
+}
+
+const onClickView = (value: string) => {
+  view.value = value
+}
+
+const onClickStatus = async (value: boolean) => {
+  isDraft.value = value
+  await getCaptures(currentPage.value)
+}
+
+const onClickPage = async (page: number) => {
+  currentPage.value = page
+  await getCaptures(page)
+}
+
+const checkEnd = function (e: any) {
+  if (!isFetchingFeed.value) {
+    currentFeedPage.value += 1
+    isEndScrolled.value = true
+    getCaptureFeed(currentFeedPage.value)
+  }
+}
+
+const getCaptureFeed = async (page: number = 1) => {
+  if (isFetchingFeed.value) {
+    return
+  }
+  isFetchingFeed.value = true
+  try {
+    const result = await axios.get('/captures', {
+      params: {
+        pageSize: 10,
+        page: currentFeedPage.value,
+        sort: {
+          date: 'desc',
+        },
+        search: {
+          activity: searchText.value,
+          cluster: searchText.value,
+          fromDate: fromDate.value,
+          toDate: toDate.value,
+        },
+        filter: {
+          isDraft: isDraft.value as boolean,
+        },
+      },
+    })
+    pagination.value = {
+      page: result.data.pagination.page,
+      pageCount: result.data.pagination.pageCount,
+      pageSize: result.data.pagination.pageSize,
+      totalDocument: result.data.pagination.totalDocument,
+    }
+    currentFeedPage.value = page
+    if (page === 1) {
+      feedCaptures.value = result.data.data
+    } else {
+      feedCaptures.value.push(...result.data.data)
+    }
+    lastDateReceived.value = new Date()
+    isNewPostAvailable.value = false
+  } catch (e) {
+    //
+  }
+  isEndScrolled.value = false
+  isFetchingFeed.value = false
+}
+
+watch(searchText, () => {
+  isLoadingSearch.value = true
+})
+
+watchDebounced(
+  searchText,
+  async () => {
+    currentPage.value = 1
+    await getCaptures()
+    isLoadingSearch.value = false
+  },
+  { debounce: 500, maxWait: 1000 }
+)
+
+const searchFeedState = computed(() => searchStore.searchText)
+const searchDateState = computed(() => searchStore.searchDate)
+
+watch(searchFeedState, async () => {
+  currentPage.value = 1
+  await getCaptures()
+  isLoadingSearch.value = false
+})
+
+watch(searchDateState, async () => {
+  if (searchDateState.value) {
+    fromDate.value = format(searchDateState.value[0], 'yyyy-MM-dd')
+    toDate.value = format(searchDateState.value[1], 'yyyy-MM-dd')
+  } else {
+    fromDate.value = null
+    toDate.value = null
+  }
+  currentPage.value = 1
+  await getCaptures()
+  isLoadingSearch.value = false
+})
+
+onMounted(async () => {
+  window.addEventListener('scrollend', checkEnd)
+  window.addEventListener('touchend', checkEnd)
+  try {
+    await getCaptures()
+    await getCaptureFeed(currentFeedPage.value)
+    setInterval(async () => {
+      // TODO: WHAT IS THIS ??? SHOULD NOT CALL API IN INTERVAL
+      // await getPostAvailability()
+    }, 10000)
+  } catch (e) {
+    //
+  }
+})
+onUnmounted(() => {
+  window.removeEventListener('scrollend', checkEnd)
+  window.removeEventListener('touchend', checkEnd)
+})
+</script>
