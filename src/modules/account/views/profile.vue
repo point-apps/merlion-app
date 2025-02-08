@@ -63,8 +63,19 @@
             readonly
           />
         </label>
+        <label class="block space-y-1">
+          <span>Account join</span>
+          <input
+            v-model="form.createdAt"
+            class="form-input bg-slate-100 dark:bg-slate-700"
+            placeholder="-"
+            type="text"
+            readonly
+          />
+        </label>
       </div>
     </div>
+
     <button class="btn btn-base bg-red-600 py-2 text-white" @click="onSignout()">Sign Out</button>
   </div>
 </template>
@@ -74,6 +85,7 @@ import { ref } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
+import { format } from 'date-fns'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -85,6 +97,7 @@ const form = ref({
   email: authStore.$state.user.email,
   role: authStore.$state.user.role,
   status: authStore.$state.user.status,
+  createdAt: authStore.$state.user.createdAt ? format(new Date(authStore.$state.user.createdAt), 'dd MMM yyyy') : '',
 })
 
 const onSignout = () => {

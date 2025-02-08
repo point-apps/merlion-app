@@ -8,6 +8,7 @@ export const useAuthStore = defineStore('auth', {
     user: {
       _id: '',
       name: '',
+      createdAt: '',
       email: '',
       role: '',
       username: '',
@@ -44,8 +45,10 @@ export const useAuthStore = defineStore('auth', {
       })
 
       if (response.status === 200) {
+        console.log('auth', response.data)
         this.$state.user._id = response.data._id
         this.$state.user.username = response.data.username
+        this.$state.user.createdAt = response.data.createdAt
         this.$state.user.name = response.data.name
         this.$state.user.email = response.data.email
         this.$state.user.role = response.data.role
@@ -81,6 +84,7 @@ export const useAuthStore = defineStore('auth', {
       if (response.status === 200) {
         this.$state.user._id = response.data._id
         this.$state.user.username = response.data.username
+        this.$state.user.createdAt = response.data.createdAt
         this.$state.user.name = response.data.name
         this.$state.user.email = response.data.email
         this.$state.user.role = response.data.role
@@ -99,6 +103,7 @@ export const useAuthStore = defineStore('auth', {
         if (response.status === 200) {
           this.$state.user._id = response.data._id
           this.$state.user.username = response.data.username
+          this.$state.user.createdAt = response.data.createdAt
           this.$state.user.name = response.data.name
           this.$state.user.email = response.data.email
           this.$state.user.role = response.data.role
@@ -111,6 +116,7 @@ export const useAuthStore = defineStore('auth', {
     },
     logout() {
       this.$state.user._id = ''
+      this.$state.user.createdAt = ''
       this.$state.user.username = ''
       this.$state.user.name = ''
       this.$state.user.email = ''

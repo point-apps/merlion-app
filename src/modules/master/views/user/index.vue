@@ -32,6 +32,7 @@
               <th class="basic-table-head">Username</th>
               <th class="basic-table-head">Role</th>
               <th class="basic-table-head">Status</th>
+              <th class="basic-table-head">Account join</th>
             </tr>
           </thead>
           <tbody>
@@ -45,6 +46,9 @@
               <td class="basic-table-body">{{ user.username }}</td>
               <td class="basic-table-body">{{ user.role }}</td>
               <td class="basic-table-body">{{ user.status ?? 'active' }}</td>
+              <td class="basic-table-body">
+                {{ user.createdAt ? format(new Date(user.createdAt), 'dd MMM yyyy') : '-' }}
+              </td>
               <td class="basic-table-body flex gap-2">
                 <!-- <router-link
                   :to="`/master/user/${user._id}/edit`"
@@ -100,6 +104,7 @@ import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { watchDebounced } from '@vueuse/core'
 import { useBaseNotification } from '@/composable/notification'
+import { format } from 'date-fns'
 
 interface UserInterface {
   _id: string

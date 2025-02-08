@@ -52,6 +52,7 @@
         </label>
       </div>
     </div>
+
     <button class="btn btn-base bg-blue-600 py-2 text-white" @click="onUpdate()">Update</button>
   </div>
 </template>

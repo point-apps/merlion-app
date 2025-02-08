@@ -38,7 +38,11 @@
         </label>
         <label class="block space-y-1">
           <span class="font-bold">Status Account</span>
-          <div>{{ user.status }}</div>
+          <div>{{ user.status ?? 'active' }}</div>
+        </label>
+        <label class="block space-y-1">
+          <span class="font-bold">Account join</span>
+          <div>{{ user.createdAt ? format(new Date(user.createdAt), 'dd MMM yyyy') : '-' }}</div>
         </label>
       </div>
     </div>
@@ -50,6 +54,7 @@ import { ref, onMounted } from 'vue'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import axios from '@/axios'
 import { useRoute } from 'vue-router'
+import { format } from 'date-fns'
 
 const route = useRoute()
 
@@ -59,6 +64,7 @@ const user = ref({
   email: '',
   role: '',
   status: '',
+  createdAt: '',
 })
 
 onMounted(async () => {
@@ -69,5 +75,6 @@ onMounted(async () => {
   user.value.email = result.data.email
   user.value.role = result.data.role
   user.value.status = result.data.status
+  user.value.createdAt = result.data.createdAt
 })
 </script>
