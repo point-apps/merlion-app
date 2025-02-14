@@ -178,16 +178,7 @@ const onSubmit = async () => {
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
       errors.value = error.response?.data.errors
-      console.log('1', error)
-      if (error.code === 'ERR_BAD_REQUEST') {
-        notification(
-          'Account Suspended',
-          'Your account has been suspended. Please contact the administrator to resolve the issue and regain access to Capture app',
-          'warning'
-        )
-      } else {
-        notification(error.response?.statusText, error.response?.data.message, 'warning')
-      }
+      notification(error.response?.statusText, error.response?.data.message, 'warning')
     } else if (error instanceof AxiosError) {
       console.log('2', error)
       if (error.code === '400') {
