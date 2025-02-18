@@ -22,7 +22,11 @@
     </div>
     <div class="flex justify-end px-8 pb-20 text-blue-600 lg:pb-0">
       <fa-icon icon="fa-light fa-lightbulb w-4 h-4" />
-      <a href="https://www.youtube.com/c/MerlionSchool" target="_blank">Click here for the guidance</a>
+      <a
+        href="https://capturehelpdesk.notion.site/bea30e9308ca43998d639d1db769892d?v=7516af8f97a44e1ebc6755925cbc1c20&pvs=4"
+        target="_blank"
+        >Click here for the guidance</a
+      >
     </div>
   </div>
 </template>
