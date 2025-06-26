@@ -185,6 +185,31 @@
             {{ error }}
           </p>
         </label>
+        <label class="block space-y-1">
+          <span class="font-semibold">Teachers</span>
+          <input
+            v-model="form.teachers"
+            class="form-input"
+            type="text"
+            placeholder="Who is facilitating this activity?"
+          />
+          <p v-for="(error, index) in errors?.teachers" :key="index" class="mt-1 text-xs text-red-500">
+            {{ error }}
+          </p>
+        </label>
+        <label class="block space-y-1">
+          <span class="font-semibold">Activity Note</span>
+          <textarea
+            v-model="form.activity_note"
+            rows="5"
+            class="form-input"
+            type="text"
+            placeholder="How did the activity turns out? Describe what went well, what can be improved, etc..."
+          />
+          <p v-for="(error, index) in errors?.activity_note" :key="index" class="mt-1 text-xs text-red-500">
+            {{ error }}
+          </p>
+        </label>
         <p class="font-bold">Please use this section to assess how the student felt or experienced the activity</p>
         <div class="rounded-lg border border-gray-300 p-4 dark:border-gray-500">
           <div class="flex flex-row gap-2">
@@ -457,6 +482,8 @@ interface CaptureInterface {
   activity: string
   description: string
   observer: string
+  teachers: string
+  activity_note: string
   clusters: CaptureClusterInterface[]
   isDraft: boolean
 }
@@ -466,6 +493,8 @@ const form = ref<CaptureInterface>({
   activity: '',
   description: '',
   observer: '',
+  teachers: '',
+  activity_note: '',
   clusters: [],
   isDraft: false,
 })
@@ -688,6 +717,8 @@ const getCapture = async () => {
     }
   })
   form.value.observer = result.data.observer
+  form.value.teachers = result.data.teachers
+  form.value.activity_note = result.data.activity_note
   if (result.data.files) {
     form.value.files = result.data.files
   }

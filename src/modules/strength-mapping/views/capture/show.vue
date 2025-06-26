@@ -70,69 +70,80 @@
           ></component>
         </label>
         <label class="block space-y-1">
-          <span class="font-semibold">Clusters</span>
-        </label>
-        <div class="block space-y-4">
-          <div
-            v-for="cluster in capture.clusters"
-            :key="cluster._id"
-            class="space-y-4 bg-green-500 p-4 shadow dark:bg-slate-800"
-          >
-            <div>
-              <p class="space-x-1">
-                <span class="text-lg font-semibold capitalize">{{ cluster.name }} </span>
-                <span class="text-sm font-light capitalize">[{{ cluster.typology }}]</span>
-              </p>
-              <p>Strength Experience</p>
-            </div>
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <button
-                type="button"
-                :class="{
-                  'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'easy'),
-                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
-                }"
-                class="border border-sky-400 px-3 py-2 shadow"
-              >
-                Easy
-              </button>
-              <button
-                type="button"
-                :class="{
-                  'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'enjoy'),
-                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
-                }"
-                class="border border-sky-400 px-3 py-2 shadow"
-              >
-                Enjoy
-              </button>
-              <button
-                type="button"
-                :class="{
-                  'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'excellent'),
-                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
-                }"
-                class="border border-sky-400 px-3 py-2 shadow"
-              >
-                Excellent
-              </button>
-              <button
-                type="button"
-                :class="{
-                  'bg-green-400 dark:bg-slate-700': isIkigaiChoosen(cluster, 'earn'),
-                  'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
-                }"
-                class="border border-sky-400 px-3 py-2 shadow"
-              >
-                Earn
-              </button>
-            </div>
-          </div>
-        </div>
-        <label class="block space-y-1">
           <span class="font-semibold">Observer</span>
           <p>{{ capture.observer }}</p>
         </label>
+        <label class="block space-y-1">
+          <span class="font-semibold">Teachers</span>
+          <p>{{ capture.teachers }}</p>
+        </label>
+        <label class="block space-y-1">
+          <span class="font-semibold">Activity Note</span>
+          <component
+            :is="BaseTextarea"
+            v-model="capture.activity_note"
+            class="-mx-2 border-none outline-none"
+            readonly
+          ></component>
+        </label>
+        <label class="block space-y-1">
+          <span class="font-semibold">Clusters</span>
+        </label>
+        <div class="block space-y-4">
+          <template v-for="cluster in capture.clusters" :key="cluster._id">
+            <div v-if="cluster.cluster_id" class="space-y-4 bg-green-500 p-4 shadow dark:bg-slate-800">
+              <div>
+                <p class="space-x-1">
+                  <span class="text-lg font-semibold capitalize">{{ cluster.name }} </span>
+                  <span class="text-sm font-light capitalize">[{{ cluster.typology }}]</span>
+                </p>
+                <p>Strength Experience</p>
+              </div>
+              <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <button
+                  type="button"
+                  :class="{
+                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'easy'),
+                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
+                  }"
+                  class="border border-sky-400 px-3 py-2 shadow"
+                >
+                  Easy
+                </button>
+                <button
+                  type="button"
+                  :class="{
+                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'enjoy'),
+                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
+                  }"
+                  class="border border-sky-400 px-3 py-2 shadow"
+                >
+                  Enjoy
+                </button>
+                <button
+                  type="button"
+                  :class="{
+                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'excellent'),
+                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
+                  }"
+                  class="border border-sky-400 px-3 py-2 shadow"
+                >
+                  Excellent
+                </button>
+                <button
+                  type="button"
+                  :class="{
+                    'bg-green-400 dark:bg-slate-700': isIkigaiChoosen(cluster, 'earn'),
+                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
+                  }"
+                  class="border border-sky-400 px-3 py-2 shadow"
+                >
+                  Earn
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
       </div>
     </div>
   </div>
@@ -165,6 +176,8 @@ const capture = ref({
   description: '',
   clusters: [],
   observer: '',
+  teachers: '',
+  activity_note: '',
   isDraft: false,
 })
 
@@ -178,6 +191,8 @@ onMounted(async () => {
   capture.value.description = result.data.description
   capture.value.clusters = result.data.clusters
   capture.value.observer = result.data.observer
+  capture.value.teachers = result.data.teachers
+  capture.value.activity_note = result.data.activity_note
 })
 
 const isIkigaiChoosen = (cluster, ikigai) => {
