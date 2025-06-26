@@ -13,37 +13,7 @@
     </div>
     <div class="card space-y-5 p-4">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
-        <div v-if="!isGrantedUploadGoogleDrive()" class="grid grid-cols-1 gap-4 font-semibold text-gray-600">
-          <span class="font-semibold">Activity photos or videos</span>
-          <p class="-mt-3 font-light">Please Sign in with Google below to grant access your Google Drive account</p>
-          <button type="button" class="flex rounded" @click="onGoogleSignin()">
-            <img
-              v-if="isGoogleSigninPressed"
-              src="@/assets/images/google/btn_google_signin_light_pressed_web@2x.png"
-              alt=""
-              class="h-12 dark:hidden"
-            />
-            <img
-              v-else
-              src="@/assets/images/google/btn_google_signin_light_normal_web@2x.png"
-              alt=""
-              class="h-12 dark:hidden"
-            />
-            <img
-              v-if="isGoogleSigninPressed"
-              src="@/assets/images/google/btn_google_signin_dark_pressed_web@2x.png"
-              alt=""
-              class="hidden h-12 dark:block"
-            />
-            <img
-              v-else
-              src="@/assets/images/google/btn_google_signin_dark_normal_web@2x.png"
-              alt=""
-              class="hidden h-12 dark:block"
-            />
-          </button>
-        </div>
-        <label v-if="isGrantedUploadGoogleDrive()" class="block space-y-1">
+        <label class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
           <div class="flex w-full items-center justify-center">
             <label
@@ -74,7 +44,14 @@
                 </p>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Only Support file format: PNG, JPG, MP4</p>
               </div>
-              <input id="dropzone-file" type="file" class="hidden" any @change="onFileChange($event)" />
+              <input
+                id="dropzone-file"
+                accept="video/*, image/*"
+                type="file"
+                class="hidden"
+                any
+                @change="onFileChange($event)"
+              />
             </label>
           </div>
         </label>
@@ -84,23 +61,42 @@
         <p v-if="formErrors.mimeType" class="my-2 text-center text-sm font-semibold text-red-500">
           {{ formErrors.mimeType }}
         </p>
-        <div class="flex flex-col space-x-3 lg:flex-row lg:flex-wrap">
+        <div class="flex flex-wrap gap-4">
           <div
             v-for="(file, index) in form.files"
             :key="index"
-            class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+            class="relative w-full rounded-lg p-2 shadow-md dark:bg-slate-700 sm:w-1/2 md:w-1/3 lg:w-1/4"
           >
-            <video v-if="file.mimeType.includes('video')" controls class="w-full">
+            <!-- Video Preview -->
+            <video v-if="file.mimeType.includes('video')" controls class="h-48 w-full rounded object-contain">
               <source :src="file.url" />
               Your browser does not support HTML5 video.
             </video>
-            <img v-else :src="file.url" alt="activity" class="relative max-h-[200px] lg:max-w-[200px]" />
+
+            <!-- Image Preview -->
+            <img
+              v-else-if="file.mimeType.includes('image')"
+              :src="file.url"
+              alt="Uploaded file"
+              class="h-48 w-full rounded object-contain"
+            />
+
+            <!-- PDF or Other File Preview -->
+            <div
+              v-else
+              class="flex h-48 items-center justify-center rounded bg-gray-100 text-center text-sm text-gray-500 dark:bg-slate-600 dark:text-white"
+            >
+              <fa-icon icon="fa-solid fa-file-pdf" class="mr-2 text-3xl text-red-500" />
+              <span class="truncate">{{ file.name }}</span>
+            </div>
+
+            <!-- Remove Button -->
             <button
               type="button"
-              class="btn absolute right-2 top-2 rounded-full border-white bg-white px-2.5 py-1 opacity-50 shadow"
+              class="btn absolute right-2 top-2 rounded-full bg-red-400 px-2 py-1 opacity-90 hover:opacity-100"
               @click="onRemoveFile(index)"
             >
-              <fa-icon icon="fa-solid fa-xmark" class="text-slate-800 shadow"></fa-icon>
+              <fa-icon icon="fa-solid fa-xmark" class="text-slate-800" />
             </button>
           </div>
         </div>
@@ -458,11 +454,6 @@ import Swal from 'sweetalert2'
 
 const authStore = useAuthStore()
 
-const isGrantedUploadGoogleDrive = () => {
-  const googleScopes = authStore.$state.user.googleScopes
-  return googleScopes?.includes('https://www.googleapis.com/auth/drive.file')
-}
-
 const { notification } = useBaseNotification()
 const { convertToDateFormat } = useDateHelper()
 
@@ -479,6 +470,7 @@ interface CaptureClusterInterface {
   typology: string
   ikigai: string[]
 }
+
 interface IFile {
   file: any
   url: string
@@ -495,6 +487,7 @@ interface CaptureInterface {
   clusters: CaptureClusterInterface[]
   isDraft: boolean
 }
+
 const form = ref<CaptureInterface>({
   date: format(new Date(), 'dd-MM-yyyy'),
   files: [],
@@ -513,6 +506,7 @@ const form = ref<CaptureInterface>({
   ],
   isDraft: false,
 })
+
 const isLoadingSearch = ref(false)
 
 const removeCluster = (index: number) => {
@@ -649,7 +643,6 @@ const onSubmit = async () => {
       const formData = new FormData()
       formData.append('capture_id', response.data._id)
       for (let i = 0; i < form.value.files.length; i++) {
-        console.log(form.value.files[i])
         formData.append('files[]', form.value.files[i].file)
       }
       await axios.post('/captures/upload', formData, {
@@ -753,7 +746,6 @@ const onSavingDraft = async () => {
       const formData = new FormData()
       formData.append('capture_id', response.data._id)
       for (let i = 0; i < form.value.files.length; i++) {
-        console.log(form.value.files[i])
         formData.append('files[]', form.value.files[i].file)
       }
       await axios.post('/captures/upload', formData, {

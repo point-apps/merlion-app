@@ -7,7 +7,7 @@
         :breadcrumbs="[
           { name: 'strength mapping', path: '/strength-mapping' },
           { name: 'capture', path: '/strength-mapping/capture' },
-          { name: capture.activity },
+          { name: capture._id },
         ]"
       />
     </div>
@@ -27,28 +27,22 @@
         <label class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
           <div v-if="!capture.files" class="font-light italic">Not captured any photo or video</div>
-          <div v-if="capture.files && capture.files?.[0]?.id != null" class="flex flex-col space-x-3">
+          <div v-if="capture.files && capture.files?.[0]?.url" class="flex space-x-3">
             <div
               v-for="(file, index) in capture.files"
               :key="index"
-              class="relative my-2 flex max-h-[200px] min-h-[100px] flex-col justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+              class="relative w-full rounded-lg p-2 shadow-md dark:bg-slate-700 sm:w-1/2 md:w-1/3 lg:w-1/4"
             >
-              <iframe
-                v-if="file?.mimeType?.includes('video')"
-                :src="`https://drive.google.com/file/d/${file.id}/preview`"
-                frameborder="0"
-                height="360"
-                class="w-full"
-                allow="autoplay; encrypted-media"
-                allowfullscreen
-              >
-              </iframe>
-              <img
-                v-else
-                :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"
-                alt="activity"
-                class="relative max-h-[200px] lg:max-w-[200px]"
-              />
+              <!-- Video Preview -->
+              <video v-if="file.mimeType.includes('video')" controls class="h-48 w-full rounded object-contain">
+                <source :src="file.url" />
+                Your browser does not support HTML5 video.
+              </video>
+
+              <!-- Image Preview -->
+              <a v-else-if="file.mimeType.includes('image')" :href="file.url" target="_blank">
+                <img :src="file.url" alt="Uploaded file" class="h-48 w-full rounded object-contain" />
+              </a>
             </div>
           </div>
         </label>
@@ -164,14 +158,9 @@ const route = useRoute()
 const router = useRouter()
 
 const capture = ref({
+  _id: '',
   date: new Date().toString(),
   files: [],
-  // file: {
-  //   id: '',
-  //   name: '',
-  //   mimeType: '',
-  //   url: '',
-  // },
   activity: '',
   description: '',
   clusters: [],
@@ -187,6 +176,7 @@ onMounted(async () => {
   if (result.data.files) {
     capture.value.files = result.data.files
   }
+  capture.value._id = result.data._id
   capture.value.activity = result.data.activity
   capture.value.description = result.data.description
   capture.value.clusters = result.data.clusters

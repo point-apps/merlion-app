@@ -13,27 +13,21 @@ const onLoad = function () {
 }
 </script>
 <template>
-  <iframe
-    v-if="file?.mimeType?.includes('video')"
-    :class="isLoading ? 'hidden' : ''"
-    :src="`https://drive.google.com/file/d/${file.id}/preview`"
-    frameborder="0"
-    height="360"
-    allow="autoplay; encrypted-media"
-    class="w-full"
-    allowfullscreen
-    @load="onLoad"
-  >
-  </iframe>
+  <!-- Video Preview -->
+  <video v-if="file.mimeType.includes('video')" controls class="w-full rounded object-contain" @loadeddata="onLoad">
+    <source :src="file.url" />
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- Image Preview -->
   <img
-    v-else
-    :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"
-    alt="activity"
-    class="max-h-[800px] w-full object-cover md:max-h-[400px]"
-    :class="isLoading ? 'hidden' : ''"
+    v-else-if="file.mimeType.includes('image')"
+    :src="file.url"
+    alt="Uploaded file"
+    class="w-full rounded object-contain"
     @load="onLoad"
   />
-  <div
+  <!-- <div
     v-if="isLoading"
     class="flex h-40 w-full items-center justify-center bg-gray-800 dark:bg-gray-300 md:h-[400px]"
     @load="onLoad"
@@ -41,5 +35,5 @@ const onLoad = function () {
     <div
       class="block size-20 animate-spin rounded-full border border-white border-b-transparent bg-transparent transition"
     ></div>
-  </div>
+  </div> -->
 </template>

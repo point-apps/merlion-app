@@ -7,42 +7,14 @@
         :breadcrumbs="[
           { name: 'strength mapping', path: '/strength-mapping' },
           { name: 'capture', path: '/strength-mapping/capture' },
+          { name: form._id, path: '/strength-mapping/capture/' + form._id },
+          { name: 'edit' },
         ]"
       />
     </div>
     <div class="card space-y-5 p-4">
       <form class="flex flex-col space-y-4" @submit.prevent="onSubmit()">
-        <div v-if="!isGrantedUploadGoogleDrive()" class="grid grid-cols-1 gap-4 font-semibold text-gray-600">
-          <span class="font-semibold">Activity photos or videos</span>
-          <p class="-mt-3 font-light">Please Sign in with Google below to grant access your Google Drive account</p>
-          <button type="button" class="flex rounded" @click="onGoogleSignin()">
-            <img
-              v-if="isGoogleSigninPressed"
-              src="@/assets/images/google/btn_google_signin_light_pressed_web@2x.png"
-              alt=""
-              class="h-12 dark:hidden"
-            />
-            <img
-              v-else
-              src="@/assets/images/google/btn_google_signin_light_normal_web@2x.png"
-              alt=""
-              class="h-12 dark:hidden"
-            />
-            <img
-              v-if="isGoogleSigninPressed"
-              src="@/assets/images/google/btn_google_signin_dark_pressed_web@2x.png"
-              alt=""
-              class="hidden h-12 dark:block"
-            />
-            <img
-              v-else
-              src="@/assets/images/google/btn_google_signin_dark_normal_web@2x.png"
-              alt=""
-              class="hidden h-12 dark:block"
-            />
-          </button>
-        </div>
-        <label v-if="isGrantedUploadGoogleDrive()" class="block space-y-1">
+        <label class="block space-y-1">
           <span class="font-semibold">Activity photos or videos</span>
           <div class="flex w-full items-center justify-center">
             <label
@@ -83,27 +55,26 @@
         <p v-if="formErrors.mimeType" class="my-2 text-center text-sm text-red-500">
           {{ formErrors.mimeType }}
         </p>
-        <div class="flex flex-col space-x-3">
+        <div class="flex space-x-3">
           <div
             v-for="(file, index) in capture.files"
             :key="'old-' + index"
-            class="relative my-2 flex max-h-[200px] min-h-[100px] justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+            class="relative w-full rounded-lg p-2 shadow-md dark:bg-slate-700 sm:w-1/2 md:w-1/3 lg:w-1/4"
           >
-            <iframe
-              v-if="file?.mimeType?.includes('video')"
-              :src="`https://drive.google.com/file/d/${file.id}/preview`"
-              frameborder="0"
-              height="360"
-              class="w-full"
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-            >
-            </iframe>
+            <!-- Video Preview -->
+            <video v-if="file.mimeType.includes('video')" controls class="h-48 w-full rounded object-contain">
+              <source :src="file.url" />
+              Your browser does not support HTML5 video.
+            </video>
+
+            <!-- Image Preview -->
             <img
-              :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"
-              alt="activity"
-              class="relative max-h-[200px] lg:max-w-[200px]"
+              v-else-if="file.mimeType.includes('image')"
+              :src="file.url"
+              alt="Uploaded file"
+              class="h-48 w-full rounded object-contain"
             />
+
             <button
               type="button"
               class="btn absolute right-2 top-2 rounded-full border-white bg-white px-2.5 py-1 opacity-50 shadow"
@@ -115,33 +86,20 @@
           <div
             v-for="(file, index) in form.files"
             :key="index"
-            class="relative my-2 flex max-h-[200px] min-h-[100px] flex-col justify-center shadow dark:bg-slate-700 lg:max-w-[200px]"
+            class="relative w-full rounded-lg p-2 shadow-md dark:bg-slate-700 sm:w-1/2 md:w-1/3 lg:w-1/4"
           >
-            <video v-if="!file.id && file.mimeType.includes('video')" controls class="w-full">
+            <!-- Video Preview -->
+            <video v-if="file.mimeType.includes('video')" controls class="h-48 w-full rounded object-contain">
               <source :src="file.url" />
               Your browser does not support HTML5 video.
             </video>
+
+            <!-- Image Preview -->
             <img
-              v-else-if="!file.id && !file.mimeType.includes('video')"
+              v-else-if="file.mimeType.includes('image')"
               :src="file.url"
-              alt="activity"
-              class="relative max-h-[200px] lg:max-w-[200px]"
-            />
-            <iframe
-              v-if="file.id && file?.mimeType?.includes('video')"
-              :src="`https://drive.google.com/file/d/${file.id}/preview`"
-              frameborder="0"
-              height="360"
-              class="w-full"
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-            >
-            </iframe>
-            <img
-              v-else-if="file.id && !file.mimeType.includes('video')"
-              :src="`https://drive.google.com/thumbnail?id=${file.id}&sz=w1200`"
-              alt="activity"
-              class="relative max-h-[200px] lg:max-w-[200px]"
+              alt="Uploaded file"
+              class="h-48 w-full rounded object-contain"
             />
             <button
               type="button"
@@ -490,6 +448,7 @@ interface CaptureInterface {
 const form = ref<CaptureInterface>({
   date: format(new Date(), 'dd-MM-yyyy'),
   files: [],
+  _id: '',
   activity: '',
   description: '',
   observer: '',
@@ -655,8 +614,6 @@ const onSubmit = async () => {
       })),
     }
 
-    console.log(values, date)
-
     const response = await axios.patch('/captures/' + route.params.id, {
       ...values,
       date: date ? date : '',
@@ -716,8 +673,10 @@ const getCapture = async () => {
       selectedCluster: clusters.value.find((a: any) => a._id === c.cluster_id),
     }
   })
+  form.value._id = result.data._id
   form.value.observer = result.data.observer
   form.value.teachers = result.data.teachers
+  form.value.files = result.data.files
   form.value.activity_note = result.data.activity_note
   if (result.data.files) {
     form.value.files = result.data.files

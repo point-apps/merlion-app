@@ -116,7 +116,7 @@
 
           <div class="w-full items-center">
             <div v-if="!capture.files" class="font-light italic">Not captured any photo or video</div>
-            <div v-if="capture.files && capture.files[0].id != null">
+            <div v-if="capture.files && capture.files[0]?.url != null">
               <swiper :slides-per-view="1" navigation :pagination="{ clickable: true }">
                 <swiper-slide v-for="(file, i) in capture.files" :key="i">
                   <PostSlide :file="file"></PostSlide>
