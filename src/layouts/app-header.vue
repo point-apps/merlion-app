@@ -177,11 +177,11 @@ const onDownload = async () => {
       if (index2 === 0) {
         formatted.value.push({
           'Activity date': format(parseISO(element.date), 'dd MMM yyyy'),
-          Activity: element.activity.trim(),
-          'Describe the activity': element.description.trim(),
-          Observer: element.observer.trim(),
-          Teachers: element.teachers.trim(),
-          'Activity Note': element.activity_note.trim(),
+          Activity: element.activity,
+          'Describe the activity': element.description,
+          Observer: element.observer,
+          Teachers: element.teachers,
+          'Activity Note': element.activity_note,
           'Strength cluster': element2.name,
           'Strength Cluster Activity': element2.typology,
           'Strength Experience': element2.ikigai ? element2.ikigai.join(', ') : '',
