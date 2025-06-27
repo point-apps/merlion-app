@@ -80,7 +80,13 @@
       <div v-for="capture in feedCaptures" :key="capture._id">
         <div class="card space-y-5 p-4 md:space-y-8 md:p-16">
           <router-link :to="`/strength-mapping/capture/${capture._id}`">
-            <div class="space-y-5">
+            <div class="relative space-y-5">
+              <div class="absolute -right-10 -top-16">
+                <!-- How to prevent router link when user click this button -->
+                <button :disabled="onLoadingShare" @click.prevent.stop="onShare(capture._id, capture)">
+                  <fa-icon icon="fa-solid fa-2x fa-paper-plane"></fa-icon>
+                </button>
+              </div>
               <div class="flex w-full gap-4">
                 <img class="size-12 rounded-full md:size-14" src="/blank-profile-picture.svg" alt="avatar" />
                 <div class="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -141,6 +147,7 @@
         <table class="table">
           <thead>
             <tr class="basic-table-row">
+              <th class="basic-table-head w-1"></th>
               <th class="basic-table-head w-1">Date</th>
               <th class="basic-table-head">Activity</th>
               <th class="basic-table-head">Cluster</th>
@@ -149,6 +156,11 @@
           </thead>
           <tbody>
             <tr v-for="capture in captures" :key="capture._id" class="basic-table-row">
+              <td class="basic-table-body whitespace-nowrap">
+                <button :disabled="onLoadingShare" @click.prevent.stop="onShare(capture._id, capture)">
+                  <fa-icon icon="fa-solid fa-paper-plane"></fa-icon>
+                </button>
+              </td>
               <td class="basic-table-body whitespace-nowrap">
                 {{ format(new Date(capture.date), 'dd-MM-yyyy') }}
               </td>
@@ -198,12 +210,16 @@ import PostSlide from '@/components/post-slide.vue'
 import axios from '@/axios'
 import { watchDebounced } from '@vueuse/core'
 import { differenceInDays, format, formatDistance } from 'date-fns'
+import { useRoute } from 'vue-router'
 import { useSearchStore } from '@/stores/search'
 import { storeToRefs } from 'pinia'
 import SwiperCore, { Navigation, Pagination, A11y } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/swiper.css'
 import 'swiper/css/pagination'
+import { useBaseNotification } from '@/composable/notification'
+
+const { notification } = useBaseNotification()
 
 SwiperCore.use([Navigation, Pagination, A11y])
 
@@ -228,9 +244,22 @@ const pageSize = 10
 const currentFeedPage = ref(1)
 const isFetchingFeed = ref(false)
 const isEndScrolled = ref(false)
-
+const route = useRoute()
 const isNewPostAvailable = ref(false)
 const lastDateReceived = ref(new Date())
+
+const onLoadingShare = ref(false)
+const onShare = async (_id: string, capture) => {
+  onLoadingShare.value = true
+  const loc = window.location.origin + route.path + '/' + _id
+
+  await axios.post('/captures/' + _id + '/share', {
+    url: loc,
+  })
+  notification('Notification', `Activity successfully sent to "${capture.createdBy?.email}"`, 'success')
+
+  onLoadingShare.value = false
+}
 
 const getPostAvailability = async function () {
   const result = await axios.get('/captures/post-counter', {
