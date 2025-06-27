@@ -23,7 +23,6 @@
                 'hidden opacity-0 transition-all duration-700 ease-out': !showSearch,
               }"
             />
-
             <VueDatePicker
               v-model="searchDate"
               class="md:text-md mr-2 w-full text-xs"
@@ -36,7 +35,11 @@
               hide-input-icon
               :enable-time-picker="false"
             />
-            <div v-if="selectedUser" class="mr-2 hover:cursor-pointer" @click="onDownload()">
+            <div
+              v-if="selectedUser && authStore.$state.user.role == 'admin'"
+              class="mr-2 hover:cursor-pointer"
+              @click="onDownload()"
+            >
               <fa-icon icon="fa-regular fa-arrow-down-to-line fa-2xl" style="color: #aaaaaa"></fa-icon>
             </div>
             <base-popover ref="popoverRef" placement="bottom-start">
