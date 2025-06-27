@@ -36,13 +36,13 @@
               :enable-time-picker="false"
             />
             <div
-              v-if="selectedUser && authStore.$state.user.role == 'admin'"
+              v-if="searchDate?.[0] && searchDate?.[1] && createdBy && authStore.$state.user.role == 'admin'"
               class="mr-2 hover:cursor-pointer"
               @click="onDownload()"
             >
               <fa-icon icon="fa-regular fa-arrow-down-to-line fa-2xl" style="color: #aaaaaa"></fa-icon>
             </div>
-            <base-popover ref="popoverRef" placement="bottom-start">
+            <base-popover v-if="authStore.$state.user.role == 'admin'" ref="popoverRef" placement="bottom-start">
               <div class="mr-2 hover:cursor-pointer" @click="popoverRef.toggle()">
                 <fa-icon icon="fa-regular fa-filter fa-2xl" style="color: #aaaaaa"></fa-icon>
               </div>
@@ -70,7 +70,7 @@
                         <input
                           type="checkbox"
                           :value="user.name"
-                          :checked="selectedUser === user.name"
+                          :checked="createdBy === user.name"
                           @change="() => selectUser(user.name)"
                         />
                         {{ user.name }}
@@ -79,7 +79,7 @@
                     <button
                       type="button"
                       class="btn btn-base relative flex-1 rounded bg-blue-500 text-slate-100 hover:bg-blue-600 dark:bg-blue-700"
-                      @click="popoverRef.toggle()"
+                      @click="onToggleButton"
                     >
                       Apply
                     </button>
@@ -129,7 +129,7 @@ const path = computed(() => route.path)
 const authStore = useAuthStore()
 
 const searchStore = useSearchStore()
-const { searchText, searchDate } = storeToRefs(searchStore)
+const { searchText, searchDate, createdBy, appliedCreatedBy } = storeToRefs(searchStore)
 
 const showSearch = ref(false)
 const showDate = ref(false)
@@ -158,7 +158,7 @@ const getCaptures = async (page = 1) => {
         date: 'desc',
       },
       search: {
-        createdBy: selectedUser.value,
+        createdBy: createdBy.value,
         fromDate: searchDate.value[0],
         toDate: searchDate.value[1],
       },
@@ -168,6 +168,11 @@ const getCaptures = async (page = 1) => {
     },
   })
   captures.value = result.data.data
+}
+
+const onToggleButton = () => {
+  appliedCreatedBy.value = createdBy.value
+  popoverRef.value.toggle()
 }
 
 const onDownload = async () => {
@@ -217,7 +222,7 @@ const onDownload = async () => {
   console.log(searchDate.value)
   const startDate = format(searchDate.value[0], 'ddMMMyyyy')
   const endDate = format(searchDate.value[1], 'ddMMMyyyy')
-  XLSX.writeFile(workbook, `Capture Activity_${selectedUser.value}_${startDate}-${endDate}.xlsx`)
+  XLSX.writeFile(workbook, `Capture Activity_${createdBy.value}_${startDate}-${endDate}.xlsx`)
 }
 
 const users = ref()
@@ -244,10 +249,8 @@ onMounted(async () => {
   await getUsers()
 })
 
-const selectedUser = ref<string | null>(null)
-
 const selectUser = (userName: string) => {
-  selectedUser.value = selectedUser.value === userName ? null : userName
+  createdBy.value = createdBy.value === userName ? null : userName
 }
 </script>
 

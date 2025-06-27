@@ -157,7 +157,11 @@
           <tbody>
             <tr v-for="capture in captures" :key="capture._id" class="basic-table-row">
               <td class="basic-table-body whitespace-nowrap">
-                <button :disabled="onLoadingShare" @click.prevent.stop="onShare(capture._id, capture)">
+                <button
+                  v-if="!capture.isDraft"
+                  :disabled="onLoadingShare"
+                  @click.prevent.stop="onShare(capture._id, capture)"
+                >
                   <fa-icon icon="fa-solid fa-paper-plane"></fa-icon>
                 </button>
               </td>
@@ -219,11 +223,11 @@ import 'swiper/swiper.css'
 import 'swiper/css/pagination'
 import { useBaseNotification } from '@/composable/notification'
 
+const searchStore = useSearchStore()
+const { searchText, searchDate, createdBy, appliedCreatedBy } = storeToRefs(searchStore)
 const { notification } = useBaseNotification()
 
 SwiperCore.use([Navigation, Pagination, A11y])
-
-const searchStore = useSearchStore()
 
 const fromDate = ref<string | null>('')
 const toDate = ref<string | null>('')
@@ -238,7 +242,6 @@ const pagination = ref({
 const view = ref('feed')
 const isLoadingSearch = ref(false)
 const isDraft = ref(false)
-const { searchText } = storeToRefs(searchStore)
 const currentPage = ref(1)
 const pageSize = 10
 const currentFeedPage = ref(1)
@@ -287,6 +290,7 @@ const getCaptures = async (page = 1) => {
         cluster: searchText.value,
         fromDate: fromDate.value,
         toDate: toDate.value,
+        createdBy: appliedCreatedBy.value,
       },
       filter: {
         isDraft: isDraft.value as boolean,
@@ -342,6 +346,7 @@ const getCaptureFeed = async (page: number = 1) => {
           cluster: searchText.value,
           fromDate: fromDate.value,
           toDate: toDate.value,
+          createdBy: appliedCreatedBy.value,
         },
         filter: {
           isDraft: isDraft.value as boolean,
@@ -356,8 +361,10 @@ const getCaptureFeed = async (page: number = 1) => {
     }
     currentFeedPage.value = page
     if (page === 1) {
+      console.log('if', result.data.data)
       feedCaptures.value = result.data.data
     } else {
+      console.log('else')
       feedCaptures.value.push(...result.data.data)
     }
     lastDateReceived.value = new Date()
@@ -371,6 +378,14 @@ const getCaptureFeed = async (page: number = 1) => {
 
 watch(searchText, () => {
   isLoadingSearch.value = true
+})
+
+watch(appliedCreatedBy, async () => {
+  isLoadingSearch.value = true
+  currentPage.value = 1
+  await getCaptureFeed(1)
+  await getCaptures()
+  isLoadingSearch.value = false
 })
 
 watchDebounced(
