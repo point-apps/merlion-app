@@ -249,7 +249,7 @@ const isNewPostAvailable = ref(false)
 const lastDateReceived = ref(new Date())
 
 const onLoadingShare = ref(false)
-const onShare = async (_id: string, capture) => {
+const onShare = async (_id: string, capture: { createdBy: { email: any } }) => {
   onLoadingShare.value = true
   const loc = window.location.origin + route.path + '/' + _id
 

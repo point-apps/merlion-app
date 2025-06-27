@@ -155,6 +155,7 @@ const getCaptures = async (page = 1) => {
         date: 'desc',
       },
       search: {
+        createdBy: selectedUser.value,
         fromDate: searchDate.value[0],
         toDate: searchDate.value[1],
       },
@@ -173,7 +174,7 @@ const onDownload = async () => {
   const formatted = ref<any[]>([])
   for (const element of captures.value) {
     console.log(element.clusters)
-    element.clusters.forEach((element2, index2) => {
+    element.clusters.forEach((element2: { name: any; typology: any; ikigai: any[] }, index2: number) => {
       if (index2 === 0) {
         formatted.value.push({
           'Activity date': format(parseISO(element.date), 'dd MMM yyyy'),
@@ -210,8 +211,9 @@ const onDownload = async () => {
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1')
 
   // Trigger download
-  const startDate = format(parseISO(searchDate.value[0].toString()), 'ddMMMyyyy')
-  const endDate = format(parseISO(searchDate.value[0].toString()), 'ddMMMyyyy')
+  console.log(searchDate.value)
+  const startDate = format(searchDate.value[0], 'ddMMMyyyy')
+  const endDate = format(searchDate.value[1], 'ddMMMyyyy')
   XLSX.writeFile(workbook, `Capture Activity_${selectedUser.value}_${startDate}-${endDate}.xlsx`)
 }
 
