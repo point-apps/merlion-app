@@ -115,7 +115,7 @@ import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import axios from '@/axios'
 import * as XLSX from 'xlsx'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 
 const route = useRoute()
 const popoverRef = ref()
@@ -176,7 +176,7 @@ const onDownload = async () => {
     element.clusters.forEach((element2, index2) => {
       if (index2 === 0) {
         formatted.value.push({
-          'Activity date': format(element.date, 'dd MMM yyyy'),
+          'Activity date': format(parseISO(element.date), 'dd MMM yyyy'),
           Activity: element.activity.trim(),
           'Describe the activity': element.description.trim(),
           Observer: element.observer.trim(),
@@ -210,8 +210,8 @@ const onDownload = async () => {
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1')
 
   // Trigger download
-  const startDate = format(searchDate.value[0], 'ddMMMyyyy')
-  const endDate = format(searchDate.value[0], 'ddMMMyyyy')
+  const startDate = format(parseISO(searchDate.value[0].toString()), 'ddMMMyyyy')
+  const endDate = format(parseISO(searchDate.value[0].toString()), 'ddMMMyyyy')
   XLSX.writeFile(workbook, `Capture Activity_${selectedUser.value}_${startDate}-${endDate}.xlsx`)
 }
 
