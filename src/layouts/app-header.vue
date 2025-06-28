@@ -35,11 +35,7 @@
               hide-input-icon
               :enable-time-picker="false"
             />
-            <div
-              v-if="searchDate?.[0] && searchDate?.[1] && createdBy && authStore.$state.user.role == 'admin'"
-              class="mr-2 hover:cursor-pointer"
-              @click="onDownload()"
-            >
+            <div v-if="authStore.$state.user.role == 'admin'" class="mr-2 hover:cursor-pointer" @click="onDownload()">
               <fa-icon icon="fa-regular fa-arrow-down-to-line fa-2xl" style="color: #aaaaaa"></fa-icon>
             </div>
             <base-popover v-if="authStore.$state.user.role == 'admin'" ref="popoverRef" placement="bottom-start">
@@ -119,7 +115,9 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import axios from '@/axios'
 import * as XLSX from 'xlsx'
 import { format, parseISO } from 'date-fns'
+import { useBaseNotification } from '@/composable/notification'
 
+const { notification } = useBaseNotification()
 const route = useRoute()
 const popoverRef = ref()
 const search = ref('')
@@ -176,6 +174,11 @@ const onToggleButton = () => {
 }
 
 const onDownload = async () => {
+  if (!searchDate?.value || !searchDate?.value[0] || !searchDate?.value[1] || !createdBy.value) {
+    notification('', 'Please select a user & period before downloading the file')
+    return
+  }
+
   await getCaptures()
 
   console.log(captures.value)
