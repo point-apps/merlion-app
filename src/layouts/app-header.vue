@@ -69,11 +69,11 @@
                       <label class="flex gap-2">
                         <input
                           type="checkbox"
-                          :value="user.name"
-                          :checked="createdBy === user.name"
-                          @change="() => selectUser(user.name)"
+                          :value="user.username"
+                          :checked="createdBy === user.username"
+                          @change="() => selectUser(user.username)"
                         />
-                        {{ user.name }}
+                        {{ user.username }}
                       </label>
                     </div>
                     <button
@@ -98,7 +98,7 @@
         <div v-else>
           <router-link to="/account/profile" class="flex items-center justify-center space-x-2">
             <fa-icon icon="fa-solid fa-user-circle w-5 h-5"></fa-icon>
-            <p>{{ authStore.$state.user.name }}</p>
+            <p>{{ authStore.$state.user.username }}</p>
           </router-link>
         </div>
       </div>
