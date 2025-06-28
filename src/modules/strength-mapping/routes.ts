@@ -81,7 +81,10 @@ export const routes = {
   beforeEnter: async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     const authStore = useAuthStore()
     if (!(await authStore.isAuthenticated())) {
-      next('/signin')
+      next({
+        path: '/signin',
+        query: { redirect: to.fullPath },
+      })
     } else {
       next()
     }

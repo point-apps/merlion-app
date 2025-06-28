@@ -173,7 +173,8 @@ const onSubmit = async () => {
     const response = await authStore.login(form.value.username, form.value.password)
 
     if (response.status === 200) {
-      router.push('/')
+      const redirectPath = (route.query.redirect as string) || '/'
+      router.push(redirectPath)
     }
   } catch (error) {
     if (error instanceof AxiosError && error.response) {
