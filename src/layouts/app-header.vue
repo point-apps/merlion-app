@@ -65,11 +65,11 @@
                       <label class="flex gap-2">
                         <input
                           type="checkbox"
-                          :value="user.username"
-                          :checked="createdBy === user.username"
-                          @change="() => selectUser(user.username)"
+                          :value="user.name"
+                          :checked="createdBy === user.name"
+                          @change="() => selectUser(user.name)"
                         />
-                        {{ user.username }}
+                        {{ user.name }}
                       </label>
                     </div>
                     <button
