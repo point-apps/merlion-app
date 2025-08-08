@@ -67,7 +67,7 @@
                           type="checkbox"
                           :value="user.name"
                           :checked="createdBy === user.name"
-                          @change="() => selectUser(user.name)"
+                          @change="() => selectUser(user.username)"
                         />
                         {{ user.name }}
                       </label>
@@ -75,7 +75,7 @@
                     <button
                       type="button"
                       class="btn btn-base relative flex-1 rounded bg-blue-500 text-slate-100 hover:bg-blue-600 dark:bg-blue-700"
-                      @click="onToggleButton"
+                      @click="onApplyUser"
                     >
                       Apply
                     </button>
@@ -168,7 +168,7 @@ const getCaptures = async (page = 1) => {
   captures.value = result.data.data
 }
 
-const onToggleButton = () => {
+const onApplyUser = () => {
   appliedCreatedBy.value = createdBy.value
   popoverRef.value.toggle()
 }
