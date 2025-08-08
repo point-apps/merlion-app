@@ -66,7 +66,7 @@
                         <input
                           type="checkbox"
                           :value="user.name"
-                          :checked="createdBy === user.name"
+                          :checked="createdBy === user.username"
                           @change="() => selectUser(user.username)"
                         />
                         {{ user.name }}
