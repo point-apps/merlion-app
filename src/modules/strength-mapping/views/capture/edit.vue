@@ -294,10 +294,10 @@
                   class="border border-sky-400 px-3 py-2 shadow"
                   @click="onChooseIkigai(cluster, 'easy')"
                 >
-                  <p class="font-bold">Enjoy</p>
-                  <p>They had fun doing this activity</p>
+                  <p class="font-bold">Easy</p>
+                  <p>This activity was easy for them to do</p>
                 </button>
-                <button
+                 <button
                   type="button"
                   :class="{
                     'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'enjoy'),
@@ -306,8 +306,8 @@
                   class="border border-sky-400 px-3 py-2 shadow"
                   @click="onChooseIkigai(cluster, 'enjoy')"
                 >
-                  <p class="font-bold">Easy</p>
-                  <p>This activity was easy for them to do</p>
+                  <p class="font-bold">Enjoy</p>
+                  <p>They had fun doing this activity</p>
                 </button>
                 <button
                   type="button"
