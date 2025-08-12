@@ -422,7 +422,7 @@ watch(searchDateState, async () => {
 
 onMounted(async () => {
   window.addEventListener('scrollend', checkEnd)
-  window.addEventListener('touchend', checkEnd)
+  // window.addEventListener('touchend', checkEnd)
   try {
     await getCaptures()
     await getCaptureFeed(currentFeedPage.value)
@@ -436,6 +436,6 @@ onMounted(async () => {
 })
 onUnmounted(() => {
   window.removeEventListener('scrollend', checkEnd)
-  window.removeEventListener('touchend', checkEnd)
+  // window.removeEventListener('touchend', checkEnd)
 })
 </script>
