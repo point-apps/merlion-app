@@ -80,11 +80,16 @@
             readonly
           ></component>
         </label>
-        <label class="block space-y-1">
-          <span class="font-semibold">Clusters</span>
-        </label>
+        
         <div class="block space-y-4">
           <template v-for="cluster in capture.clusters" :key="cluster._id">
+            <div v-if="cluster.cluster_id" class="flex flex-col">
+              <p class="font-semibold">Is Strength Experience Identifiable?</p>
+              <p>{{  cluster.is_identifiable ? 'Yes': 'No' }}</p>
+            </div>
+            <label class="block space-y-1">
+              <span class="font-semibold">Clusters</span>
+            </label>
             <div v-if="cluster.cluster_id" class="space-y-4 bg-green-500 p-4 shadow dark:bg-slate-800">
               <div>
                 <p class="space-x-1">
@@ -93,7 +98,7 @@
                 </p>
                 <p>Strength Experience</p>
               </div>
-              <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <div v-if="cluster.is_identifiable" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 <button
                   type="button"
                   :class="{

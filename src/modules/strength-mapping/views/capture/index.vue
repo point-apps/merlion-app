@@ -17,22 +17,20 @@
 
     <div class="flex justify-between pt-4">
       <div class="flex space-x-4">
-        <button
-          type="button"
+        <router-link
+          to="/strength-mapping/capture"
           class="text-md inline-block uppercase leading-normal focus:outline-none focus:ring-0"
           :class="{ 'font-semibold': isDraft === false }"
-          @click="onClickStatus(false)"
         >
           Captured
-        </button>
-        <button
-          type="button"
+        </router-link>
+        <router-link
+          to="/strength-mapping/capture/draft"
           class="text-md inline-block uppercase leading-normal focus:outline-none focus:ring-0"
           :class="{ 'font-semibold': isDraft === true }"
-          @click="onClickStatus(true)"
         >
           Draft
-        </button>
+        </router-link>
       </div>
 
       <div class="-ml-10 -mt-10 hidden lg:block">

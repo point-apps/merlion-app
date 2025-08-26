@@ -268,60 +268,67 @@
                   </p>
                 </template>
               </div>
-              <div v-if="cluster.typology" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <p class="col-span-2 -mb-4 font-semibold sm:col-span-4">Choose Strength Experience</p>
-                <p class="col-span-2 sm:col-span-4">
+              <div v-if="cluster.typology" class="flex flex-col">
+                <p class="font-semibold">Is Strength Experience Identifiable?</p>
+                <base-switch v-model="cluster.is_identifiable" />
+              </div>
+              <div v-if="cluster.typology" class="flex flex-col">
+                <p class="font-semibold">Choose Strength Experience</p>
+                <p class="">
                   Choose the options that best describe how the student felt about the activity. You may select more
                   than one option
                 </p>
-                <button
-                  type="button"
-                  :class="{
-                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'easy'),
-                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
-                  }"
-                  class="border border-sky-400 px-3 py-2 shadow"
-                  @click="onChooseIkigai(cluster, 'easy')"
-                >
-                  <p class="font-bold">Easy</p>
-                  <p>This activity was easy for them to do</p>
-                </button>
-                <button
-                  type="button"
-                  :class="{
-                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'enjoy'),
-                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
-                  }"
-                  class="border border-sky-400 px-3 py-2 shadow"
-                  @click="onChooseIkigai(cluster, 'enjoy')"
-                >
-                  <p class="font-bold">Enjoy</p>
-                  <p>They had fun doing this activity</p>
-                </button>
-                <button
-                  type="button"
-                  :class="{
-                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'excellent'),
-                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
-                  }"
-                  class="border border-sky-400 px-3 py-2 shadow"
-                  @click="onChooseIkigai(cluster, 'excellent')"
-                >
-                  <p class="font-bold">Excellent</p>
-                  <p>They did this activity really well</p>
-                </button>
-                <button
-                  type="button"
-                  :class="{
-                    'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'earn'),
-                    'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
-                  }"
-                  class="border border-sky-400 px-3 py-2 shadow"
-                  @click="onChooseIkigai(cluster, 'earn')"
-                >
-                  <p class="font-bold">Earn</p>
-                  <p>This activity was rewarding for them</p>
-                </button>
+                <div v-if="cluster.is_identifiable" class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                  <button
+                    type="button"
+                    :class="{
+                      'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'easy'),
+                      'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'easy'),
+                    }"
+                    class="border border-sky-400 px-3 py-2 shadow"
+                    @click="onChooseIkigai(cluster, 'easy')"
+                  >
+                    <p class="font-bold">Easy</p>
+                    <p>This activity was easy for them to do</p>
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'enjoy'),
+                      'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'enjoy'),
+                    }"
+                    class="border border-sky-400 px-3 py-2 shadow"
+                    @click="onChooseIkigai(cluster, 'enjoy')"
+                  >
+                    <p class="font-bold">Enjoy</p>
+                    <p>They had fun doing this activity</p>
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'excellent'),
+                      'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'excellent'),
+                    }"
+                    class="border border-sky-400 px-3 py-2 shadow"
+                    @click="onChooseIkigai(cluster, 'excellent')"
+                  >
+                    <p class="font-bold">Excellent</p>
+                    <p>They did this activity really well</p>
+                  </button>
+                  <button
+                    type="button"
+                    :class="{
+                      'bg-sky-400 text-white dark:bg-sky-700': isIkigaiChoosen(cluster, 'earn'),
+                      'bg-slate-50 dark:bg-slate-700': !isIkigaiChoosen(cluster, 'earn'),
+                    }"
+                    class="border border-sky-400 px-3 py-2 shadow"
+                    @click="onChooseIkigai(cluster, 'earn')"
+                  >
+                    <p class="font-bold">Earn</p>
+                    <p>This activity was rewarding for them</p>
+                  </button>  
+                </div>
+                
               </div>
               <p
                 v-for="(error, index2) in errors?.[`clusters.${index}.ikigai`]"
@@ -442,6 +449,7 @@ import { onMounted, ref } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import Breadcrumb from '@/components/breadcrumb.vue'
 import Datepicker from '@/components/datepicker.vue'
+import BaseSwitch from '@/components/switch.vue'
 import axios from '@/axios'
 import { useRouter } from 'vue-router'
 import { format } from 'date-fns'
@@ -468,6 +476,7 @@ interface CaptureClusterInterface {
   selectedTypologyIndex?: any
   name: string
   typology: string
+  is_identifiable: boolean
   ikigai: string[]
 }
 
@@ -501,6 +510,7 @@ const form = ref<CaptureInterface>({
       cluster_id: null,
       name: '',
       typology: '',
+      is_identifiable: true,
       ikigai: [],
     },
   ],
@@ -556,6 +566,7 @@ const chooseCluster = function (index: number, cluster: any) {
     name: cluster.name,
     typology: '',
     ikigai: [],
+    is_identifiable: true,
     selectedCluster: cluster,
   }
 }
@@ -569,6 +580,7 @@ const addCluster = function () {
     cluster_id: '',
     name: '',
     typology: '',
+    is_identifiable: true,
     ikigai: [],
   })
 }
@@ -588,6 +600,7 @@ const onChooseCluster = (cluster: any, typology: string) => {
     cluster_id: cluster._id,
     name: cluster.name,
     typology: typology,
+    is_identifiable: true,
     ikigai: [],
   })
 }

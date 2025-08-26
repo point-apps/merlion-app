@@ -181,11 +181,10 @@ const onDownload = async () => {
 
   await getCaptures()
 
-  console.log(captures.value)
   const formatted = ref<any[]>([])
   for (const element of captures.value) {
-    console.log(element.clusters)
-    element.clusters.forEach((element2: { name: any; typology: any; ikigai: any[] }, index2: number) => {
+    element.clusters.forEach((element2: { name: any; typology: any; ikigai: any[]; is_identifiable: boolean }, index2: number) => {
+      const ikigai = element2.ikigai ? element2.ikigai.join(', ') : ''
       if (index2 === 0) {
         formatted.value.push({
           'Activity date': format(parseISO(element.date), 'dd MMM yyyy'),
@@ -196,7 +195,8 @@ const onDownload = async () => {
           'Activity Note': element.activity_note,
           'Strength cluster': element2.name,
           'Strength Cluster Activity': element2.typology,
-          'Strength Experience': element2.ikigai ? element2.ikigai.join(', ') : '',
+          'Is Strength experience identifiable': element2.is_identifiable ? 'Yes' : 'No',
+          'Strength Experience': element2.is_identifiable ? ikigai : '',
         })
       } else {
         formatted.value.push({
@@ -208,7 +208,8 @@ const onDownload = async () => {
           'Activity Note': '',
           'Strength cluster': element2.name,
           'Strength Cluster Activity': element2.typology,
-          'Strength Experience': element2.ikigai ? element2.ikigai.join(', ') : '',
+          'Is Strength experience identifiable': element2.is_identifiable ? 'Yes' : 'No',
+          'Strength Experience': element2.is_identifiable ? ikigai : '',
         })
       }
     })
