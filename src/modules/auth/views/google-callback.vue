@@ -1,5 +1,5 @@
 <template>
-  <div>Your email has not been invited, please contact Hyouman to be added</div>
+  <div></div>
 </template>
 
 <script setup lang="ts">
@@ -21,7 +21,7 @@ const serialize = (obj: any) => {
 }
 
 if (route.query.error) {
-  // router.push(`/signin?${serialize(route.query)}`)
+  router.push(`/auth/error`)
 } else {
   await exchangeOAuthToken('google', route.query.code as string)
   router.push('/')

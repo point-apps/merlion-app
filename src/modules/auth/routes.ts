@@ -31,6 +31,10 @@ export const routes = {
           path: 'google-callback',
           component: () => import('./views/google-callback.vue'),
         },
+        {
+          path: 'error',
+          component: () => import('./views/error.vue'),
+        },
       ],
     },
   ],
