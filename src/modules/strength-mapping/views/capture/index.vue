@@ -79,10 +79,10 @@
         <div class="card space-y-5 p-4 md:space-y-8 md:p-16">
           <router-link :to="`/strength-mapping/capture/${capture._id}`">
             <div class="relative space-y-5">
-              <div class="absolute -right-10 -top-16">
+              <div class="absolute lg:-right-10 lg:-top-16 -top-6 right-0">
                 <!-- How to prevent router link when user click this button -->
                 <button :disabled="onLoadingShare" @click.prevent.stop="onShare(capture._id, capture)">
-                  <fa-icon icon="fa-solid fa-2x fa-paper-plane"></fa-icon>
+                  <fa-icon icon="fa-solid lg:fa-2x fa-paper-plane"></fa-icon>
                 </button>
               </div>
               <div class="flex w-full gap-4">
