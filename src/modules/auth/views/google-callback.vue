@@ -21,7 +21,7 @@ const serialize = (obj: any) => {
 }
 
 if (route.query.error) {
-  router.push(`/signin?${serialize(route.query)}`)
+  // router.push(`/signin?${serialize(route.query)}`)
 } else {
   await exchangeOAuthToken('google', route.query.code as string)
   router.push('/')
