@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { onMounted } from 'vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -20,10 +21,12 @@ const serialize = (obj: any) => {
   return str.join('&')
 }
 
-if (route.query.error) {
-  router.push(`/auth/error`)
-} else {
-  await exchangeOAuthToken('google', route.query.code as string)
-  router.push('/')
-}
+onMounted(async () => {
+  if (route.query.error) {
+    router.push(`/auth/error`)
+  } else {
+    await exchangeOAuthToken('google', route.query.code as string)
+    router.push('/')
+  }
+})
 </script>

@@ -11,5 +11,5 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import AppPreloader from '@/components/app-preloader.vue'
+// import AppPreloader from '@/components/app-preloader.vue'
 </script>
