@@ -1,5 +1,5 @@
 <template>
-  <app-preloader class="print:hidden"></app-preloader>
+  <!-- <app-preloader class="print:hidden"></app-preloader> -->
 
   <!-- Page Wrapper -->
   <div class="h-100vh flex grow bg-slate-50 dark:bg-slate-900">
