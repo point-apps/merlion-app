@@ -319,7 +319,10 @@ const onClickPage = async (page: number) => {
 }
 
 const checkEnd = function (e: any) {
-  if (!isFetchingFeed.value) {
+  if (
+    !isFetchingFeed.value &&
+    currentFeedPage.value < pagination.value.pageCount // ✅ stop if last page
+  ) {
     currentFeedPage.value += 1
     isEndScrolled.value = true
     getCaptureFeed(currentFeedPage.value)
@@ -327,18 +330,20 @@ const checkEnd = function (e: any) {
 }
 
 const getCaptureFeed = async (page: number = 1) => {
-  if (isFetchingFeed.value) {
+  if (isFetchingFeed.value) return
+
+  // ✅ stop if already at last page
+  if (page > pagination.value.pageCount && pagination.value.pageCount !== 0) {
     return
   }
+
   isFetchingFeed.value = true
   try {
     const result = await axios.get('/captures', {
       params: {
         pageSize: 10,
         page: currentFeedPage.value,
-        sort: {
-          date: 'desc',
-        },
+        sort: { date: 'desc' },
         search: {
           activity: searchText.value,
           cluster: searchText.value,
@@ -346,33 +351,35 @@ const getCaptureFeed = async (page: number = 1) => {
           toDate: toDate.value,
           createdBy: appliedCreatedBy.value,
         },
-        filter: {
-          isDraft: isDraft.value as boolean,
-        },
+        filter: { isDraft: isDraft.value as boolean },
       },
     })
+
     pagination.value = {
       page: result.data.pagination.page,
       pageCount: result.data.pagination.pageCount,
       pageSize: result.data.pagination.pageSize,
       totalDocument: result.data.pagination.totalDocument,
     }
+
     currentFeedPage.value = page
+
     if (page === 1) {
-      console.log('if', result.data.data)
       feedCaptures.value = result.data.data
     } else {
-      console.log('else')
       feedCaptures.value.push(...result.data.data)
     }
+
     lastDateReceived.value = new Date()
     isNewPostAvailable.value = false
   } catch (e) {
-    //
+    console.error(e)
   }
+
   isEndScrolled.value = false
   isFetchingFeed.value = false
 }
+
 
 watch(searchText, () => {
   isLoadingSearch.value = true
@@ -418,9 +425,33 @@ watch(searchDateState, async () => {
   isLoadingSearch.value = false
 })
 
+// ---------- REPLACED: removed scrollend and added cross-browser debounced scroll ----------
+let scrollTimeout: any = null
+let onScrollHandler: any = null
+
 onMounted(async () => {
-  window.addEventListener('scrollend', checkEnd)
-  // window.addEventListener('touchend', checkEnd)
+  // debounced scroll -> simulates "scrollend" and works on iOS Safari
+  onScrollHandler = () => {
+  clearTimeout(scrollTimeout)
+  scrollTimeout = setTimeout(() => {
+    if (view.value !== 'feed') return
+
+    const scrollTop = window.scrollY
+    const clientHeight = window.innerHeight
+    const scrollHeight = document.documentElement.scrollHeight
+
+    // ✅ trigger only if at exact bottom (allow tiny rounding tolerance)
+    const atBottom = Math.abs(scrollTop + clientHeight - scrollHeight) < 2
+
+    if (atBottom) {
+      checkEnd(undefined)
+    }
+  }, 150)
+}
+
+
+  window.addEventListener('scroll', onScrollHandler, { passive: true })
+
   try {
     await getCaptures()
     await getCaptureFeed(currentFeedPage.value)
@@ -432,8 +463,14 @@ onMounted(async () => {
     //
   }
 })
+
 onUnmounted(() => {
-  window.removeEventListener('scrollend', checkEnd)
-  // window.removeEventListener('touchend', checkEnd)
+  if (onScrollHandler) {
+    window.removeEventListener('scroll', onScrollHandler)
+  }
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout)
+    scrollTimeout = null
+  }
 })
 </script>
